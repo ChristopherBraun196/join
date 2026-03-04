@@ -9,18 +9,18 @@ a {
 }
 
 h1 {
-    font-size: 48px;
+    font-size: 60px;
     font-family: InterBold;
 }
 h2 {
-    font-size: 40px;
+    font-size: 48px;
     font-family: InterBold;
 }
 h3 {
-    font-size: 28px;
+    font-size: 38px;
 }
 h4 {
-    font-size: 20px;
+    font-size: 30px;
 }
 
 /* Responsive Styling */
