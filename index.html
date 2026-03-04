@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Join | Start</title>
     <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./css/assets.css">
     <link rel="stylesheet" href="./css/fonts.css">
     <link rel="stylesheet" href="./css/standard.css">
     <link rel="shortcut icon" href="./assets/img/join_logo.png" type="image/x-icon">
@@ -13,17 +14,44 @@
 
 <body>
     
-    <h1>Login</h1>
+    <header id="login-navbar">
+        <nav>
+            <img src="./assets/img/logo-dark.png" class="logo">
+            <div class="signin">
+                <p>Not a Join user?</p>
+                <button class="primary-btn btn">Sign up</button>
+            </div>
+        </nav>
+    </header>
     
     <main>
-        
+        <section id="login-section">
+            <div class="form-header">
+                <h1>Log in</h1>
+                <div class="spacer"></div>
+            </div>
+
+            <form id="login-form">
+                <div class="input-fields">
+                    <div class="email-input">
+                        <input class="form-input" type="email" placeholder="E-Mail" name="email" autocomplete="additional-name" required />
+                        <span><img src="./assets/icons/mail.png" alt="Email icon"></span>
+                    </div>
+                    <div class="pwd-input">
+                        <input class="form-input" type="password" placeholder="Password" name="password" required/>
+                        <span><img src="./assets/icons/lock.png" alt="Lock icon"></span>
+                    </div>
+                </div>
+                <div class="login-btns">
+                    <button id="login-btn" class="primary-btn btn">Log in</button>
+                    <button id="guest-login-btn" class="regular-btn btn">Guest Log in</button>
+                </div>
+            </form>
+
+        </section>
     </main>
 
     <footer>
-        <div class="copyright">
-            <p>Join &copy; by Christopher Braun, Filip Rozanowski & Mischa Siegrist</p>
-            <p>Design by <a href="https://developerakademie.com/">Developer Akademie</a></p>
-        </div>
         <div class="privacy">
             <a href="#">Privacy Policy</a>
             <a href="#">Legal notice</a>

@@ -1,41 +1,34 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 html {
-    background-color: #F6F7F8;
+  background-color: #f6f7f8;
 }
 
-body{
-    font-family: Arial, sans-serif;
+body {
+  font-family: Arial, sans-serif;
 }
 
-header{
-    width: calc(100% - 240px);
-    box-shadow: 0px 1px 5px rgb(138, 138, 138);
-    background-color: white;
+
+
+nav {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
 }
 
-nav{
-display: flex;
-justify-content: center;
-flex-direction: column;
-gap: 20px;
-width: 100%;
-
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: calc(100vh - 350px);
 }
 
-main{
-    width: 100%;
-    height: 100vh;
-}
-
-.main_grid{
-    width: 560px;
-    height: 560px;
-    padding-left: 100px;
+.main_grid {
+  width: 560px;
+  height: 560px;
+  padding-left: 100px;
 }
 
 .line {
@@ -45,45 +38,40 @@ main{
   border-radius: 100px;
 }
 
-
-
-.headline{
-    display: flex;
-    align-items: center;  
-    gap: 30px;
-    padding-left:100px;
-    padding-top: 100px;
-    font-size: 27px;
+.headline {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  padding-left: 100px;
+  padding-top: 100px;
+  font-size: 27px;
 }
 
-.headline h1{
-    font-size: 61px;
+.headline h1 {
+  font-size: 61px;
 }
 
 nav a {
-    display: flex;             
-    align-items: center;  
-    justify-content:stretch;     
-    gap: 12px;                  
-    text-decoration: none;
-    color: #CDCDCD;
-    font-size: 16px;            
-    padding: 7px 56px;         
-    width: 100%;                
+  display: flex;
+  align-items: center;
+  justify-content: stretch;
+  gap: 12px;
+  text-decoration: none;
+  color: #cdcdcd;
+  font-size: 16px;
+  padding: 7px 56px;
+  width: 100%;
 }
 
 nav a:hover {
-    color: #fff;               
-    background: #091931;
+  color: #fff;
+  background: #091931;
 }
 
-
-.logo{
-    height: 120px;
-    width: 100px;
+.logo {
+  height: 120px;
+  width: 100px;
 }
-
-
 
 .sidebar {
   position: fixed;
@@ -97,15 +85,14 @@ nav a:hover {
   display: flex;
   align-items: center;
   flex-direction: column;
-  padding:70px 0px;
+  padding: 70px 0px;
   justify-content: space-between;
 }
-
 
 .topbar {
   position: fixed;
   top: 0;
-  left: 240px;  
+  left: 240px;
   right: 0;
   height: 100px;
   background: #f4f4f4;
@@ -118,21 +105,98 @@ nav a:hover {
   font-size: 20px;
 }
 
-.privacy{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    gap: 10px;
-    padding-top:100px;
-    
+.privacy {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.privacy a{
-    color: #CDCDCD;
-    text-decoration: none;
+.privacy a {
+  color: #cdcdcd;
+  text-decoration: none;
 }
 
-.privacy a:hover{
-    color: white;
+.privacy a:hover {
+  color: white;
+}
+
+footer {
+  height: 150px;
+}
+
+#login-navbar {
+  padding: 0 48px;
+}
+#login-navbar nav {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-between;
+  align-items: center;
+  height: 200px;
+}
+
+.signin {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+#login-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 500px;
+  height: 350px;
+  background-color: white;
+  gap: 24px;
+  border-radius: 10px;
+}
+
+#login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.form-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.spacer {
+  height: 3px;
+  width: 150px;
+  background-color: #29abe2;
+  border-radius: 10px;
+}
+
+.input-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.email-input,
+.pwd-input {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px #dbdcde;
+  border-style: solid;
+  padding: 0 12px;
+  width: 350px;
+  border-radius: 8px;
+}
+
+.login-btns {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  gap: 32px;
 }
