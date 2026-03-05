@@ -6,6 +6,11 @@
 
 a {
     text-decoration: none;
+    font-family: InterRegular;
+}
+
+.highlighted {
+    color: #29ABE2;
 }
 
 h1 {
