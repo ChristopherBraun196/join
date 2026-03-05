@@ -176,13 +176,16 @@ footer {
   justify-content: center;
 
   width: 500px;
-  height: 350px;
+  min-height: 350px;
   background-color: white;
   gap: 24px;
-  border-radius: 10px;
+  border-radius: 30px;
+  padding: 50px;
+
+  box-shadow: 0 0 30px rgba(130, 130, 130, 0.515);
 }
 
-#login-form {
+#login-signup-form {
   display: flex;
   flex-direction: column;
   gap: 32px;
@@ -193,6 +196,8 @@ footer {
   flex-direction: column;
   align-items: center;
   gap: 8px;
+  position: relative;
+  width: 100%;
 }
 
 .spacer {
@@ -208,6 +213,7 @@ footer {
   gap: 16px;
 }
 
+.name-input,
 .email-input,
 .pwd-input {
   display: flex;
@@ -225,4 +231,16 @@ footer {
   justify-content: center;
   width: 100%;
   gap: 32px;
+}
+
+#guest-login-btn a{
+  color: #2A3647;
+}
+
+.back {
+  position: absolute;
+  top: 50%;
+  left: 20px;
+
+  transform: translateY(-50%);
 }
