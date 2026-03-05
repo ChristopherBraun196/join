@@ -6,8 +6,6 @@ body {
   font-family: Arial, sans-serif;
 }
 
-
-
 nav {
   display: flex;
   justify-content: center;
@@ -68,6 +66,11 @@ nav a:hover {
   background: #091931;
 }
 
+.active {
+  color: #fff;
+  background: #091931;
+}
+
 .logo {
   height: 120px;
   width: 100px;
@@ -120,7 +123,7 @@ nav a:hover {
   text-decoration: none;
 }
 #login-signup-privacy a:hover {
-  color: #2A3647;
+  color: #2a3647;
 }
 
 .privacy {
