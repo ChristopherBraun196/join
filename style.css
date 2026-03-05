@@ -105,6 +105,24 @@ nav a:hover {
   font-size: 20px;
 }
 
+#login-signup-privacy {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  gap: 16px;
+}
+
+#login-signup-privacy a {
+  color: #cdcdcd;
+  text-decoration: none;
+}
+#login-signup-privacy a:hover {
+  color: #2A3647;
+}
+
 .privacy {
   display: flex;
   justify-content: center;
@@ -143,7 +161,7 @@ footer {
   gap: 32px;
 }
 
-#login-section {
+#login-signup-section {
   display: flex;
   flex-direction: column;
   align-items: center;

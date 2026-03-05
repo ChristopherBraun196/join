@@ -25,7 +25,7 @@
     </header>
     
     <main>
-        <section id="login-section">
+        <section id="login-signup-section">
             <div class="form-header">
                 <h1>Log in</h1>
                 <div class="spacer"></div>
@@ -39,11 +39,11 @@
                     </div>
                     <div class="pwd-input">
                         <input class="form-input" type="password" placeholder="Password" name="password" required/>
-                        <span><img src="./assets/icons/lock.png" alt="Lock icon"></span>
+                        <span><img id="pwd-icon" src="./assets/icons/lock.png" alt="Lock icon"></span>
                     </div>
                 </div>
                 <div class="login-btns">
-                    <button id="login-btn" class="primary-btn btn">Log in</button>
+                    <button id="login-btn" class="primary-btn btn" type="submit">Log in</button>
                     <button id="guest-login-btn" class="regular-btn btn">Guest Log in</button>
                 </div>
             </form>
@@ -52,7 +52,7 @@
     </main>
 
     <footer>
-        <div class="privacy">
+        <div id="login-signup-privacy" class="privacy">
             <a href="#">Privacy Policy</a>
             <a href="#">Legal notice</a>
         </div>
