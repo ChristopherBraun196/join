@@ -24,3 +24,11 @@
     outline: none;
     height: 32px;
 }
+
+.back {
+    border: none;
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    object-fit: cover;
+}
