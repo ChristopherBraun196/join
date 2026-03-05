@@ -226,6 +226,12 @@ footer {
   border-radius: 8px;
 }
 
+.accept-input {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
 .login-btns {
   display: flex;
   justify-content: center;
