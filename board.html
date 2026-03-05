@@ -1,52 +1,85 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Join | Board</title>
+    <link
+      rel="shortcut icon"
+      href="./assets/img/logo-light.png"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./css/assets.css" />
+    <link rel="stylesheet" href="./css/fonts.css" />
+    <link rel="stylesheet" href="./css/standard.css" />
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
-</head>
+    <style>
+      .search-wrapper {
+        position: relative;
+      }
+      .search-icon {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+    </style>
+  </head>
 
-<body>
-
-
+  <body>
     <header class="topbar">
-        <a>Kanban Project Management Tool</a>
-        <img src="./assets/icons/help.png">
+      <a>Kanban Project Management Tool</a>
+      <img src="./assets/icons/help.png" />
     </header>
 
     <aside class="sidebar">
-        <img src="./assets/img/join_logo.png" class="logo">
-        <nav>
+      <img src="./assets/img/logo-light.png" class="logo" />
+      <nav>
+        <a href=""><img src="./assets/icons/summary_icon.png" />Summary</a>
 
-            <a href=""><img src="./assets/icons/summary_icon.png">Summary</a>
+        <a href=""><img src="./assets/icons/addtask_icon.png" />Add Task</a>
 
-            <a href=""><img src="./assets/icons/addtask_icon.png">Add Task</a>
+        <a style="color: #fff; background: #091931" href=""
+          ><img src="./assets/icons/board_icon.png" />Board</a
+        >
 
-            <a href=""><img src="./assets/icons/board_icon.png">Board</a>
+        <a href=""><img src="./assets/icons/contacts_icon.png" />Contacts</a>
+      </nav>
 
-            <a href=""><img src="./assets/icons/contacts_icon.png">Contacts</a>
-
-        </nav>
-
-        <div class="privacy">
-            <a href="">Privacy Policy</a>
-            <a href="">Legal notice</a>
-        </div>
-
+      <div class="privacy">
+        <a href="">Privacy Policy</a>
+        <a href="">Legal notice</a>
+      </div>
     </aside>
 
-
-
     <main>
-
-
+      <section>
+        <h1>Board</h1>
+        <div class="search-wrapper">
+          <img src="./assets/icons/search.png" class="search-icon" />
+          <input type="text" placeholder="Find Task |" />
+        </div>
+        <button class="primary-btn">Add task +</button>
+      </section>
+      <section>
+        <div>
+          To do
+          <button>+</button>
+        </div>
+        <div>
+          In progress
+          <button>+</button>
+        </div>
+        <div>
+          Await feedback
+          <button>+</button>
+        </div>
+        <div>
+          Done
+          <button>+</button>
+        </div>
+      </section>
     </main>
-
-
-
-
-</body>
-
+  </body>
 </html>
