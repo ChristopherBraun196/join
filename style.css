@@ -144,10 +144,11 @@ footer {
   height: 150px;
 }
 
-#login-navbar {
+#login-signup-navbar {
   padding: 0 48px;
 }
-#login-navbar nav {
+
+#login-signup-navbar nav {
   display: flex !important;
   flex-direction: row !important;
   justify-content: space-between;
@@ -155,10 +156,14 @@ footer {
   height: 200px;
 }
 
-.signin {
+#signup {
   display: flex;
   align-items: center;
   gap: 32px;
+}
+
+#signup.hidden {
+  display: none;
 }
 
 #login-signup-section {
