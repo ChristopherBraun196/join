@@ -2,7 +2,7 @@ const loginSignupSection = document.getElementById('login-signup-section');
 const signupBtn = document.getElementById('signup');
 
 function init() {
-    
+    switchToLogin();
 }
 
 function switchToSignup() {
