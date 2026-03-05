@@ -15,14 +15,56 @@
     <link rel="stylesheet" href="./css/standard.css" />
 
     <style>
+      .board-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100vh;
+        padding-inline: 80px;
+      }
       .search-wrapper {
+        display: flex;
         position: relative;
       }
       .search-icon {
         position: absolute;
-        right: 10px;
+        right: 200px;
         top: 50%;
         transform: translateY(-50%);
+      }
+      .find-task {
+        align-items: center;
+        border: 1px #dbdcde;
+        border-style: solid;
+        padding: 0px 14px;
+        width: 260px;
+        height: 40px;
+        border-radius: 8px;
+        margin-right: 34px;
+        font-size: 18px;
+      }
+
+      .add-task {
+        width: 160px;
+        border-radius: 8px;
+        font-size: 24px;
+        font-weight: bold;
+        color: white;
+        background-color: #2a3647;
+      }
+
+      .progress-board {
+        display: flex;
+        align-items: center;
+        margin-top: 80px;
+        width: 100vh;
+        justify-content: space-around;
+      }
+
+      .board-task {
+        display: flex;
+        align-content: center;        
+        align-items: center;
       }
     </style>
   </head>
@@ -36,15 +78,21 @@
     <aside class="sidebar">
       <img src="./assets/img/logo-light.png" class="logo" />
       <nav>
-        <a href=""><img src="./assets/icons/summary_icon.png" />Summary</a>
+        <a href="./summary.html"
+          ><img src="./assets/icons/summary_icon.png" />Summary</a
+        >
 
-        <a href=""><img src="./assets/icons/addtask_icon.png" />Add Task</a>
+        <a href="./addtask.html"
+          ><img src="./assets/icons/addtask_icon.png" />Add Task</a
+        >
 
-        <a class="active" href=""
+        <a class="active" href="./board.html"
           ><img src="./assets/icons/board_icon.png" />Board</a
         >
 
-        <a href=""><img src="./assets/icons/contacts_icon.png" />Contacts</a>
+        <a href="./contacts.html"
+          ><img src="./assets/icons/contacts_icon.png" />Contacts</a
+        >
       </nav>
 
       <div class="privacy">
@@ -54,32 +102,31 @@
     </aside>
 
     <main>
-      <section>
+      <section class="board-bar">
         <h1>Board</h1>
         <div class="search-wrapper">
-          <input type="text" placeholder="Find Task |" />
+          <input class="find-task" type="text" placeholder="Find Task" />
           <span>
             <img src="./assets/icons/search.png" class="search-icon"
           /></span>
+          <button class="add-task">Add task +</button>
         </div>
-        <button class="primary-btn">Add task +</button>
       </section>
-      <section>
-        <div>
-          To do
+      <section class="progress-board">
+        <div class="board-task">
+          <h4>To do</h4>
           <button>+</button>
         </div>
-        <div>
-          In progress
+        <div class="board-task">
+          <h4>In progress</h4>
           <button>+</button>
         </div>
-        <div>
-          Await feedback
+        <div class="board-task">
+          <h4>Await feedback</h4>
           <button>+</button>
         </div>
-        <div>
-          Done
-          <button>+</button>
+        <div class="board-task">
+          <h4>Done</h4>          
         </div>
       </section>
     </main>
