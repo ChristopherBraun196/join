@@ -3,11 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="./css/assets.css" />
-    <link rel="stylesheet" href="./css/fonts.css" />
-    <link rel="stylesheet" href="./css/standard.css" />
+    <title>Join - Add Task</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./css/assets.css">
+    <link rel="stylesheet" href="./css/fonts.css">
+    <link rel="stylesheet" href="./css/standard.css">
+    <link rel="stylesheet" href="./css/addTask.css">
+    <link rel="shortcut icon" href="./assets/img/logo-light.svg" type="image/x-icon">
   </head>
 
   <body onload="loadSidebar('addtask')">
@@ -20,7 +22,63 @@
 
     <aside id="sidebar"></aside>
 
-    <main></main>
+    <main>
+      <section id="add-task">
+            <h1>Add Task</h2>
+
+            <form onsubmit="return false">
+                <div id="left-side-form">
+                    <div id="task-title">
+                        <label for="title">Title<span class="required">*</span></label>
+                        <input type="text" name="title" placeholder="Enter a title" required/>
+                    </div>
+                    <div id="task-description">
+                        <label for="description">Description</label>
+                        <textarea name="description" id="description" cols="30" rows="5"></textarea>
+                    </div>
+                    <div id="task-due-date">
+                        <label for="due-date">Due Date<span class="required">*</span></label>
+                        <input type="date" id="due-date" required/>
+                    </div>
+                </div>
+                <div id="task-spacer"></div>
+                <div id="right-side-task">
+                    <div id="task-priority">
+                        <label for="priority">Priority</label>
+                        <div id="task-priority-btns">
+                            <button class="priority" type="button">Urgent <span><img src="./assets/icons/priority-urgent.svg" alt="Urgent priority icon"></span></button>
+                            <button class="priority" type="button">Medium<img src="./assets/icons/priority-medium.svg" alt="Medium priority icon"></span></button>
+                            <button class="priority" type="button">Low<img src="./assets/icons/priority-low.svg" alt="Low priority icon"></span></button>
+                        </div>
+                    </div>
+                    <div id="task-assigned-to">
+                        <label for="assigned">Assigned to</label>
+                        <select name="assigned" id="assigned">
+                            <option value="assign">Select contacts to assign</option>
+                        </select>
+                    </div>
+                    <div id="task-category">
+                        <label for="category">Category<span class="required">*</span></label>
+                        <select name="category" id="category">
+                            <option value="category">Select task category</option>
+                        </select>
+                    </div>
+                    <div id="task-subtasks">
+                        <label for="due-date">Subtasks</label>
+                        <input type="text" placeholder="Add new Subtasks"/>
+                    </div>
+                </div>
+            </form>
+            <div id="add-task-form-footer">
+                <p><span class="required">*</span> This field is required</p>
+                <div id="task-btns">
+                    <button id="clear-task-form" type="button" onclick="clearAddTaskForm()">Clear <img src="./assets/icons/close.svg" alt="Cross icon"></button>
+                    <button id="create-task" class="primary-btn" type="submit">Create Task <img src="./assets/icons/check.svg" alt="Check icon"></button>
+                </div>
+            </div>
+
+        </section>
+    </main>
 
     <script src="./script.js"></script>
     <script src="./js/templates.js"></script>

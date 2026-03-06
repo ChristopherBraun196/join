@@ -1,0 +1,180 @@
+/* --- Globale Variablen & Reset --- */
+    :root {
+        --bg-color: #f4f6f8;
+        --card-bg: #ffffff;
+        --text-main: #1a1a1a;
+        --text-muted: #666666;
+        --input-bg: #f9f9f9;
+        --primary-orange: #ff9f1c;
+        --danger-color: #ff4d4f;
+        --success-color: #2ecc71;
+        --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    #add-task {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 80px;
+        position: absolute;
+        bottom: 0;
+        right: 50%;
+        transform: translateX(50%);
+        padding: 60px 100px;
+        width: 100%;
+        max-width: 1440px;
+        height: calc(100% - 100px);
+    }
+
+    form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 40px;
+        width: 100%;
+    }
+
+    #left-side-form, #right-side-task {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    #task-spacer {
+        width: 1px; 
+        height: 100%;
+        background-color: var(--border-color);
+    }
+
+    label {
+        display: block;
+        font-size: 15px;
+        font-weight: 500;
+        margin-bottom: 8px;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    textarea,
+    select {
+        width: 100%;
+        padding: 12px 15px;
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+        background-color: white;
+        font-size: 15px;
+        font-family: inherit;
+        transition: border-color 0.2s, box-shadow 0.2s;
+        appearance: none;
+        resize: none;
+    }
+
+    select {
+        background-image: url("../assets/icons/arrow_drop_down.svg");
+        background-repeat: no-repeat;
+        background-position: right 15px top 50%;
+        background-size: 12px auto;
+        cursor: pointer;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+        outline: none;
+        background-color: #fff;
+    }
+
+    textarea {
+        resize: vertical;
+        min-height: 120px;
+    }
+
+    input[type="date"] {
+        cursor: text;
+    }
+    
+    input[type="date"]::-webkit-calendar-picker-indicator {
+        cursor: pointer;
+    }
+
+    #task-priority-btns {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+    .priority {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid transparent;
+        box-shadow: 0 0 1px .01px rgba(130, 130, 130, 0.515);
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 500;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: all 0.2s ease;
+        background-color: white;
+    }
+
+    .priority img {
+        width: 16px;
+        height: 16px;
+        opacity: 0.7;
+    }
+
+    #add-task-form-footer {
+        padding-top: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    #add-task-form-footer {
+        width: 100%;
+        font-size: 14px;
+    }
+
+    #task-btns {
+        display: flex;
+        gap: 15px;
+    }
+
+    #task-btns button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px 24px;
+        border-radius: 6px;
+        font-size: 15px;
+        font-family: InterRegular;
+        cursor: pointer;
+        gap: 8px;
+        transition: opacity 0.2s;
+        border: none;
+    }
+
+    #task-btns button span{
+        height: 100%;
+    }
+
+    #task-btns button img {
+        width: 14px;
+        height: 14px;
+    }
+
+    #clear-task-form {
+        color: #2A3647;
+        border: 1px solid black;
+    }
+
+    #create-task:hover {
+        opacity: 0.9;
+    }
