@@ -5,15 +5,15 @@ function getLoginTemplate() {
             <div class="spacer"></div>
         </div>
 
-        <form id="login-signup-form">
+        <form id="login-signup-form" onsubmit="return false">
             <div class="input-fields">
                 <div class="email-input">
                     <input class="form-input" type="email" placeholder="E-Mail" name="email" autocomplete="additional-name" />
-                    <span><img src="./assets/icons/mail.png" alt="Email icon"></span>
+                    <span><img class="input-icon" src="./assets/icons/mail.png" alt="Email icon"></span>
                 </div>
                 <div class="pwd-input">
                     <input class="form-input" type="password" placeholder="Password" name="password"/>
-                    <span><img id="pwd-icon" src="./assets/icons/lock.png" alt="Lock icon"></span>
+                    <span><img class="input-icon" id="pwd-icon" src="./assets/icons/lock.png" alt="Lock icon"></span>
                 </div>
             </div>
             <div class="login-btns">
@@ -33,29 +33,29 @@ function getSignupTemplate() {
             <div class="spacer"></div>
         </div>
 
-        <form id="login-signup-form">
+        <form id="login-signup-form" onsubmit="signup(); return false;">
             <div class="input-fields">
                 <div class="name-input">
-                    <input class="form-input" type="text" placeholder="Full Name" name="fullname" autocomplete="name" />
-                    <span><img src="./assets/icons/person.png" alt="User icon"></span>
+                    <input class="form-input" type="text" placeholder="Full Name" name="fullname" autocomplete="name" required/>
+                    <span><img class="input-icon" src="./assets/icons/person.png" alt="User icon"></span>
                 </div>
 
                 <div class="email-input">
-                    <input class="form-input" type="email" placeholder="E-Mail" name="email" autocomplete="email" />
-                    <span><img src="./assets/icons/mail.png" alt="Email icon"></span>
+                    <input class="form-input" type="email" placeholder="E-Mail" name="email" autocomplete="email" required/>
+                    <span><img class="input-icon" src="./assets/icons/mail.png" alt="Email icon"></span>
                 </div>
 
                 <div class="pwd-input">
-                    <input class="form-input" type="password" placeholder="Password" name="password"/>
-                    <span><img id="pwd-icon" src="./assets/icons/lock.png" alt="Lock icon"></span>
+                    <input class="form-input" type="password" placeholder="Password" name="password" required/>
+                    <span><img class="input-icon" id="pwd-icon" src="./assets/icons/lock.png" alt="Lock icon"></span>
                 </div>
 
                 <div class="pwd-input">
                     <input class="form-input" type="password" placeholder="Confirm Password" name="password_confirm"/>
-                    <span><img id="pwd-confirm-icon" src="./assets/icons/lock.png" alt="Lock icon"></span>
+                    <span><img class="input-icon" id="pwd-confirm-icon" src="./assets/icons/lock.png" alt="Lock icon"></span>
                 </div>
                 <div class="accept-input">
-                    <input type="checkbox" id="accept-btn" /><p>I accept the <a class="highlighted" href="./legal.html">Privacy policy</a></p>
+                    <input type="checkbox" id="accept-btn" required/><p>I accept the <a class="highlighted" href="./legal.html">Privacy policy</a></p>
                 </div>
             </div>
 

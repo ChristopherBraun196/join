@@ -226,6 +226,11 @@ footer {
   border-radius: 8px;
 }
 
+.input-icon {
+  width: 20px;
+  object-fit: cover;
+}
+
 .accept-input {
   display: flex;
   justify-content: center;
