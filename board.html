@@ -64,7 +64,7 @@
         gap: 60px;
         display: flex;
         align-items: center;
-        margin-top: 80px;        
+        margin-top: 80px;
         padding-inline: 60px;
         justify-content: space-around;
       }
@@ -76,6 +76,7 @@
         align-content: center;
         align-items: center;
         justify-content: space-between;
+        flex-wrap: wrap;
       }
 
       .plus-btn {
@@ -93,13 +94,11 @@
         color: var(--highligted-color);
         cursor: pointer;
       }
-      /* class for plus button (img) */
-      /* .plus-btn {
-        color: var(--primary-color);
-        font-size: 24px;
-        font-weight: bold;
-        border: none;
-      } */
+
+      .task-content {
+        width: 100%;
+        padding-top: 24px;
+      }
     </style>
   </head>
 
@@ -128,20 +127,21 @@
         <div class="board-task">
           <h4>To do</h4>
           <button class="plus-btn">+</button>
+          <div class="task-content">Template Inhalt erstellen</div>
         </div>
         <div class="board-task">
           <h4>In progress</h4>
           <button class="plus-btn">+</button>
+          <div class="task-content">Template Inhalt erstellen</div>
         </div>
         <div class="board-task">
           <h4>Await feedback</h4>
-          <button class="plus-btn">
-            +
-            <!-- <img src="./assets/icons/add-with-border-dark.svg" alt="" /> -->
-          </button>
+          <button class="plus-btn">+</button>
+          <div class="task-content">Template Inhalt erstellen</div>
         </div>
         <div class="board-task">
           <h4>Done</h4>
+          <div class="task-content">Template Inhalt erstellen</div>
         </div>
       </section>
     </main>
