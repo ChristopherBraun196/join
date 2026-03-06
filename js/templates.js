@@ -28,7 +28,7 @@ function getSignupTemplate() {
     return `
     
         <div class="form-header">
-            <span onclick="switchToLogin()" class="back"><img src="./assets/icons/arrow-back.png" /></span>
+            <span onclick="switchToLogin()" class="back"><img src="./assets/icons/arrow-back.svg" /></span>
             <h1>Sign Up</h1>
             <div class="spacer"></div>
         </div>
