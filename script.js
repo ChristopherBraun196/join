@@ -1,5 +1,6 @@
 const loginSignupSection = document.getElementById('login-signup-section');
 const signupBtn = document.getElementById('signup');
+const messageElement = document.getElementById('message-box');
 
 function init() {
     switchToLogin();
@@ -15,4 +16,21 @@ function switchToLogin() {
     loginSignupSection.innerHTML = getLoginTemplate();
     signupBtn.classList.remove('hidden');
     document.title = "Join | Log in"
+}
+
+function showMessage(message) {
+    messageElement.classList.add('visible');
+    const msgNode = document.createElement('p');
+    msgNode.textContent = message; 
+    messageElement.appendChild(msgNode); 
+    setTimeout(() => {
+        msgNode.remove();
+        if (messageElement.children.length === 0) {
+            messageElement.classList.remove('visible');
+        }
+    }, 5000);
+}
+
+function signup() {
+    showMessage("Signup Test")
 }
