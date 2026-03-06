@@ -50,7 +50,7 @@
         font-size: 24px;
         font-weight: bold;
         color: white;
-        background-color: #2a3647;
+        background-color: var(--primary-color);
       }
 
       .progress-board {
@@ -58,13 +58,28 @@
         align-items: center;
         margin-top: 80px;
         width: 100vh;
+        padding-inline: 60px;
         justify-content: space-around;
       }
 
       .board-task {
+        color: var(--primary-color);
+        width: 250px;
         display: flex;
-        align-content: center;        
+        align-content: center;
         align-items: center;
+        justify-content: space-between;
+      }
+
+      .plus-btn {
+        color: var(--primary-color);
+        border-radius: 12px;
+        border-color: var(--primary-color);
+        border: 3px solid;
+        width: 35px;
+        height: 35px;
+        font-size: 24px;
+        font-weight: bold;
       }
     </style>
   </head>
@@ -115,18 +130,18 @@
       <section class="progress-board">
         <div class="board-task">
           <h4>To do</h4>
-          <button>+</button>
+          <button class="plus-btn">+</button>
         </div>
         <div class="board-task">
           <h4>In progress</h4>
-          <button>+</button>
+          <button class="plus-btn">+</button>
         </div>
         <div class="board-task">
           <h4>Await feedback</h4>
-          <button>+</button>
+          <button class="plus-btn">+</button>
         </div>
         <div class="board-task">
-          <h4>Done</h4>          
+          <h4>Done</h4>
         </div>
       </section>
     </main>
