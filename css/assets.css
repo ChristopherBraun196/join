@@ -34,6 +34,11 @@
     object-fit: cover;
 }
 
+#help {
+    border: none;
+    background-color: none;
+}
+
 #message-box  {
   display: flex;
   flex-direction: column;
