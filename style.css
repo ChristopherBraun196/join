@@ -3,7 +3,7 @@ html {
 }
 
 body {
-  font-family: Arial, sans-serif;
+  font-family: InterRegular;
 }
 
 nav {
@@ -18,8 +18,20 @@ main {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: flex-start;
+  position: absolute;
+  right: 0;
+  width: calc(100% - 240px);
+  height: 100%;
+}
+
+#login-signup-main {
+  position: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  width: 100%;
+  width: 100% !important;
   min-height: calc(100vh - 400px);
 }
 
