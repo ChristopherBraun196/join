@@ -51,20 +51,27 @@
         font-weight: bold;
         color: white;
         background-color: var(--primary-color);
+        border: none;
+      }
+
+      .add-task:hover {
+        background-color: var(--highligted-color);
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
       }
 
       .progress-board {
+        gap: 60px;
         display: flex;
         align-items: center;
-        margin-top: 80px;
-        width: 100vh;
+        margin-top: 80px;        
         padding-inline: 60px;
         justify-content: space-around;
       }
 
       .board-task {
         color: var(--primary-color);
-        width: 250px;
+        width: 300px;
         display: flex;
         align-content: center;
         align-items: center;
@@ -81,6 +88,18 @@
         font-size: 24px;
         font-weight: bold;
       }
+
+      .plus-btn:hover {
+        color: var(--highligted-color);
+        cursor: pointer;
+      }
+      /* class for plus button (img) */
+      /* .plus-btn {
+        color: var(--primary-color);
+        font-size: 24px;
+        font-weight: bold;
+        border: none;
+      } */
     </style>
   </head>
 
@@ -116,7 +135,10 @@
         </div>
         <div class="board-task">
           <h4>Await feedback</h4>
-          <button class="plus-btn">+</button>
+          <button class="plus-btn">
+            +
+            <!-- <img src="./assets/icons/add-with-border-dark.svg" alt="" /> -->
+          </button>
         </div>
         <div class="board-task">
           <h4>Done</h4>
