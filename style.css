@@ -49,7 +49,7 @@ main {
   font-size: 61px;
 }
 
-nav a {
+.nav-link {
   display: flex;
   align-items: center;
   justify-content: stretch;
@@ -61,7 +61,7 @@ nav a {
   width: 100%;
 }
 
-nav a:hover {
+.nav-link:hover {
   color: #fff;
   background: #091931;
 }
@@ -76,7 +76,7 @@ nav a:hover {
   width: 100px;
 }
 
-.sidebar {
+#sidebar {
   position: fixed;
   left: 0;
   top: 0;
@@ -132,6 +132,7 @@ nav a:hover {
   align-items: center;
   flex-direction: column;
   gap: 10px;
+  width: 100%;
 }
 
 .privacy a {

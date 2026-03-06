@@ -65,3 +65,36 @@ function getSignupTemplate() {
         </form>
     `;
 }
+
+function getSidebarTemplate(summary, addtask, board, contact, privacy, legal) {
+    return `
+        <img src="./assets/img/logo-light.svg" class="logo" />
+        <nav>
+            <a class="nav-link ${summary}" id="summary-link" href="./summary.html">
+                <img src="./assets/icons/summary_icon.svg" />
+                Summary
+            </a>
+
+            <a class="nav-link ${addtask}" id="addtask-link" href="./addtask.html">
+                <img src="./assets/icons/addtask_icon.svg" />
+                Add Task
+            </a>
+
+            <a class="nav-link ${board}" id="board-link" href="./board.html">
+                <img src="./assets/icons/board_icon.svg" class="highlighted-icon" />
+                Board
+            </a>
+
+            <a class="nav-link ${contact}" href="./contacts.html">
+                <img src="./assets/icons/contacts_icon.svg" />
+                Contacts
+            </a>
+        </nav>
+
+        <div class="privacy">
+            <a class="nav-link ${privacy}" href="privacy.html">Privacy Policy</a>
+            <a class="nav-link ${legal}" href="legal.html">Legal notice</a>
+        </div>
+
+    `;
+}

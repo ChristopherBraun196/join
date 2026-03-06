@@ -1,53 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="style.css">
-</head>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="./css/assets.css" />
+    <link rel="stylesheet" href="./css/fonts.css" />
+    <link rel="stylesheet" href="./css/standard.css" />
+  </head>
 
-<body>
-
-
+  <body onload="loadSidebar('privacy')">
     <header class="topbar">
-        <a>Kanban Project Management Tool</a>
-        <img src="./assets/icons/help.svg">
+      <a>Kanban Project Management Tool</a>
+      <button id="help">
+        <a href="help.html"><img src="./assets/icons/help.svg" /></a>
+      </button>
     </header>
 
-    <aside class="sidebar">
-        <img src="./assets/img/logo-light.svg" class="logo">
-        <nav>
+    <aside id="sidebar"></aside>
 
-            <a href="summary.html"><img src="./assets/icons/summary_icon.svg">Summary</a>
+    <main></main>
 
-            <a href="addtask.html"><img src="./assets/icons/addtask_icon.svg">Add Task</a>
-
-            <a href="board.html"><img src="./assets/icons/board_icon.svg">Board</a>
-
-            <a href="contacts.html"><img src="./assets/icons/contacts_icon.svg">Contacts</a>
-
-        </nav>
-
-        <div class="privacy">
-            <a href="#">Privacy Policy</a>
-            <a href="legal.html">Legal notice</a>
-        </div>
-
-    </aside>
-
-
-
-    <main>
-
-  
-
-    </main>
-
-
-
-
-</body>
-
+    <script src="./script.js"></script>
+    <script src="./js/templates.js"></script>
+  </body>
 </html>

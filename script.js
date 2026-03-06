@@ -1,6 +1,7 @@
 const loginSignupSection = document.getElementById('login-signup-section');
 const signupBtn = document.getElementById('signup');
 const messageElement = document.getElementById('message-box');
+const sidebar = document.getElementById('sidebar');
 
 function init() {
     switchToLogin();
@@ -33,4 +34,17 @@ function showMessage(message) {
 
 function signup() {
     showMessage("Signup Test")
+}
+
+function loadSidebar(page) {
+    const map = {
+        summary: ['active', '', '', '', '', ''],
+        addtask: ['', 'active', '', '', '', ''],
+        board:   ['', '', 'active', '', '', ''],
+        contact: ['', '', '', 'active', '', ''],
+        privacy: ['', '', '', '', 'active', ''],
+        legal:   ['', '', '', '', '', 'active']
+    }
+    const args = map[page] || ['', '', '', '', '', '']
+    sidebar.innerHTML = getSidebarTemplate(...args)
 }

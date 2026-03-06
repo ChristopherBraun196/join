@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="de">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -84,37 +84,15 @@
     </style>
   </head>
 
-  <body>
+  <body onload="loadSidebar('board')">
     <header class="topbar">
       <a>Kanban Project Management Tool</a>
-      <img src="./assets/icons/help.svg" />
+      <button id="help">
+        <a href="help.html"><img src="./assets/icons/help.svg" /></a>
+      </button>
     </header>
 
-    <aside class="sidebar">
-      <img src="./assets/img/logo-light.svg" class="logo" />
-      <nav>
-        <a href="./summary.html"
-          ><img src="./assets/icons/summary_icon.svg" />Summary</a
-        >
-
-        <a href="./addtask.html"
-          ><img src="./assets/icons/addtask_icon.svg" />Add Task</a
-        >
-
-        <a class="active" href="./board.html"
-          ><img src="./assets/icons/board_icon.svg" />Board</a
-        >
-
-        <a href="./contacts.html"
-          ><img src="./assets/icons/contacts_icon.svg" />Contacts</a
-        >
-      </nav>
-
-      <div class="privacy">
-        <a href="">Privacy Policy</a>
-        <a href="">Legal notice</a>
-      </div>
-    </aside>
+    <aside id="sidebar"></aside>
 
     <main>
       <section class="board-bar">
@@ -145,5 +123,8 @@
         </div>
       </section>
     </main>
+
+    <script src="./script.js"></script>
+    <script src="./js/templates.js"></script>
   </body>
 </html>
