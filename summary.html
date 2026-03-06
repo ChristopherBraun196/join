@@ -1,28 +1,105 @@
 <!doctype html>
 <html lang="de">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="./css/assets.css" />
-    <link rel="stylesheet" href="./css/fonts.css" />
-    <link rel="stylesheet" href="./css/standard.css" />
-  </head>
 
-  <body onload="loadSidebar('summary')">
-    <header class="topbar">
-      <a>Kanban Project Management Tool</a>
-      <button id="help">
-        <a href="help.html"><img src="./assets/icons/help.svg" /></a>
-      </button>
-    </header>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="./css/assets.css" />
+  <link rel="stylesheet" href="./css/fonts.css" />
+  <link rel="stylesheet" href="./css/standard.css" />
 
-    <aside id="sidebar"></aside>
 
-    <main></main>
+</head>
 
-    <script src="./script.js"></script>
-    <script src="./js/templates.js"></script>
-  </body>
+<body onload="loadSidebar('summary')">
+  <header class="topbar">
+    <a>Kanban Project Management Tool</a>
+    <button id="help">
+      <a href="help.html"><img src="./assets/icons/help.svg" /></a>
+    </button>
+  </header>
+
+  <aside id="sidebar"></aside>
+
+  <main>
+
+
+    <div class="headline">
+      <h1>Join 360</h1>
+      <div class="line"></div><a>Key Metrics at a Glance</a>
+    </div>
+
+    <div class="summary_main_content">
+
+    <div class="summary_grid">
+      <div class="summary_row_first">
+        <div class="summary_bubble">
+          <img src="./assets/icons/todo_icon.png">
+          <div class="summary_counter">
+            <div id="todo_count">1</div>
+            <a>To-do</a>
+          </div>
+        </div>
+        <div class="summary_bubble">
+          <img src="./assets/icons/done_icon.png">
+           <div class="summary_counter">
+            <div id="done_count">1</div>
+            <a>Done</a>
+          </div>
+        </div>
+      </div>
+
+       <div class="summary_bubble">
+          <img src="./assets/icons/urgent_icon.png">
+          <div class="summary_counter">
+            <div id="urgent_count">1</div>
+            <a>Urgent</a>
+          </div>
+          <div class="line"></div>
+           <div class="summary_counter">
+            <div id="deadline">October 16, 2022</div>
+            <a>Upcoming Deadline</a>
+          </div>
+        </div>
+
+         <div class="summary_row_last">
+        <div class="summary_bubble">
+          <div class="summary_counter">
+            <div id="board_count">5</div>
+            <a>Tasks in Board </a>
+          </div>
+        </div>
+        <div class="summary_bubble">
+           <div class="summary_counter">
+            <div id="progress_count">2</div>
+            <a>Tasks in Progress</a>
+          </div>
+        </div>
+        <div class="summary_bubble">
+          <div class="summary_counter">
+            <div id="feedback_count">2</div>
+            <a>Awaiting Feedback</a>
+          </div>
+        </div>
+      </div>
+
+
+
+    </div>
+
+    <div class="welcome_msg">
+    <div class="morning_msg">Good morning,</div>
+    <div class="welcome_name">Sofia Müller</div>
+    </div>
+    </div>
+    
+
+  </main>
+
+  <script src="./script.js"></script>
+  <script src="./js/templates.js"></script>
+</body>
+
 </html>
