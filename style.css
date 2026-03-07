@@ -17,13 +17,12 @@ nav {
 main {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: flex-start;
   position: absolute;
   right: 0;
   width: calc(100% - 240px);
   height: 100%;
-  top: 100px;
-  background-color: rgb(220, 221, 228);
 }
 
 #login-signup-main {
