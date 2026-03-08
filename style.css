@@ -21,8 +21,40 @@ main {
   align-items: flex-start;
   position: absolute;
   right: 0;
-  width: calc(100% - 240px);
+  width: calc(100% - 240px); 
   height: 100%;
+}
+
+
+/*Main für legal/help/privacy*/
+.legal{
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  top: 100px;
+  right: 0;
+  width: calc(100% - 240px);
+  gap: 50px;
+  padding: 100px 100px;
+  height: auto;
+}
+
+.legal a{
+  color: #29ABE2;
+}
+
+.legal ol li {
+  margin-bottom: 20px;
+}
+
+.legal h2{
+  font-size: 27px;
+  font-weight: bold;
+}
+
+.legal h3{
+  font-size: 20px;
+  font-weight: bold;
 }
 
 #login-signup-main {
@@ -118,6 +150,7 @@ main {
   padding-right: 30px;
   justify-content: space-between;
   font-size: 20px;
+   z-index: 100;
 }
 
 #login-signup-privacy {
@@ -279,6 +312,45 @@ footer {
   justify-content: center;
   gap: 20px;
 }
+
+.summary_bubble:hover{
+  background-color: #2f3e4e;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+  transform: scale(1.05);
+}
+
+#help:hover{
+  transition: 0.2s;
+  transform: scale(1.3);
+}
+
+  .icon-wrapper {
+    display: inline-block;
+    cursor: pointer;
+  }
+
+  .summary_bubble:hover:hover .icon-bg {
+    fill: white;
+    transition: 0.2s;
+  }
+
+  .summary_bubble:hover .icon-symbol {
+    fill: #2A3647;
+    transition: 0.2s;
+  }
+
+  .summary_bubble:hover .icon-symbol-done {
+    stroke: #2A3647;
+    transition: 0.2s;
+  }
+
+  .summary_bubble:hover #deadline{
+    color: white;
+    transition: 0.2s;
+  }
+
 
 
 .summary_counter{
