@@ -70,8 +70,9 @@
     opacity: 1;
 }
 
-.highlighted-icon {
+.nav-link-icon.active {
     filter: invert(0) brightness(1000%) saturate(0);
+    background-color: transparent;
 }
 
 .required {

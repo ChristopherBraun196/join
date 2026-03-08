@@ -71,22 +71,22 @@ function getSidebarTemplate(summary, addtask, board, contact, privacy, legal) {
         <img src="./assets/img/logo-light.svg" class="logo" />
         <nav>
             <a class="nav-link ${summary}" id="summary-link" href="./summary.html">
-                <img src="./assets/icons/summary_icon.svg" />
+                <img src="./assets/icons/summary_icon.svg" class="nav-link-icon ${summary}" />
                 Summary
             </a>
 
             <a class="nav-link ${addtask}" id="addtask-link" href="./addtask.html">
-                <img src="./assets/icons/addtask_icon.svg" />
+                <img src="./assets/icons/addtask_icon.svg" class="nav-link-icon ${addtask}" />
                 Add Task
             </a>
 
             <a class="nav-link ${board}" id="board-link" href="./board.html">
-                <img src="./assets/icons/board_icon.svg" class="highlighted-icon" />
+                <img src="./assets/icons/board_icon.svg" class="nav-link-icon ${board}" />
                 Board
             </a>
 
             <a class="nav-link ${contact}" href="./contacts.html">
-                <img src="./assets/icons/contacts_icon.svg" />
+                <img src="./assets/icons/contacts_icon.svg" class="nav-link-icon ${contact}" />
                 Contacts
             </a>
         </nav>
