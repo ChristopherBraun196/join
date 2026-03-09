@@ -99,9 +99,10 @@ function getSidebarTemplate(summary, addtask, board, contact, privacy, legal) {
     `;
 }
 
-function getAddTaskTemplate() {
+function getAddTaskDialogTemplate() {
     return `
         <section id="add-task">
+            <button onclick="closeAddTaskDialog()" id="close-dialog-btn" tabindex="1"><img src="../assets/icons/close.svg"></button>
             <h1>Add Task</h2>
 
             <form onsubmit="return false">
@@ -124,22 +125,43 @@ function getAddTaskTemplate() {
                     <div id="task-priority">
                         <label for="priority">Priority</label>
                         <div id="task-priority-btns">
-                            <button class="priority" type="button">Urgent <span><img src="./assets/icons/priority-urgent.svg" alt="Urgent priority icon"></span></button>
-                            <button class="priority" type="button">Medium<img src="./assets/icons/priority-medium.svg" alt="Medium priority icon"></span></button>
-                            <button class="priority" type="button">Low<img src="./assets/icons/priority-low.svg" alt="Low priority icon"></span></button>
+                            <button class="priority urgent" onclick="setPriority(this)" type="button">Urgent <span><img src="./assets/icons/priority-urgent.svg" alt="Urgent priority icon"></span></button>
+                            <button class="priority medium set" onclick="setPriority(this)" type="button">Medium<span><img src="./assets/icons/priority-medium.svg" alt="Medium priority icon"></span></button>
+                            <button class="priority low" onclick="setPriority(this)" type="button">Low<span><img src="./assets/icons/priority-low.svg" alt="Low priority icon"></span></button>
                         </div>
                     </div>
                     <div id="task-assigned-to">
-                        <label for="assigned">Assigned to</label>
-                        <select name="assigned" id="assigned">
-                            <option value="assign">Select contacts to assign</option>
-                        </select>
+                        <label>Assigned to</label>
+                        <div class="custom-select-wrapper" id="assigned-wrapper">
+                            <div class="custom-select-trigger" onclick="toggleDropdown('assigned')">
+                                <span id="assigned-placeholder">Select contacts to assign</span>
+                                <img src="./assets/icons/arrow_drop_down.svg" class="select-arrow">
+                            </div>
+                            <div class="custom-select-dropdown" id="assigned-dropdown">
+                                <div id="custom-select-dropdown-inner">
+                                </div>
+                            </div>
+                        </div>
+                        <div id="assigned-badges"></div>
                     </div>
                     <div id="task-category">
-                        <label for="category">Category<span class="required">*</span></label>
-                        <select name="category" id="category">
-                            <option value="category">Select task category</option>
-                        </select>
+                        <label>Category<span class="required">*</span></label>
+                        <div class="custom-select-wrapper" id="category-wrapper">
+                            <div class="custom-select-trigger" onclick="toggleDropdown('category')">
+                                <span id="category-placeholder">Select task category</span>
+                                <img src="./assets/icons/arrow_drop_down.svg" class="select-arrow">
+                            </div>
+                            <div class="custom-select-dropdown" id="category-dropdown">
+                                <div class="custom-select-dropdown-inner">
+                                    <div class="custom-option" onclick="selectCategory(this)" data-value="technical-task">
+                                        <span>Technical Task</span>
+                                    </div>
+                                    <div class="custom-option" onclick="selectCategory(this)" data-value="user-story">
+                                        <span>User Story</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div id="task-subtasks">
                         <label for="due-date">Subtasks</label>
