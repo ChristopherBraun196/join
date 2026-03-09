@@ -16,25 +16,25 @@
     <link rel="stylesheet" href="./css/board.css" />
 
     <style>
-            .drag-area {
-          height: 200px;
-          background-color: rgba(0, 0, 0, 0.1);
-          border: 1px dashed black;
-          margin-bottom: 50px;
-          display: flex;
-          align-items: flex-start;
+      .drag-area {
+        height: 200px;
+        background-color: rgba(0, 0, 0, 0.1);
+        border: 1px dashed black;
+        margin-bottom: 50px;
+        display: flex;
+        align-items: flex-start;
       }
 
       .drag-area-highlight {
-          background-color: rgba(0, 0, 0, 0.2);
+        background-color: rgba(0, 0, 0, 0.2);
       }
 
       .todo {
-          background-color: white;
-          border: 1px solid black;
-          border-radius: 5px;
-          padding: 10px;
-          margin: 10px;
+        background-color: white;
+        border: 1px solid black;
+        border-radius: 5px;
+        padding: 10px;
+        margin: 10px;
       }
     </style>
   </head>
@@ -78,9 +78,7 @@
               allowDrop(event);
               highlight('toDo');
             "
-          >
-            Template Inhalt erstellen
-          </div>
+          ></div>
         </div>
         <div class="board-task">
           <h4>In progress</h4>
@@ -94,18 +92,34 @@
               allowDrop(event);
               highlight('inProgress');
             "
-          >
-            Template Inhalt erstellen
-          </div>
+          ></div>
         </div>
         <div class="board-task">
           <h4>Await feedback</h4>
           <button class="plus-btn">+</button>
-          <div class="task-content">Template Inhalt erstellen</div>
+          <div
+            class="task-content"
+            id="await"
+            ondrop="moveTo('await')"
+            ondragleave="removeHighlight('await')"
+            ondragover="
+              allowDrop(event);
+              highlight('await');
+            "
+          ></div>
         </div>
         <div class="board-task">
           <h4>Done</h4>
-          <div class="task-content">Template Inhalt erstellen</div>
+          <div
+            class="task-content"
+            id="done"
+            ondrop="moveTo('done')"
+            ondragleave="removeHighlight('done')"
+            ondragover="
+              allowDrop(event);
+              highlight('done');
+            "
+          ></div>
         </div>
       </section>
     </main>
