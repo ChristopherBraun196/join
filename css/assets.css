@@ -37,6 +37,12 @@
 #help {
     border: none;
     background-color: none;
+    transition: all 0.2s ease-out;
+}
+
+#help:hover {
+  transition: all 0.15s ease-in;
+  transform: scale(1.3);
 }
 
 #message-box  {
