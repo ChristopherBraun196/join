@@ -3,18 +3,21 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100vh;
+  width: 1440px;
 }
+
 .search-wrapper {
   display: flex;
   position: relative;
 }
+
 .search-icon {
   position: absolute;
   right: 200px;
   top: 50%;
   transform: translateY(-50%);
 }
+
 .find-task {
   align-items: center;
   border: 1px gray solid;
@@ -27,9 +30,9 @@
 }
 
 .add-task {
-  width: 160px;
+  width: 225px;
   border-radius: 8px;
-  font-size: 24px;
+  font-size: 22px;
   font-weight: bold;
   color: white;
   background-color: var(--primary-color);
@@ -45,7 +48,7 @@
 .progress-board {
   gap: 60px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   margin-top: 80px;
   padding-left: 100px;
   justify-content: space-around;
@@ -55,10 +58,15 @@
   color: var(--primary-color);
   width: 300px;
   display: flex;
-  align-content: center;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.board-task-header {
+  display: flex;
   justify-content: space-between;
-  flex-wrap: wrap;
+  align-items: center;
+  width: 100%;
 }
 
 .plus-btn {

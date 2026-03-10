@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="./css/fonts.css" />
     <link rel="stylesheet" href="./css/standard.css" />
     <link rel="stylesheet" href="./css/board.css" />
-    <link rel="stylesheet" href="./css/addTask.css">
+    <link rel="stylesheet" href="./css/addTask.css" />
 
     <style>
       .drag-area {
@@ -59,17 +59,25 @@
       <section class="board-bar">
         <h1>Board</h1>
         <div class="search-wrapper">
-          <input class="find-task" type="text" placeholder="Find Task" />
+          <input
+            class="find-task"
+            type="text"
+            role="search"
+            placeholder="Find Task                                           |"
+          />
           <span>
-            <img src="./assets/icons/search.svg" class="search-icon"
-          /></span>
+            <img src="./assets/icons/search.svg" class="search-icon" />
+          </span>
           <button class="add-task">Add task +</button>
         </div>
       </section>
+
       <section class="progress-board">
         <div class="board-task">
-          <h4>To do</h4>
-          <button class="plus-btn" onclick="openAddTaskDialog()">+</button>
+          <div class="board-task-header">
+            <h4>To do</h4>
+            <button class="plus-btn" onclick="openAddTaskDialog()">+</button>
+          </div>
           <div
             class="task-content"
             id="toDo"
@@ -81,9 +89,12 @@
             "
           ></div>
         </div>
+
         <div class="board-task">
-          <h4>In progress</h4>
-          <button class="plus-btn">+</button>
+          <div class="board-task-header">
+            <h4>In progress</h4>
+            <button class="plus-btn">+</button>
+          </div>
           <div
             class="task-content"
             id="inProgress"
@@ -95,9 +106,12 @@
             "
           ></div>
         </div>
+
         <div class="board-task">
-          <h4>Await feedback</h4>
-          <button class="plus-btn">+</button>
+          <div class="board-task-header">
+            <h4>Await feedback</h4>
+            <button class="plus-btn">+</button>
+          </div>
           <div
             class="task-content"
             id="await"
@@ -109,8 +123,11 @@
             "
           ></div>
         </div>
+
         <div class="board-task">
-          <h4>Done</h4>
+          <div class="board-task-header">
+            <h4>Done</h4>
+          </div>
           <div
             class="task-content"
             id="done"
