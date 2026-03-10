@@ -137,6 +137,7 @@ main {
   align-items: center;
   flex-direction: column;
   padding: 20px 0px;
+  background-color: white;
 }
 
 .add_contact{
