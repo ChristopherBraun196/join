@@ -99,6 +99,17 @@ main {
   background: #091931;
 }
 
+.privacy .nav-link:hover {
+  color: #29a9e1;
+  background: none;
+  transform: scale(1.05);
+}
+
+.nav-link.active {
+  pointer-events: none;
+  cursor: default;
+}
+
 .active {
   color: #fff;
   background: #091931;
