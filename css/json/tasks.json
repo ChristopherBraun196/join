@@ -1,0 +1,24 @@
+{
+  "tasks": {
+    "-abc123": {
+      "title": "Kochwelt Page & Recipe Recommender",
+      "description": "DBuild start page with recipe recommendation",
+      "dueDate": "2026-05-10",
+      "priority": "medium",
+      "assignedTo": [],
+      "category": "User Story",
+      "subtasks": {
+        "subtask1": {
+          "title": "HTML structure",
+          "done": true
+        },
+        "subtask2": {
+          "title": "CSS Styling",
+          "done": false
+        }
+      },
+      "status": "in progress",
+      "createdAt": "2026-03-11"
+    }
+  }
+}
