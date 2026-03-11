@@ -46,9 +46,9 @@
                     <div id="task-priority">
                         <label for="priority">Priority</label>
                         <div id="task-priority-btns">
-                            <button class="priority urgent" onclick="setPriority(this)" type="button">Urgent <span><img src="./assets/icons/priority-urgent.svg" alt="Urgent priority icon"></span></button>
-                            <button class="priority medium set" onclick="setPriority(this)" type="button">Medium<span><img src="./assets/icons/priority-medium.svg" alt="Medium priority icon"></span></button>
-                            <button class="priority low" onclick="setPriority(this)" type="button">Low<span><img src="./assets/icons/priority-low.svg" alt="Low priority icon"></span></button>
+                            <button class="priority-btn urgent" onclick="setPriority(this)" type="button">Urgent <span><img src="./assets/icons/priority-urgent.svg" alt="Urgent priority icon"></span></button>
+                            <button class="priority-btn medium set" onclick="setPriority(this)" type="button">Medium<span><img src="./assets/icons/priority-medium.svg" alt="Medium priority icon"></span></button>
+                            <button class="priority-btn low" onclick="setPriority(this)" type="button">Low<span><img src="./assets/icons/priority-low.svg" alt="Low priority icon"></span></button>
                         </div>
                     </div>
                     <div id="task-assigned-to">
@@ -93,7 +93,7 @@
             <div id="add-task-form-footer">
                 <p><span class="required">*</span> This field is required</p>
                 <div id="task-btns">
-                    <button id="clear-task-form" type="button" onclick="clearAddTaskForm()">Clear <img src="./assets/icons/close.svg" alt="Cross icon"></button>
+                    <button id="clear-task-form" class="secondary-btn" type="button" onclick="clearAddTaskForm()">Clear <img src="./assets/icons/close.svg" alt="Cross icon"></button>
                     <button id="create-task" class="primary-btn" type="submit">Create Task <img src="./assets/icons/check.svg" alt="Check icon"></button>
                 </div>
             </div>
@@ -103,5 +103,6 @@
 
     <script src="./script.js"></script>
     <script src="./js/templates.js"></script>
+    <script src="./js/addTask.js"></script>
   </body>
 </html>

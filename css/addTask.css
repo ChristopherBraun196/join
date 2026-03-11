@@ -86,7 +86,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   margin-bottom: 10px;
 }
 
-.priority {
+.priority-btn {
   flex: 1;
   padding: 10px;
   border: 1px solid var(--border-color);
@@ -103,34 +103,38 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   background-color: white;
 }
 
-.priority span {
+.priority-btn:hover {
+  box-shadow: 0 4px 4px 0 #00000050;
+}
+
+.priority-btn span {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.priority.set {
+.priority-btn.set {
   font-family: InterBold;
   color: white;
 }
 
-.priority.set span img {
+.priority-btn.set span img {
   filter: brightness(0) invert(1);
 }
 
-.priority.urgent.set {
+.priority-btn.urgent.set {
   background-color: #ff3d00;
 }
 
-.priority.medium.set {
+.priority-btn.medium.set {
   background-color: #ffa800;
 }
 
-.priority.low.set {
+.priority-btn.low.set {
   background-color: #7ae229;
 }
 
-.priority img {
+.priority-btn img {
   width: 16px;
   height: 16px;
 }
@@ -172,11 +176,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 #task-btns button img {
   width: 14px;
   height: 14px;
-}
-
-#clear-task-form {
-  color: #2a3647;
-  border: 1px solid black !important;
 }
 
 #create-task:hover {

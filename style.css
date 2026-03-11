@@ -152,20 +152,11 @@ main {
 }
 
 .add_contact{
-  background-color:#2f3e4e;
-  color: white;
   font-size: 21px;
   font-weight: bold;
   padding: 16px 65px;
   display: flex;
   gap: 16px;
-  border-radius: 10px;
-  border: 0;
-}
-
-.add_contact:hover{
-  background-color: #29a9e1;
-  transform: scale(1.02);
 }
 
 .main_contacts{

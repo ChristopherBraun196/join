@@ -1,7 +1,30 @@
 .primary-btn {
+    transition: all .1s ease-in !important;
     background-color: var(--primary-color) !important;
     color: white !important;
     font-family: InterBold !important;
+    border-radius: var(--border-radius);
+    border: none;
+}
+
+.primary-btn:hover {
+    transition: all .1s ease-in !important;
+    background-color: var(--highligted-color) !important;
+    box-shadow:  0 4px 4px 0 #00000050 !important;
+}
+
+.secondary-btn {
+    transition: all .1s ease-in !important;
+    background-color: white;
+    color: var(--primary-color);
+    border: 1px solid var(--border-color) !important;
+    border-radius: var(--border-radius) !important;
+}
+
+.secondary-btn:hover {
+    transition: all .1s ease-in !important;
+    border: 1px solid var(--highligted-color) !important;
+    box-shadow: 0 4px 4px 0 #00000050 !important;
 }
 
 .regular-btn {
