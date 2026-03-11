@@ -125,9 +125,9 @@ function getAddTaskDialogTemplate() {
                     <div id="task-priority">
                         <label for="priority">Priority</label>
                         <div id="task-priority-btns">
-                            <button class="priority urgent" onclick="setPriority(this)" type="button">Urgent <span><img src="./assets/icons/priority-urgent.svg" alt="Urgent priority icon"></span></button>
-                            <button class="priority medium set" onclick="setPriority(this)" type="button">Medium<span><img src="./assets/icons/priority-medium.svg" alt="Medium priority icon"></span></button>
-                            <button class="priority low" onclick="setPriority(this)" type="button">Low<span><img src="./assets/icons/priority-low.svg" alt="Low priority icon"></span></button>
+                            <button class="priority-btn urgent" onclick="setPriority(this)" type="button">Urgent <span><img src="./assets/icons/priority-urgent.svg" alt="Urgent priority icon"></span></button>
+                            <button class="priority-btn medium set" onclick="setPriority(this)" type="button">Medium<span><img src="./assets/icons/priority-medium.svg" alt="Medium priority icon"></span></button>
+                            <button class="priority-btn low" onclick="setPriority(this)" type="button">Low<span><img src="./assets/icons/priority-low.svg" alt="Low priority icon"></span></button>
                         </div>
                     </div>
                     <div id="task-assigned-to">
