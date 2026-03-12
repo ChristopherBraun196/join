@@ -1,3 +1,5 @@
+let addTaskDialog;
+
 function openAddTaskDialog() {
     let main = document.querySelector('main');
     let dialogSection = document.createElement("dialog");
@@ -243,4 +245,51 @@ function cancelEditSubtask(input, originalText) {
 
 function removeSubtask(btn) {
     btn.closest('li').remove();
+}
+
+function generateTaskJson() {
+    const task = {
+        id: crypto.randomUUID(),
+        title: getTaskTitle(),
+        description: getTaskDescription(),
+        dueDate: getTaskDueDate(),
+        priority: getTaskPriority(),
+        category: getTaskCategory(),
+        assignedTo: [
+            // { id: "xK9mP2qRtL8vNjW3", name: "David Eisenberg", color: "#FFBB2B" }
+        ],
+        subtasks: [
+            // { id: crypto.randomUUID(), title: "Subtask text", completed: false }
+        ],
+        status: "todo",
+    };
+
+    return task;
+}
+
+function getTaskTitle() {
+    return document.querySelector('input[name="title"]').value.trim();
+}
+
+function getTaskDescription() {
+    return document.querySelector('textarea[name="description"]').value.trim();
+}
+
+function getTaskDueDate() {
+    return document.querySelector('input[name="due-date"]').value.trim();
+}
+
+function getTaskPriority() {
+    const priorityBtn = document.querySelector('.priority-btn.set');
+    const priority = ['urgent', 'medium', 'low'].find(p => priorityBtn.classList.contains(p));
+    return priority;
+}
+
+function getTaskCategory() {
+    return document.querySelector('input[name="category"]').value.trim();
+}
+
+function createTask() {
+    console.log(generateTaskJson());
+    // push to firebase function here
 }
