@@ -2,7 +2,6 @@ const loginSignupSection = document.getElementById('login-signup-section');
 const signupBtn = document.getElementById('signup');
 const messageElement = document.getElementById('message-box');
 const sidebar = document.getElementById('sidebar');
-let addTaskDialog;
 
 function init() {
     switchToLogin();
