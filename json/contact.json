@@ -1,50 +1,42 @@
 {
   "contacts": {
     "contact1": {
-      "firstName": "Anton",
-      "lastName": "Mayer",
+      "name": "Anton Mayer",
       "phone": "+49 1111 111 11 1",
       "email": "antom@gmail.com"
     },
     "contact2": {
-      "firstName": "Anja",
-      "lastName": "Schulz",
+      "name": "Anja Schulz",
       "phone": "+49 1111 111 11 1",
       "email": "schulz@hotmail.com"
     },
     "contact3": {
-      "firstName": "Benedikt",
-      "lastName": "Ziegler",
+      "name": "Benedikt Ziegler",      
       "phone": "+49 1111 111 11 1",
       "email": "benedikt@gmail.com"
     },
     "contact4": {
-      "firstName": "David",
-      "lastName": "Eisenberg",
+      "name": "David Eisenberg",      
       "phone": "+49 1111 111 11 1",
       "email": "davidberg@gmail.com"
     },
     "contact5": {
-      "firstName": "Eva",
-      "lastName": "Fischer",
+      "name": "Eva Fischer",      
       "phone": "+49 1111 111 11 1",
       "email": "eva@gmail.com"
     },
     "contact6": {
-      "firstName": "Emmanuel",
-      "lastName": "Mauer",
+      "name": "Emmanuel Mauer",     
       "phone": "+49 1111 111 11 1",
       "email": "emmanuelma@gmail.com"
     },
     "contact7": {
-      "firstName": "Marcel",
-      "lastName": "Bauer",
+      "name": "Marcel Bauer",      
       "phone": "+49 1111 111 11 1",
       "email": "bauer@gmail.com"
     },
     "contact8": {
-      "firstName": "Tatjana",
-      "lastName": "Wolf",
+      "name": "Tatjana Wolf",      
       "phone": "+49 1111 111 11 1",
       "email": "wolf@gmail.com"
     }
