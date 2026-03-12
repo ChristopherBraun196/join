@@ -43,7 +43,7 @@ function switchToLogin() {
 function showMessage(message) {
     messageElement.classList.add('visible');
     const msgNode = document.createElement('p');
-    msgNode.textContent = message;
+    msgNode.textContent = message.toString();
     messageElement.appendChild(msgNode);
     setTimeout(() => {
         msgNode.remove();
