@@ -16,6 +16,19 @@ function generateDialog() {
     addTaskDialog = dialogSection;
 }
 
+function generateTopbar() {
+    let body = document.querySelector('body');
+    let header = document.createElement('header');
+    header.id = 'topbar';
+    body.appendChild(header);
+    setTopbar();
+}
+
+function setTopbar() {
+    const topbar = document.getElementById('topbar');
+    topbar.innerHTML = getTopbarTemplate();
+}
+
 function switchToSignup() {
     loginSignupSection.innerHTML = getSignupTemplate();
     signupBtn.classList.add('hidden');

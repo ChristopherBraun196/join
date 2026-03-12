@@ -99,6 +99,15 @@ function getSidebarTemplate(summary, addtask, board, contact, privacy, legal) {
     `;
 }
 
+function getTopbarTemplate() {
+    return `
+        <a>Kanban Project Management Tool</a>
+        <button id="help">
+            <a href="help.html"><img src="./assets/icons/help.svg" /></a>
+        </button>
+    `;
+}
+
 function getAddTaskDialogTemplate() {
     return `
         <section id="add-task">

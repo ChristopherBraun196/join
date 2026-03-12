@@ -171,7 +171,7 @@ main {
   height: auto;
 }
 
-.topbar {
+#topbar {
   position: fixed;
   top: 0;
   left: 240px;

@@ -44,17 +44,13 @@
 
   <body
     onload="
+      generateTopbar();
       loadSidebar('board');
       updateHTML();
       loadDatabank();
     "
   >
-    <header class="topbar">
-      <a>Kanban Project Management Tool</a>
-      <button id="help">
-        <a href="help.html"><img src="./assets/icons/help.svg" /></a>
-      </button>
-    </header>
+
 
     <aside id="sidebar"></aside>
 
@@ -146,6 +142,7 @@
     </main>
     <script src="./script.js"></script>
     <script src="./js/validation.js"></script>
+    <script src="./js/board.js"></script>
     <script src="./js/templates.js"></script>
     <script src="./js/database.js"></script>
     <script src="./js/addTask.js"></script>
