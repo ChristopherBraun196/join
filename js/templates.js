@@ -164,8 +164,28 @@ function getAddTaskDialogTemplate() {
                         </div>
                     </div>
                     <div id="task-subtasks">
-                        <label for="due-date">Subtasks</label>
-                        <input type="text" placeholder="Add new Subtasks"/>
+                        <label>Subtasks</label>
+                        <div class="subtask-input-wrapper" id="subtask-wrapper">
+                            <input 
+                                type="text" 
+                                id="subtask-input"
+                                placeholder="Add new Subtask"
+                                oninput="onSubtaskInput()"
+                                onkeydown="handleSubtaskKey(event)"
+                            />
+                            <div class="subtask-actions" id="subtask-actions">
+                                <div class="subtask-confirm-btns" id="subtask-confirm-btns">
+                                    <button class="subtask-icon-btn" onclick="clearSubtaskInput()" type="button">
+                                        <img src="./assets/icons/close.svg" alt="Cancel">
+                                    </button>
+                                    <div class="subtask-divider"></div>
+                                    <button class="subtask-icon-btn" onclick="addSubtask()" type="button">
+                                        <img src="./assets/icons/check-dark.svg" alt="Confirm">
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <ul id="subtask-list"></ul>
                     </div>
                 </div>
             </form>

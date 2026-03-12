@@ -341,3 +341,131 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   max-height: 220px;
   overflow-y: auto;
 }
+
+
+
+/* ── Subtasks ── */
+
+.subtask-input-wrapper {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  background: white;
+  padding: 0 12px;
+  transition: border-color 0.2s;
+}
+
+.subtask-input-wrapper:focus-within {
+  border-color: #aaa;
+}
+
+.subtask-input-wrapper input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 12px 0;
+  font-size: 15px;
+  font-family: inherit;
+  background: transparent;
+  width: auto;
+}
+
+.subtask-actions {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.subtask-icon-btn {
+  background: transparent;
+  border: none;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.subtask-icon-btn:hover {
+  background: #f0f0f0;
+}
+
+.subtask-icon-btn img {
+  width: 16px;
+  height: 16px;
+}
+
+.subtask-confirm-btns {
+  display: none;
+  align-items: center;
+  gap: 4px;
+}
+
+.subtask-confirm-btns.visible {
+  display: flex;
+}
+
+.subtask-divider {
+  width: 1px;
+  height: 16px;
+  background: var(--border-color);
+  margin: 0 2px;
+}
+
+#subtask-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  margin-top: 6px;
+}
+
+#subtask-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  border-radius: var(--border-radius);
+  font-size: 14px;
+  color: #2a3647;
+  gap: 8px;
+  transition: background 0.15s;
+}
+
+#subtask-list li:before {
+  content: "•";
+  flex-shrink: 0;
+  color: #2a3647;
+}
+
+#subtask-list li:hover {
+  background: #f0f4f8;
+}
+
+#subtask-list li:hover .subtask-item-actions {
+  opacity: 1;
+}
+
+#subtask-list li span {
+  flex: 1;
+}
+
+.subtask-item-actions {
+  display: flex;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+#subtask-list li input.subtask-edit-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  font-family: inherit;
+  background: transparent;
+  color: #2a3647;
+  width: 100%;
+}

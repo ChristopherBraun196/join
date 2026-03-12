@@ -122,3 +122,114 @@ document.addEventListener('click', (e) => {
         document.querySelectorAll('.custom-select-trigger.open').forEach(t => t.classList.remove('open'));
     }
 });
+
+function focusSubtaskInput() {
+    document.getElementById('subtask-input').focus();
+}
+
+function clearSubtaskInput() {
+    document.getElementById('subtask-input').value = '';
+    onSubtaskInput();
+}
+
+function handleSubtaskKey(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        addSubtask();
+    }
+    if (event.key === 'Escape') {
+        clearSubtaskInput();
+    }
+}
+
+function onSubtaskInput() {
+    const input = document.getElementById('subtask-input');
+    const confirmBtns = document.getElementById('subtask-confirm-btns');
+    const hasText = input.value.trim().length > 0;
+    confirmBtns.classList.toggle('visible', hasText);
+}
+
+function clearSubtaskInput() {
+    document.getElementById('subtask-input').value = '';
+    onSubtaskInput();
+}
+
+function handleSubtaskKey(event) {
+    if (event.key === 'Enter') { event.preventDefault(); addSubtask(); }
+    if (event.key === 'Escape') clearSubtaskInput();
+}
+
+function addSubtask() {
+    const input = document.getElementById('subtask-input');
+    const text = input.value.trim();
+    if (!text) return;
+
+    const list = document.getElementById('subtask-list');
+    const li = createSubtaskItem(text);
+    list.appendChild(li);
+    clearSubtaskInput();
+}
+
+function createSubtaskItem(text) {
+    const li = document.createElement('li');
+    li.innerHTML = `
+        <span class="subtask-text" onclick="editSubtask(this)">${text}</span>
+        <div class="subtask-item-actions">
+            <button class="subtask-icon-btn" onclick="removeSubtask(this)" type="button">
+                <img src="./assets/icons/close.svg" alt="Delete">
+            </button>
+        </div>
+    `;
+    return li;
+}
+
+function editSubtask(span) {
+    const li = span.closest('li');
+    const currentText = span.textContent;
+    
+    // Input ersetzen
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.value = currentText;
+    input.className = 'subtask-edit-input';
+    li.replaceChild(input, span);
+    input.focus();
+    input.select();
+
+    // Aktions-Icons tauschen
+    const actions = li.querySelector('.subtask-item-actions');
+    actions.innerHTML = `
+        <button class="subtask-icon-btn" onclick="removeSubtask(this)" type="button">
+            <img src="./assets/icons/delete.svg" alt="Delete">
+        </button>
+        <div class="subtask-divider"></div>
+        <button class="subtask-icon-btn" onclick="confirmEditSubtask(this)" type="button">
+            <img src="./assets/icons/check-dark.svg" alt="Confirm">
+        </button>
+    `;
+
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') confirmEditSubtask(actions.querySelector('[alt="Confirm"]').closest('button'));
+        if (e.key === 'Escape') cancelEditSubtask(input, currentText);
+    });
+}
+
+function confirmEditSubtask(btn) {
+    const li = btn.closest('li');
+    const input = li.querySelector('.subtask-edit-input');
+    const newText = input.value.trim();
+    if (!newText) { li.remove(); return; }
+
+    const newLi = createSubtaskItem(newText);
+    li.replaceWith(newLi);
+}
+
+function cancelEditSubtask(input, originalText) {
+    const li = input.closest('li');
+    const newLi = createSubtaskItem(originalText);
+    li.replaceWith(newLi);
+}
+
+function removeSubtask(btn) {
+    btn.closest('li').remove();
+}
