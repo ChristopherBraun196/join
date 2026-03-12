@@ -109,7 +109,7 @@ function getAddTaskDialogTemplate() {
                 <div id="left-side-form">
                     <div id="task-title">
                         <label for="title">Title<span class="required">*</span></label>
-                        <input type="text" name="title" placeholder="Enter a title" required/>
+                        <input type="text" name="title" placeholder="Enter a title" required onblur="validateOnBlur(this, 'Please enter a title')" />
                     </div>
                     <div id="task-description">
                         <label for="description">Description</label>
@@ -117,7 +117,7 @@ function getAddTaskDialogTemplate() {
                     </div>
                     <div id="task-due-date">
                         <label for="due-date">Due Date<span class="required">*</span></label>
-                        <input type="date" id="due-date" required/>
+                        <input type="date" id="due-date" required onblur="validateOnBlur(this, 'Please pick a due date')" />
                     </div>
                 </div>
                 <div id="task-spacer"></div>
@@ -147,6 +147,7 @@ function getAddTaskDialogTemplate() {
                     <div id="task-category">
                         <label>Category<span class="required">*</span></label>
                         <div class="custom-select-wrapper" id="category-wrapper">
+                            <input type="hidden" name="category" required data-error-msg="Please select a category" />
                             <div class="custom-select-trigger" onclick="toggleDropdown('category')">
                                 <span id="category-placeholder">Select task category</span>
                                 <img src="./assets/icons/arrow_drop_down.svg" class="select-arrow">

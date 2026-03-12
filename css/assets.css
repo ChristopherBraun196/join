@@ -107,3 +107,20 @@
 .required {
     color:#FF8190;
 }
+
+.input-error {
+    border-color: #FF8190 !important;
+    background-color: #fff5f6;
+}
+ 
+.field-error-msg {
+    display: none;
+    color: #FF8190;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+#category-wrapper input[name="category"].input-error ~ .custom-select-trigger {
+    border-color: #FF8190 !important;
+    background-color: #fff5f6;
+}

@@ -62,7 +62,6 @@ function toggleDropdown(id) {
     const wrapper = document.getElementById(`${id}-wrapper`);
     const trigger = wrapper.querySelector('.custom-select-trigger');
     const dropdown = document.getElementById(`${id}-dropdown`);
-
     const isOpen = dropdown.classList.contains('open');
 
     document.querySelectorAll('.custom-select-dropdown.open').forEach(d => d.classList.remove('open'));
@@ -71,16 +70,24 @@ function toggleDropdown(id) {
     if (!isOpen) {
         dropdown.classList.add('open');
         trigger.classList.add('open');
+    } else if (id === 'category') {
+        const hiddenInput = wrapper.querySelector('input[name="category"]');
+        if (hiddenInput) validateOnBlur(hiddenInput, 'Please select a category');
     }
 }
 
 function selectCategory(option) {
-    document.querySelectorAll('#category-dropdown .custom-option').forEach(o => o.classList.remove('selected'));
+    document.querySelectorAll('#category-dropdown .custom-option')
+        .forEach(o => o.classList.remove('selected'));
     option.classList.add('selected');
 
     const placeholder = document.getElementById('category-placeholder');
     placeholder.textContent = option.querySelector('span').textContent;
     placeholder.style.color = '#2a3647';
+
+    const hiddenInput = document.querySelector('#category-wrapper input[name="category"]');
+    hiddenInput.value = option.dataset.value;
+    clearFieldError(hiddenInput);
 
     toggleDropdown('category');
 }
@@ -118,7 +125,13 @@ function renderSelectedAvatars() {
 
 document.addEventListener('click', (e) => {
     if (!e.target.closest('.custom-select-wrapper')) {
-        document.querySelectorAll('.custom-select-dropdown.open').forEach(d => d.classList.remove('open'));
+        document.querySelectorAll('.custom-select-dropdown.open').forEach(d => {
+            d.classList.remove('open');
+
+            const wrapper = d.closest('.custom-select-wrapper');
+            const hiddenInput = wrapper?.querySelector('input[name="category"]');
+            if (hiddenInput) validateOnBlur(hiddenInput, 'Please select a category');
+        });
         document.querySelectorAll('.custom-select-trigger.open').forEach(t => t.classList.remove('open'));
     }
 });
@@ -187,7 +200,6 @@ function editSubtask(span) {
     const li = span.closest('li');
     const currentText = span.textContent;
     
-    // Input ersetzen
     const input = document.createElement('input');
     input.type = 'text';
     input.value = currentText;
@@ -196,7 +208,6 @@ function editSubtask(span) {
     input.focus();
     input.select();
 
-    // Aktions-Icons tauschen
     const actions = li.querySelector('.subtask-item-actions');
     actions.innerHTML = `
         <button class="subtask-icon-btn" onclick="removeSubtask(this)" type="button">
