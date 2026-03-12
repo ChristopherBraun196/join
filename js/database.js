@@ -19,40 +19,57 @@ function loadDatabank() {
 }
 
 async function loadData() {
-  let response = await fetch(BASE_URL + ".json");
-  let responseToJson = await response.json();
-
-  console.log(responseToJson);
+  try {
+    let response = await fetch(BASE_URL + ".json");
+    let responseToJson = await response.json();
+    return responseToJson;
+  } catch (error) {
+    showMessage(error);
+  }
 }
 
 async function postData(path = "", data = {}) {
-  let response = await fetch(BASE_URL + path + ".json", {
-    method: "POST",
-    header: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
+  try {
+    let response = await fetch(BASE_URL + path + ".json", {
+      method: "POST",
+      header: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+  
+    return (responseToJson = await response.json());
 
-  return (responseToJson = await response.json());
+  } catch (error) {
+    showMessage(error);
+  }
 }
 
 async function deleteData(path="") {
-  let response = await fetch(BASE_URL + path + ".json", {
-    method: "DELETE",
-  });
-  return (responseToJson = await response.json());
+  try {
+    let response = await fetch(BASE_URL + path + ".json", {
+      method: "DELETE",
+    });
+    return (responseToJson = await response.json());
+    
+  } catch (error) {
+    showMessage(error);
+  }
 }
 
 async function putData(path = "", data = {}) {
-  let response = await fetch(BASE_URL + path + ".json", {
-    method: "PUT",
-    header: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
-
-  return (responseToJson = await response.json());
+  try {
+    let response = await fetch(BASE_URL + path + ".json", {
+      method: "PUT",
+      header: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    
+    return (responseToJson = await response.json());
+  } catch (error) {
+    showMessage(error);
+  }
 }
 
