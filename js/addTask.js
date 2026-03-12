@@ -247,9 +247,9 @@ function removeSubtask(btn) {
     btn.closest('li').remove();
 }
 
-function generateTaskJson() {
+function generateTaskJson(taskID) {
     const task = {
-        id: crypto.randomUUID(),
+        id: taskID,
         title: getTaskTitle(),
         description: getTaskDescription(),
         dueDate: getTaskDueDate(),
@@ -289,7 +289,7 @@ function getTaskCategory() {
     return document.querySelector('input[name="category"]').value.trim();
 }
 
-function createTask() {
-    console.log(generateTaskJson());
-    // push to firebase function here
+async function createTask() {
+    const taskID = crypto.randomUUID();
+    await putData("/tasks/task-"+taskID, generateTaskJson(taskID));
 }
