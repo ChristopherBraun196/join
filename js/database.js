@@ -18,9 +18,9 @@ function loadDatabank() {
   // putData(path = "", data = {}) 
 }
 
-async function loadData() {
+async function loadData(path = "") {
   try {
-    let response = await fetch(BASE_URL + ".json");
+    let response = await fetch(BASE_URL + path + ".json");
     let responseToJson = await response.json();
     return responseToJson;
   } catch (error) {

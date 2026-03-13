@@ -114,7 +114,7 @@ function getAddTaskDialogTemplate() {
             <button onclick="closeAddTaskDialog()" id="close-dialog-btn" tabindex="1"><img src="../assets/icons/close.svg"></button>
             <h1>Add Task</h2>
 
-            <form onsubmit="return false">
+            <form onsubmit="createTask(); return false;" id="add-task-form">
                 <div id="left-side-form">
                     <div id="task-title">
                         <label for="title">Title<span class="required">*</span></label>
@@ -126,7 +126,7 @@ function getAddTaskDialogTemplate() {
                     </div>
                     <div id="task-due-date">
                         <label for="due-date">Due Date<span class="required">*</span></label>
-                        <input type="date" id="due-date" required onblur="validateOnBlur(this, 'Please pick a due date')" />
+                        <input type="date" id="due-date" name="due-date" required onblur="validateOnBlur(this, 'Please pick a due date')" />
                     </div>
                 </div>
                 <div id="task-spacer"></div>
@@ -203,10 +203,14 @@ function getAddTaskDialogTemplate() {
                 <p><span class="required">*</span> This field is required</p>
                 <div id="task-btns">
                     <button id="clear-task-form" type="button" onclick="clearAddTaskForm()">Clear <img src="./assets/icons/close.svg" alt="Cross icon"></button>
-                    <button id="create-task" class="primary-btn" type="submit">Create Task <img src="./assets/icons/check.svg" alt="Check icon"></button>
+                    <button id="create-task" class="primary-btn" form="add-task-form" type="submit">Create Task <img src="./assets/icons/check.svg" alt="Check icon"></button>
                 </div>
             </div>
 
         </section>
     `;
+}
+
+function getToDoTemplate(element) {
+  return `<div draggable="true" ondragstart="startDragging(${element["id"]})" class="todo">${element["title"]}</div>`;
 }

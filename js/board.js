@@ -1,78 +1,56 @@
 let currentDraggedElement;
 
-let todos = [
-  {
-    id: 0,
-    title: "toDo",
-    category: "toDo",
-  },
-  {
-    id: 1,
-    title: "todo2",
-    category: "toDo",
-  },
-  {
-    id: 2,
-    title: "inProgress",
-    category: "inProgress",
-  },
-  {
-    id: 3,
-    title: "Await",
-    category: "await",
-  },
-  {
-    id: 4,
-    title: "Done",
-    category: "done",
-  },
-];
+let tasks = [];
 
-function updateHTML() {
-  toDo();
-  inProgress();
-  awaitFeedback();
-  done();
+async function initBoard(site) {
+  init(site);
+  const data = await loadData("/tasks");
+  tasks = Object.entries(data).map(([id, task]) => ({ ...task, id }));
+  renderToDo();
+  renderInProgress();
+  renderAwaitFeedback();
+  renderDone();
+  
 }
 
-function toDo() {
-  let toDo = todos.filter((t) => t["category"] == "toDo");
+function renderToDo() {
+  let toDo = tasks.filter((t) => t["status"] == "todo");
   document.getElementById("toDo").innerHTML = "";
 
   for (let i = 0; i < toDo.length; i++) {
     const element = toDo[i];
-    document.getElementById("toDo").innerHTML += generateToDoHTML(element);
+    document.getElementById("toDo").innerHTML += getToDoTemplate(element);
   }
 }
 
-function inProgress() {
-  let progress = todos.filter((t) => t["category"] == "inProgress");
+function renderInProgress() {
+  let progress = tasks.filter((t) => t["status"] == "in-progress");
   document.getElementById("inProgress").innerHTML = "";
 
   for (let i = 0; i < progress.length; i++) {
     const element = progress[i];
     document.getElementById("inProgress").innerHTML +=
-      generateToDoHTML(element);
+      getToDoTemplate(element);
   }
 }
 
-function awaitFeedback() {
-  let awaitFeedback = todos.filter((t) => t["category"] == "await");
+function renderAwaitFeedback() {
+  let awaitFeedback = tasks.filter((t) => t["status"] == "await");
   document.getElementById("await").innerHTML = "";
 
   for (let i = 0; i < awaitFeedback.length; i++) {
     const element = awaitFeedback[i];
-    document.getElementById("await").innerHTML += generateToDoHTML(element);
+    document.getElementById("await").innerHTML += getToDoTemplate(element);
   }
 }
 
-function done() {
-  let done = todos.filter((t) => t["category"] == "done");
+function renderDone() {
+  let done = tasks.filter((t) => t["status"] == "done");
   document.getElementById("done").innerHTML = "";
 
   for (let i = 0; i < done.length; i++) {
     const element = done[i];
-    document.getElementById("done").innerHTML += generateToDoHTML(element);
+    document.getElementById("done").innerHTML += getToDoTemplate(element);
   }
 }
 
@@ -80,17 +58,12 @@ function startDragging(id) {
   currentDraggedElement = id;
 }
 
-// This is the template 
-function generateToDoHTML(element) {
-  return `<div draggable="true" ondragstart="startDragging(${element["id"]})" class="todo">${element["title"]}</div>`;
-}
-
 function allowDrop(ev) {
   ev.preventDefault();
 }
 
 function moveTo(category) {
-  todos[currentDraggedElement]["category"] = category;
+  tasks[currentDraggedElement]["category"] = category;
   updateHTML();
 }
 
