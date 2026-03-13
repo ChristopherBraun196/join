@@ -211,22 +211,17 @@ function getAddTaskDialogTemplate() {
     `;
 }
 
-// function getToDoTemplate(element) {
-//   return `<div draggable="true" ondragstart="startDragging(${element["id"]})" class="todo">${element["title"]}</div>`;
-// }
-
-
-function generateToDoHTML(element) {
+function getToDoTemplate(element) {
   return `
   <div class="task-card" draggable="true" ondragstart="startDragging(${element["id"]})" class="todo">
   <!-- Category Badge -->
-  <span class="category-badge">${element}User Story</span>
+  <span class="category-badge" style="background-color:${element["categoryLabelColor"]}">${element["category"]}</span>
 
   <!-- Title -->
-  <h3 class="task-title">Kochwelt Page & Recipe Recommender</h3>
+  <h3 class="task-title">${element["title"]}</h3>
 
   <!-- Description -->
-  <p class="task-description">Build start page with recipe recommendation...</p>
+  <p class="task-description">${element["description"]}</p>
 
   <!-- Progress Bar -->
   <div class="progress-wrapper">
@@ -243,7 +238,7 @@ function generateToDoHTML(element) {
       <div class="avatar" style="background:#9327FF">EM</div>
       <div class="avatar" style="background:#00BEE8">MB</div>
     </div>
-    
+    <span><img src="./assets/icons/priority-${element["priority"]}.svg" /></span>
   </div>
 </div>`;
 }

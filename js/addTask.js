@@ -255,6 +255,7 @@ function generateTaskJson(taskID) {
         dueDate: getTaskDueDate(),
         priority: getTaskPriority(),
         category: getTaskCategory(),
+        categoryLabelColor: getTaskCategoryLabelColor(getTaskCategory()),
         assignedTo: [
             // { id: "xK9mP2qRtL8vNjW3", name: "David Eisenberg", color: "#FFBB2B" }
         ],
@@ -286,11 +287,28 @@ function getTaskPriority() {
 }
 
 function getTaskCategory() {
-    return document.querySelector('input[name="category"]').value.trim();
+    const category = document.querySelector('input[name="category"]').value.trim();
+    return formatLabel(category);
+}
+
+function getTaskCategoryLabelColor(category) {
+    switch (category) {
+        case "User Story":
+            return "#0038FF";
+        case "Technical Task":
+            return "#1FD7C1";
+    }
 }
 
 async function createTask() {
     const taskID = crypto.randomUUID();
     await putData("/tasks/task-"+taskID, generateTaskJson(taskID));
     location.href = "./board.html";
+}
+
+function formatLabel(str) {
+  return str
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
 }
