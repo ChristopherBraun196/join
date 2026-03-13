@@ -149,6 +149,8 @@ main {
   flex-direction: column;
   padding: 20px 0px;
   background-color: white;
+   overflow-y: auto;
+  height: calc(100vh - 80px); /* 80px = ungefähre Höhe des Buttons */
 }
 
 .add_contact{
