@@ -211,6 +211,39 @@ function getAddTaskDialogTemplate() {
     `;
 }
 
-function getToDoTemplate(element) {
-  return `<div draggable="true" ondragstart="startDragging(${element["id"]})" class="todo">${element["title"]}</div>`;
+// function getToDoTemplate(element) {
+//   return `<div draggable="true" ondragstart="startDragging(${element["id"]})" class="todo">${element["title"]}</div>`;
+// }
+
+
+function generateToDoHTML(element) {
+  return `
+  <div class="task-card" draggable="true" ondragstart="startDragging(${element["id"]})" class="todo">
+  <!-- Category Badge -->
+  <span class="category-badge">${element}User Story</span>
+
+  <!-- Title -->
+  <h3 class="task-title">Kochwelt Page & Recipe Recommender</h3>
+
+  <!-- Description -->
+  <p class="task-description">Build start page with recipe recommendation...</p>
+
+  <!-- Progress Bar -->
+  <div class="progress-wrapper">
+    <div class="progress-bar">
+      <div class="progress-fill" style="width: 50%"></div>
+    </div>
+    <span class="progress-label">1/2 Subtasks</span>
+  </div>
+
+  <!-- Footer -->
+  <div class="task-footer">
+    <div class="avatars">
+      <div class="avatar" style="background:#FF7A00">AN</div>
+      <div class="avatar" style="background:#9327FF">EM</div>
+      <div class="avatar" style="background:#00BEE8">MB</div>
+    </div>
+    
+  </div>
+</div>`;
 }
