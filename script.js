@@ -3,8 +3,9 @@ const signupBtn = document.getElementById('signup');
 const messageElement = document.getElementById('message-box');
 const sidebar = document.getElementById('sidebar');
 
-function init() {
-    switchToLogin();
+function init(site) {
+    generateTopbar();
+    loadSidebar(site);
 }
 
 function generateDialog() {
