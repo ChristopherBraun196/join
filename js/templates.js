@@ -213,7 +213,7 @@ function getAddTaskDialogTemplate() {
 
 function getToDoTemplate(element) {
   return `
-  <div class="task-card" draggable="true" ondragstart="startDragging(${element["id"]})" class="todo">
+  <div class="task-card" draggable="true" ondragstart="startDragging('${element["id"]}')" class="todo">
   <!-- Category Badge -->
   <span class="category-badge" style="background-color:${element["categoryLabelColor"]}">${element["category"]}</span>
 

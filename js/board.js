@@ -6,11 +6,14 @@ async function initBoard(site) {
   init(site);
   const data = await loadData("/tasks");
   tasks = Object.entries(data).map(([id, task]) => ({ ...task, id }));
+  renderAll();
+}
+
+function renderAll() {
   renderToDo();
   renderInProgress();
   renderAwaitFeedback();
   renderDone();
-  
 }
 
 function renderToDo() {
@@ -24,7 +27,7 @@ function renderToDo() {
 }
 
 function renderInProgress() {
-  let progress = tasks.filter((t) => t["status"] == "in-progress");
+  let progress = tasks.filter((t) => t["status"] == "inProgress");
   document.getElementById("inProgress").innerHTML = "";
 
   for (let i = 0; i < progress.length; i++) {
@@ -62,9 +65,12 @@ function allowDrop(ev) {
   ev.preventDefault();
 }
 
-function moveTo(category) {
-  tasks[currentDraggedElement]["category"] = category;
-  updateHTML();
+
+function moveTo(newStatus) {
+  const task = tasks.find(t => t.id === currentDraggedElement);
+  if (!task) return;
+  task.status = newStatus;
+  renderAll();
 }
 
 function highlight(id) {
