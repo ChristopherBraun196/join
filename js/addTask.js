@@ -292,4 +292,5 @@ function getTaskCategory() {
 async function createTask() {
     const taskID = crypto.randomUUID();
     await putData("/tasks/task-"+taskID, generateTaskJson(taskID));
+    location.href = "./board.html";
 }
