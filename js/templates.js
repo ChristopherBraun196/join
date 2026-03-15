@@ -213,7 +213,7 @@ function getAddTaskDialogTemplate() {
 
 function getToDoTemplate(element) {
   return `
-  <div class="task-card" draggable="true" ondragstart="startDragging('${element["id"]}')" class="todo">
+  <div onclick="openDialogBoard('${element["id"]}')" class="task-card" draggable="true" ondragstart="startDragging('${element["id"]}')">
   <!-- Category Badge -->
   <span class="category-badge" style="background-color:${element["categoryLabelColor"]}">${element["category"]}</span>
 
@@ -242,3 +242,17 @@ function getToDoTemplate(element) {
   </div>
 </div>`;
 }
+
+function getDialogBoardTemplate(element) {
+  return `
+    <div class="dialog-board-content">
+      <button onclick="closeDialogBoard()">✕</button>
+      <span class="category-badge">${element.category}</span>
+      <h2>${element.title}</h2>
+      <p>${element.description}</p>
+      <p>Due: ${element.dueDate}</p>
+      <p>Priority: ${element.priority}</p>
+    </div>
+  `;
+}
+

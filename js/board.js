@@ -47,12 +47,12 @@ function renderAwaitFeedback() {
   }
 }
 
-function renderDone() {
+function renderDone() {  
   let done = tasks.filter((t) => t["status"] == "done");
   document.getElementById("done").innerHTML = "";
 
   for (let i = 0; i < done.length; i++) {
-    const element = done[i];
+    const element = done[i];    
     document.getElementById("done").innerHTML += getToDoTemplate(element);
   }
 }
@@ -92,3 +92,17 @@ function updateNoTaskPlaceholders() {
     placeholder.style.display = hasTasks ? "none" : "flex";
   }
 }
+
+function openDialogBoard(id) {
+  const element = tasks.find((t) => t.id === id);
+  const dialogBoard = document.getElementById("openDialogBoard");
+  dialogBoard.innerHTML = getDialogBoardTemplate(element);
+  dialogBoard.showModal();
+}
+
+
+function closeDialogBoard() {
+  const dialogBoard = document.getElementById("openDialogBoard");
+  dialogBoard.close();
+}
+
