@@ -14,6 +14,7 @@ function renderAll() {
   renderInProgress();
   renderAwaitFeedback();
   renderDone();
+  updateNoTaskPlaceholders();
 }
 
 function renderToDo() {
@@ -79,4 +80,15 @@ function highlight(id) {
 
 function removeHighlight(id) {
   document.getElementById(id).classList.remove("drag-area-highlight");
+}
+
+function updateNoTaskPlaceholders() {
+  const columns = ["toDo", "inProgress", "await", "done"];
+
+  for (let i = 0; i < columns.length; i++) {
+    const column = document.getElementById(columns[i]);
+    const placeholder = document.getElementById("placeholder-" + columns[i]);
+    const hasTasks = column.querySelector(".task-card") !== null;
+    placeholder.style.display = hasTasks ? "none" : "flex";
+  }
 }

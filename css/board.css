@@ -224,3 +224,20 @@
   background: #ffb347;
   border-radius: 2px;
 }
+
+.no-tasks-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e7e7e7;
+  border-radius: 16px;
+  border: 1px dashed #a8a8a8;
+  height: 48px;
+  width: 230px;
+}
+
+.p-no-task {
+  color: #a8a8a8;
+  font-size: 16px;
+  font-weight: 400;
+}

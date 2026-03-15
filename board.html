@@ -18,8 +18,9 @@
   </head>
 
   <body onload="initBoard('board')">
-    <aside id="sidebar"></aside>
 
+    <aside id="sidebar"></aside>
+    
     <main>
       <section class="board-bar">
         <h1>Board</h1>
@@ -43,6 +44,10 @@
             <h4>To do</h4>
             <button class="plus-btn" onclick="openAddTaskDialog()">+</button>
           </div>
+          <div class="no-tasks-placeholder" id="placeholder-toDo">
+            <p class="p-no-task">No Task</p>
+          </div>
+
           <div
             class="task-content"
             id="toDo"
@@ -63,6 +68,10 @@
             <h4>In progress</h4>
             <button class="plus-btn" onclick="openAddTaskDialog()">+</button>
           </div>
+          <div class="no-tasks-placeholder" id="placeholder-inProgress">
+            <p class="p-no-task">No Task</p>
+          </div>
+
           <div
             class="task-content"
             id="inProgress"
@@ -83,6 +92,9 @@
             <h4>Await feedback</h4>
             <button class="plus-btn">+</button>
           </div>
+          <div class="no-tasks-placeholder" id="placeholder-await">
+            <p class="p-no-task">No Task</p>
+          </div>
           <div
             class="task-content"
             id="await"
@@ -101,6 +113,9 @@
         <div class="board-task">
           <div class="board-task-header">
             <h4>Done</h4>
+          </div>
+          <div class="no-tasks-placeholder" id="placeholder-done">
+            <p class="p-no-task">No Task</p>
           </div>
           <div
             class="task-content"
