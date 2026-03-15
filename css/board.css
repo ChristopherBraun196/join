@@ -46,12 +46,16 @@
 }
 
 .progress-board {
-  gap: 60px;
+  gap: 20px;
   display: flex;
   align-items: flex-start;
   margin-top: 80px;
   padding-left: 100px;
   justify-content: space-around;
+}
+
+[draggable="true"]:active {
+  transform: rotate(8deg);
 }
 
 .board-task {
@@ -86,6 +90,6 @@
 }
 
 .task-content {
-  width: 250px;
-  height: 250px;   
+  width: 245px;
+  height: 230px;
 }
