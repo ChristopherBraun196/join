@@ -9,13 +9,13 @@
       href="./assets/img/logo-light.svg"
       type="image/x-icon"
     />
-    <link rel="stylesheet" href="./style.css">
-    <link rel="stylesheet" href="./css/assets.css">
-    <link rel="stylesheet" href="./css/fonts.css">
-    <link rel="stylesheet" href="./css/standard.css">
-    <link rel="stylesheet" href="./css/addTask.css">
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./css/assets.css" />
+    <link rel="stylesheet" href="./css/fonts.css" />
+    <link rel="stylesheet" href="./css/standard.css" />
+    <link rel="stylesheet" href="./css/addTask.css" />
     <link rel="stylesheet" href="./css/board.css" />
- <style>
+    <style>
       .drag-area {
         height: 200px;
         background-color: rgba(0, 0, 0, 0.1);
@@ -26,7 +26,10 @@
       }
 
       .drag-area-highlight {
-        background-color: rgba(0, 0, 0, 0.2);
+        border-style: dashed;
+        border-color: grey;
+        /* background-color: rgba(0, 0, 0, 0.2); */
+        border-radius: 16px;
       }
 
       .todo {
@@ -42,7 +45,7 @@
         border-radius: 16px;
         padding: 20px;
         width: 240px;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);        
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
         transition: box-shadow 0.2s;
         margin-top: 14px;
       }
@@ -52,9 +55,9 @@
       }
 
       .category-badge {
-        display: inline-block;       
-        background-color: #1FD7C1;  /* color Technical Task */
-        background-color: #0038FF;  /* color User Story */
+        display: inline-block;
+        background-color: #1fd7c1; /* color Technical Task */
+        background-color: #0038ff; /* color User Story */
         color: #fff;
         font-size: 13px;
         font-weight: 600;
@@ -143,11 +146,9 @@
         border-radius: 2px;
       }
     </style>
-
   </head>
 
-  <body onload="initBoard('board');">
-
+  <body onload="initBoard('board')">
     <aside id="sidebar"></aside>
 
     <main>
@@ -163,7 +164,7 @@
           <span>
             <img src="./assets/icons/search.svg" class="search-icon" />
           </span>
-           <button class="primary-btn add-task">Add task +</button>
+          <button class="primary-btn add-task">Add task +</button>
         </div>
       </section>
 
