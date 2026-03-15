@@ -64,6 +64,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  padding-bottom: 12px;
 }
 
 .board-task-header {
@@ -71,6 +72,7 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  padding-bottom: 12px;
 }
 
 .plus-btn {
@@ -91,5 +93,5 @@
 
 .task-content {
   width: 245px;
-  height: 230px;
+  height: 215px;
 }
