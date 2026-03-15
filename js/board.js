@@ -32,8 +32,7 @@ function renderInProgress() {
 
   for (let i = 0; i < progress.length; i++) {
     const element = progress[i];
-    document.getElementById("inProgress").innerHTML +=
-      getToDoTemplate(element);
+    document.getElementById("inProgress").innerHTML += getToDoTemplate(element);
   }
 }
 
@@ -65,11 +64,12 @@ function allowDrop(ev) {
   ev.preventDefault();
 }
 
-
-function moveTo(newStatus) {
-  const task = tasks.find(t => t.id === currentDraggedElement);
+async function moveTo(newStatus) {
+  const task = tasks.find((t) => t.id === currentDraggedElement);
   if (!task) return;
   task.status = newStatus;
+
+  await putData("/tasks/" + task.id, task);
   renderAll();
 }
 
