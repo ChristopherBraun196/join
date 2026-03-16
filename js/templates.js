@@ -108,13 +108,13 @@ function getTopbarTemplate() {
     `;
 }
 
-function getAddTaskDialogTemplate() {
+function getAddTaskDialogTemplate(status) {
     return `
         <section id="add-task">
             <button onclick="closeAddTaskDialog()" id="close-dialog-btn" tabindex="1"><img src="../assets/icons/close.svg"></button>
             <h1>Add Task</h2>
 
-            <form onsubmit="createTask(); return false;" id="add-task-form">
+            <form onsubmit="createTask('${status}'); return false;" id="add-task-form">
                 <div id="left-side-form">
                     <div id="task-title">
                         <label for="title">Title<span class="required">*</span></label>
@@ -213,7 +213,7 @@ function getAddTaskDialogTemplate() {
 
 function getToDoTemplate(element) {
   return `
-  <div onclick="openDialogBoard('${element["id"]}')" class="task-card" draggable="true" ondragstart="startDragging('${element["id"]}')">
+  <div class="task-card" draggable="true" ondragstart="startDragging('${element["id"]}')" class="todo">
   <!-- Category Badge -->
   <span class="category-badge" style="background-color:${element["categoryLabelColor"]}">${element["category"]}</span>
 
@@ -242,17 +242,3 @@ function getToDoTemplate(element) {
   </div>
 </div>`;
 }
-
-function getDialogBoardTemplate(element) {
-  return `
-    <div class="dialog-board-content">
-      <button onclick="closeDialogBoard()">✕</button>
-      <span class="category-badge">${element.category}</span>
-      <h2>${element.title}</h2>
-      <p>${element.description}</p>
-      <p>Due: ${element.dueDate}</p>
-      <p>Priority: ${element.priority}</p>
-    </div>
-  `;
-}
-
