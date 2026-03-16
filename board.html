@@ -18,7 +18,6 @@
   </head>
 
   <body onload="initBoard('board')">
-
     <aside id="sidebar"></aside>
 
     <main>
@@ -45,11 +44,10 @@
             <button class="plus-btn" onclick="openAddTaskDialog('todo')">+</button>
           </div>
           <div class="no-tasks-placeholder" id="placeholder-toDo">
-            <p class="p-no-task">No Task</p>
+            <p class="p-no-task">No Tasks to do</p>
           </div>
 
           <div
-            class="task-content"
             id="toDo"
             ondrop="
               moveTo('todo');
@@ -69,11 +67,10 @@
             <button class="plus-btn" onclick="openAddTaskDialog('inProgress')">+</button>
           </div>
           <div class="no-tasks-placeholder" id="placeholder-inProgress">
-            <p class="p-no-task">No Task</p>
+            <p class="p-no-task">No Tasks in Progress</p>
           </div>
 
           <div
-            class="task-content"
             id="inProgress"
             ondrop="
               moveTo('inProgress');
@@ -93,10 +90,9 @@
             <button class="plus-btn" onclick="openAddTaskDialog('await')">+</button>
           </div>
           <div class="no-tasks-placeholder" id="placeholder-await">
-            <p class="p-no-task">No Task</p>
+            <p class="p-no-task">No Task to await feedback</p>
           </div>
           <div
-            class="task-content"
             id="await"
             ondrop="
               moveTo('await');
@@ -115,10 +111,9 @@
             <h4>Done</h4>
           </div>
           <div class="no-tasks-placeholder" id="placeholder-done">
-            <p class="p-no-task">No Task</p>
+            <p class="p-no-task">No Task is done</p>
           </div>
           <div
-            class="task-content"
             id="done"
             ondrop="
               moveTo('done');

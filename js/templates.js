@@ -242,3 +242,21 @@ function getToDoTemplate(element) {
   </div>
 </div>`;
 }
+
+function getDialogBoardTemplate(element) {
+  return `
+    <div class="dialog-board-content">
+      <button onclick="closeDialogBoard()">✕</button>
+      <span class="category-badge">${element.category}</span>
+      <h2>${element.title}</h2>
+      <p>${element.description}</p>
+      <p>Due: ${element.dueDate}</p>
+      <p>Priority: ${element.priority}</p>
+    </div>
+  `;
+}
+
+function getDropZoneTemplate(columnId) {
+  return `<div class="drop-zone" id="dropzone-${columnId}"></div>`;
+}
+
