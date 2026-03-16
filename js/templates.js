@@ -1,5 +1,5 @@
 function getLoginTemplate() {
-    return `
+  return `
         <div class="form-header">
             <h1>Log in</h1>
             <div class="spacer"></div>
@@ -25,7 +25,7 @@ function getLoginTemplate() {
 }
 
 function getSignupTemplate() {
-    return `
+  return `
     
         <div class="form-header">
             <span onclick="switchToLogin()" class="back"><img src="./assets/icons/arrow-back.svg" /></span>
@@ -67,7 +67,7 @@ function getSignupTemplate() {
 }
 
 function getSidebarTemplate(summary, addtask, board, contact, privacy, legal) {
-    return `
+  return `
         <img src="./assets/img/logo-light.svg" class="logo" />
         <nav>
             <a class="nav-link ${summary}" id="summary-link" href="./summary.html">
@@ -100,7 +100,7 @@ function getSidebarTemplate(summary, addtask, board, contact, privacy, legal) {
 }
 
 function getTopbarTemplate() {
-    return `
+  return `
         <a>Kanban Project Management Tool</a>
         <button id="help">
             <a href="help.html"><img src="./assets/icons/help.svg" /></a>
@@ -109,7 +109,7 @@ function getTopbarTemplate() {
 }
 
 function getAddTaskDialogTemplate() {
-    return `
+  return `
         <section id="add-task">
             <button onclick="closeAddTaskDialog()" id="close-dialog-btn" tabindex="1"><img src="../assets/icons/close.svg"></button>
             <h1>Add Task</h2>
@@ -256,3 +256,6 @@ function getDialogBoardTemplate(element) {
   `;
 }
 
+function getDropZoneTemplate(columnId) {
+  return `<div class="drop-zone" id="dropzone-${columnId}"></div>`;
+}

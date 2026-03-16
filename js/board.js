@@ -25,6 +25,7 @@ function renderToDo() {
     const element = toDo[i];
     document.getElementById("toDo").innerHTML += getToDoTemplate(element);
   }
+  document.getElementById("toDo").innerHTML += getDropZoneTemplate("toDo");
 }
 
 function renderInProgress() {
@@ -35,6 +36,8 @@ function renderInProgress() {
     const element = progress[i];
     document.getElementById("inProgress").innerHTML += getToDoTemplate(element);
   }
+  document.getElementById("inProgress").innerHTML +=
+    getDropZoneTemplate("inProgress");
 }
 
 function renderAwaitFeedback() {
@@ -45,16 +48,18 @@ function renderAwaitFeedback() {
     const element = awaitFeedback[i];
     document.getElementById("await").innerHTML += getToDoTemplate(element);
   }
+  document.getElementById("await").innerHTML += getDropZoneTemplate("await");
 }
 
-function renderDone() {  
+function renderDone() {
   let done = tasks.filter((t) => t["status"] == "done");
   document.getElementById("done").innerHTML = "";
 
   for (let i = 0; i < done.length; i++) {
-    const element = done[i];    
+    const element = done[i];
     document.getElementById("done").innerHTML += getToDoTemplate(element);
   }
+  document.getElementById("done").innerHTML += getDropZoneTemplate("done");
 }
 
 function startDragging(id) {
@@ -75,11 +80,13 @@ async function moveTo(newStatus) {
 }
 
 function highlight(id) {
-  document.getElementById(id).classList.add("drag-area-highlight");
+  const dropzone = document.getElementById("dropzone-" + id);
+  if (dropzone) dropzone.classList.add("drag-area-highlight");
 }
 
 function removeHighlight(id) {
-  document.getElementById(id).classList.remove("drag-area-highlight");
+  const dropzone = document.getElementById("dropzone-" + id);
+  if (dropzone) dropzone.classList.remove("drag-area-highlight");
 }
 
 function updateNoTaskPlaceholders() {
@@ -100,9 +107,7 @@ function openDialogBoard(id) {
   dialogBoard.showModal();
 }
 
-
 function closeDialogBoard() {
   const dialogBoard = document.getElementById("openDialogBoard");
   dialogBoard.close();
 }
-
