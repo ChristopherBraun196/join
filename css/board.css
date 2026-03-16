@@ -163,6 +163,9 @@
 }
 
 .progress-wrapper {
+  display: none;
+}
+.progress-wrapper.show {
   display: flex;
   align-items: center;
   gap: 10px;

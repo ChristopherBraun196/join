@@ -1,28 +1,9 @@
-const BASE_URL =
-  "https://join-database-3e254-default-rtdb.europe-west1.firebasedatabase.app/";
-
-const CONCTACT_URL =
-  "https://join-database-3e254-default-rtdb.europe-west1.firebasedatabase.app/contacts/";
-
-  const TASK_URL =  "https://join-database-3e254-default-rtdb.europe-west1.firebasedatabase.app/tasks";
-
-function loadDatabank() {
-  console.log("test");
-  // loadData();
-  postData("/tasks", { Test: "ABC123",
-    Name: "Max",
-    Lastname: "Mustermann"
-
-   });
-  // deleteData("/-OnOBfp3TMgEPEXlwYyC");
-  // putData(path = "", data = {}) 
-}
+const URL = "https://join-database-3e254-default-rtdb.europe-west1.firebasedatabase.app/";
 
 async function loadData(path = "") {
   try {
-    let response = await fetch(BASE_URL + path + ".json");
-    let responseToJson = await response.json();
-    return responseToJson;
+    let response = await fetch(URL + path + ".json");
+    return await response.json();
   } catch (error) {
     showMessage(error);
   }
@@ -30,7 +11,7 @@ async function loadData(path = "") {
 
 async function postData(path = "", data = {}) {
   try {
-    let response = await fetch(BASE_URL + path + ".json", {
+    let response = await fetch(URL + path + ".json", {
       method: "POST",
       header: {
         "Content-Type": "application/json",
@@ -47,7 +28,7 @@ async function postData(path = "", data = {}) {
 
 async function deleteData(path="") {
   try {
-    let response = await fetch(BASE_URL + path + ".json", {
+    let response = await fetch(URL + path + ".json", {
       method: "DELETE",
     });
     return (responseToJson = await response.json());
@@ -59,7 +40,7 @@ async function deleteData(path="") {
 
 async function putData(path = "", data = {}) {
   try {
-    let response = await fetch(BASE_URL + path + ".json", {
+    let response = await fetch(URL + path + ".json", {
       method: "PUT",
       header: {
         "Content-Type": "application/json",

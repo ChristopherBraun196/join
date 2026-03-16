@@ -211,32 +211,27 @@ function getAddTaskDialogTemplate(status) {
     `;
 }
 
-function getToDoTemplate(element) {
+function getToDoTemplate(element, solvedSubtasks, totalSubtasks, visibility="", progress) {
   return `
   <div class="task-card" draggable="true" ondragstart="startDragging('${element["id"]}')" ontouchstart="startDragging('${element["id"]}')" class="todo" >
+  <div class="task-card" draggable="true" onclick="openDialogBoard('${element["id"]}')" ondragstart="startDragging('${element["id"]}')" class="todo">
   <!-- Category Badge -->
   <span class="category-badge" style="background-color:${element["categoryLabelColor"]}">${element["category"]}</span>
 
-  <!-- Title -->
   <h3 class="task-title">${element["title"]}</h3>
 
-  <!-- Description -->
   <p class="task-description">${element["description"]}</p>
 
-  <!-- Progress Bar -->
-  <div class="progress-wrapper">
+  <div class="progress-wrapper ${visibility}">
     <div class="progress-bar">
-      <div class="progress-fill" style="width: 50%"></div>
+      <div class="progress-fill" style="width: ${progress}%"></div>
     </div>
-    <span class="progress-label">1/2 Subtasks</span>
+    <span class="progress-label">${solvedSubtasks}/${totalSubtasks} Subtasks</span>
   </div>
 
-  <!-- Footer -->
   <div class="task-footer">
     <div class="avatars">
-      <div class="avatar" style="background:#FF7A00">AN</div>
-      <div class="avatar" style="background:#9327FF">EM</div>
-      <div class="avatar" style="background:#00BEE8">MB</div>
+      ${getAssignedToAvatars(element.assignedTo)}
     </div>
     <span><img src="./assets/icons/priority-${element["priority"]}.svg" /></span>
   </div>
