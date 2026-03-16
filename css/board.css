@@ -55,7 +55,7 @@
 }
 
 [draggable="true"]:active {
-  transform: rotate(8deg);
+  transform: rotate(3deg);
 }
 
 .board-task {
