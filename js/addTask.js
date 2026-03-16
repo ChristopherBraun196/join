@@ -1,11 +1,18 @@
 let addTaskDialog;
 
-function openAddTaskDialog() {
+let contacts = [];
+
+async function initAddTask(site) {
+    init(site);
+    await renderContacts()
+}
+
+function openAddTaskDialog(status) {
     let main = document.querySelector('main');
     let dialogSection = document.createElement("dialog");
     dialogSection.id = "add-task-dialog";
     main.appendChild(dialogSection);
-    dialogSection.innerHTML = getAddTaskDialogTemplate();
+    dialogSection.innerHTML = getAddTaskDialogTemplate(status);
     dialogSection.showModal();
     addTaskDialog = dialogSection;
     renderContacts();
@@ -30,21 +37,20 @@ function setPriority(clickedButton) {
 
 
 async function loadContacts() {
-    return [
-        { id: "xK9mP2qRtL8vNjW3", name: "David Eisenberg",  color: "#FFBB2B" },
-        { id: "aB3cD4eF5gH6iJ7k", name: "David Müller",     color: "#FF5733" },
-        { id: "cD5eF6gH7iJ8kL9m", name: "Sarah König",      color: "#29ABE2" },
-        { id: "eF7gH8iJ9kL0mN1o", name: "Max Mustermann",   color: "#7AE229" },
-        { id: "gH9iJ0kL1mN2oP3q", name: "Lisa Schneider",   color: "#C300C3" },
-    ];
-}
-
-function getInitials(name) {
-    return name.split(' ').map(n => n[0]).join('').toUpperCase();
+    try {
+        const data = await loadData("/contacts");
+        contacts = Object.entries(data).map(([id, contact]) => ({
+            id,
+            name: contact.name,
+            color: contact.avatarColor
+        }));        
+    } catch (error) {
+        contacts = [];
+    }
 }
 
 async function renderContacts() {
-    const contacts = await loadContacts();
+    await loadContacts();    
     const container = document.getElementById('custom-select-dropdown-inner');
 
     container.innerHTML = contacts.map(contact => `
@@ -247,8 +253,8 @@ function removeSubtask(btn) {
     btn.closest('li').remove();
 }
 
-function generateTaskJson(taskID) {
-    const task = {
+function generateTaskJson(taskID, statusArg='todo') {
+    return {
         id: taskID,
         title: getTaskTitle(),
         description: getTaskDescription(),
@@ -256,16 +262,10 @@ function generateTaskJson(taskID) {
         priority: getTaskPriority(),
         category: getTaskCategory(),
         categoryLabelColor: getTaskCategoryLabelColor(getTaskCategory()),
-        assignedTo: [
-            // { id: "xK9mP2qRtL8vNjW3", name: "David Eisenberg", color: "#FFBB2B" }
-        ],
-        subtasks: [
-            // { id: crypto.randomUUID(), title: "Subtask text", completed: false }
-        ],
-        status: "todo",
+        assignedTo: getAssignedTo(),
+        subtasks: getSubtasks(),
+        status: statusArg
     };
-
-    return task;
 }
 
 function getTaskTitle() {
@@ -300,9 +300,26 @@ function getTaskCategoryLabelColor(category) {
     }
 }
 
-async function createTask() {
+function getAssignedTo() {
+    return [...document.querySelectorAll('#assigned-dropdown .custom-option.selected')]
+        .map(opt => ({
+            id:    opt.dataset.id
+        }));
+}
+
+function getSubtasks() {
+    return [...document.querySelectorAll('#subtask-list li')]
+        .map(li => ({
+            id:        "subtask-"+crypto.randomUUID(),
+            title:     li.querySelector('.subtask-text').textContent,
+            completed: false
+        }));
+}
+
+async function createTask(status) {
     const taskID = crypto.randomUUID();
-    await putData("/tasks/task-"+taskID, generateTaskJson(taskID));
+    let task = generateTaskJson(taskID, status);    
+    await putData("/tasks/task-"+taskID, task);
     location.href = "./board.html";
 }
 
