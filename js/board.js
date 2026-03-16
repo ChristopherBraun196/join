@@ -164,9 +164,10 @@ function handleTouchEnd(e) {
   for (let i = 0; i < columns.length; i++) {
     removeHighlight(columns[i]);
   }
+
+  if (column) moveTo(column.id);
 }
 
-if (column) moveTo(column.id);
 async function getSubtaskData(element) {
   const solved = await getAmountSolvedSubtasks(element["id"]);
   const total = await getNumberOfSubtasks(element["id"]);

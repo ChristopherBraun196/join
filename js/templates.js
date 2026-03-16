@@ -212,8 +212,7 @@ function getAddTaskDialogTemplate(status) {
 }
 
 function getToDoTemplate(element, solvedSubtasks, totalSubtasks, visibility="", progress) {
-  return `
-  <div class="task-card" draggable="true" ondragstart="startDragging('${element["id"]}')" ontouchstart="startDragging('${element["id"]}')" class="todo" >
+  return `  
   <div class="task-card" draggable="true" onclick="openDialogBoard('${element["id"]}')" ondragstart="startDragging('${element["id"]}')" class="todo">
   <!-- Category Badge -->
   <span class="category-badge" style="background-color:${element["categoryLabelColor"]}">${element["category"]}</span>
