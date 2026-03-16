@@ -9,55 +9,60 @@ async function initBoard(site) {
   renderAll();
 }
 
-function renderAll() {
-  renderToDo();
-  renderInProgress();
-  renderAwaitFeedback();
-  renderDone();
+async function renderAll() {
+  await renderToDo();
+  await renderInProgress();
+  await renderAwaitFeedback();
+  await renderDone();
   updateNoTaskPlaceholders();
 }
 
-function renderToDo() {
+async function renderToDo() {
   let toDo = tasks.filter((t) => t["status"] == "todo");
   document.getElementById("toDo").innerHTML = "";
 
   for (let i = 0; i < toDo.length; i++) {
     const element = toDo[i];
-    document.getElementById("toDo").innerHTML += getToDoTemplate(element);
+    const [solved, total, visibility] = await getSubtaskData(element);
+    
+    document.getElementById("toDo").innerHTML += getToDoTemplate(element, solved, total, visibility, calcSubtaskProgress(solved, total));
   }
   document.getElementById("toDo").innerHTML += getDropZoneTemplate("toDo");
 }
 
-function renderInProgress() {
+async function renderInProgress() {
   let progress = tasks.filter((t) => t["status"] == "inProgress");
   document.getElementById("inProgress").innerHTML = "";
 
   for (let i = 0; i < progress.length; i++) {
     const element = progress[i];
-    document.getElementById("inProgress").innerHTML += getToDoTemplate(element);
+    const [solved, total, visibility] = await getSubtaskData(element);
+    document.getElementById("inProgress").innerHTML += getToDoTemplate(element, solved, total, visibility, calcSubtaskProgress(solved, total));
   }
   document.getElementById("inProgress").innerHTML +=
     getDropZoneTemplate("inProgress");
 }
 
-function renderAwaitFeedback() {
+async function renderAwaitFeedback() {
   let awaitFeedback = tasks.filter((t) => t["status"] == "await");
   document.getElementById("await").innerHTML = "";
 
   for (let i = 0; i < awaitFeedback.length; i++) {
     const element = awaitFeedback[i];
-    document.getElementById("await").innerHTML += getToDoTemplate(element);
+    const [solved, total, visibility] = await getSubtaskData(element);
+    document.getElementById("await").innerHTML += getToDoTemplate(element, solved, total, visibility, calcSubtaskProgress(solved, total));
   }
   document.getElementById("await").innerHTML += getDropZoneTemplate("await");
 }
 
-function renderDone() {
+async function renderDone() {
   let done = tasks.filter((t) => t["status"] == "done");
   document.getElementById("done").innerHTML = "";
 
   for (let i = 0; i < done.length; i++) {
     const element = done[i];
-    document.getElementById("done").innerHTML += getToDoTemplate(element);
+    const [solved, total, visibility] = await getSubtaskData(element);
+    document.getElementById("done").innerHTML += getToDoTemplate(element, solved, total, visibility, calcSubtaskProgress(solved, total));
   }
   document.getElementById("done").innerHTML += getDropZoneTemplate("done");
 }
@@ -110,4 +115,41 @@ function openDialogBoard(id) {
 function closeDialogBoard() {
   const dialogBoard = document.getElementById("openDialogBoard");
   dialogBoard.close();
+}
+
+async function getSubtaskData(element) {
+  const solved = await getAmountSolvedSubtasks(element['id']);
+  const total  = await getNumberOfSubtasks(element['id']);
+  let visibility = "";
+  if (total != 0) visibility = "show";
+  return [solved, total, visibility];
+}
+
+async function getAmountSolvedSubtasks(taskID) {
+  const task = await loadData("/tasks/"+taskID);
+  if (task.subtasks === undefined) return 0;
+  let amount = 0;
+  for (let i = 0; i < task.subtasks.length; i++) {
+    if (task.subtasks[i]['completed'] == true) amount++;
+  }  
+  return String(amount);
+}
+
+async function getNumberOfSubtasks(taskID) {
+  const task = await loadData("/tasks/"+taskID);
+  if (task.subtasks === undefined) return 0;
+  
+  return task.subtasks.length;
+}
+
+function calcSubtaskProgress(solved, total) {
+  return (solved/total)*100;
+}
+
+// temporary returns string with no content
+// logic in progress
+function getAssignedToAvatars() {
+  const member = {avatarColor:"",name:""}
+  const htmlTemplate = `<div class="avatar" style="background:${member['avatarColor']}">${getInitials(member['name'])}</div>`;
+  return "";
 }
