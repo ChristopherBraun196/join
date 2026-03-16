@@ -111,3 +111,30 @@ function closeDialogBoard() {
   const dialogBoard = document.getElementById("openDialogBoard");
   dialogBoard.close();
 }
+
+function handleTouchMove(e) {
+  e.preventDefault();
+  const touch = e.touches[0];
+  const target = document.elementFromPoint(touch.clientX, touch.clientY);
+  const column = target?.closest("#toDo, #inProgress, #await, #done");
+
+  const columns = ["toDo", "inProgress", "await", "done"];
+  for (let i = 0; i < columns.length; i++) {
+    removeHighlight(columns[i]);
+  }
+
+  if (column) highlight(column.id);
+}
+
+function handleTouchEnd(e) {
+  const touch = e.changedTouches[0];
+  const target = document.elementFromPoint(touch.clientX, touch.clientY);
+  const column = target?.closest("#toDo, #inProgress, #await, #done");
+
+  const columns = ["toDo", "inProgress", "await", "done"];
+  for (let i = 0; i < columns.length; i++) {
+    removeHighlight(columns[i]);
+  }
+
+  if (column) moveTo(column.id);
+}

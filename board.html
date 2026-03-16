@@ -33,7 +33,12 @@
           <span>
             <img src="./assets/icons/search.svg" class="search-icon" />
           </span>
-          <button class="primary-btn add-task" onclick="openAddTaskDialog('todo')">Add task +</button>
+          <button
+            class="primary-btn add-task"
+            onclick="openAddTaskDialog('todo')"
+          >
+            Add task +
+          </button>
         </div>
       </section>
 
@@ -41,7 +46,9 @@
         <div class="board-task">
           <div class="board-task-header">
             <h4>To do</h4>
-            <button class="plus-btn" onclick="openAddTaskDialog('todo')">+</button>
+            <button class="plus-btn" onclick="openAddTaskDialog('todo')">
+              +
+            </button>
           </div>
           <div class="no-tasks-placeholder" id="placeholder-toDo">
             <p class="p-no-task">No Tasks to do</p>
@@ -58,13 +65,17 @@
               allowDrop(event);
               highlight('toDo');
             "
+            ontouchmove="handleTouchMove(event)"
+            ontouchend="handleTouchEnd(event)"
           ></div>
         </div>
 
         <div class="board-task">
           <div class="board-task-header">
             <h4>In progress</h4>
-            <button class="plus-btn" onclick="openAddTaskDialog('inProgress')">+</button>
+            <button class="plus-btn" onclick="openAddTaskDialog('inProgress')">
+              +
+            </button>
           </div>
           <div class="no-tasks-placeholder" id="placeholder-inProgress">
             <p class="p-no-task">No Tasks in Progress</p>
@@ -81,13 +92,17 @@
               allowDrop(event);
               highlight('inProgress');
             "
+            ontouchmove="handleTouchMove(event)"
+            ontouchend="handleTouchEnd(event)"
           ></div>
         </div>
 
         <div class="board-task">
           <div class="board-task-header">
             <h4>Await feedback</h4>
-            <button class="plus-btn" onclick="openAddTaskDialog('await')">+</button>
+            <button class="plus-btn" onclick="openAddTaskDialog('await')">
+              +
+            </button>
           </div>
           <div class="no-tasks-placeholder" id="placeholder-await">
             <p class="p-no-task">No Task to await feedback</p>
@@ -103,6 +118,8 @@
               allowDrop(event);
               highlight('await');
             "
+            ontouchmove="handleTouchMove(event)"
+            ontouchend="handleTouchEnd(event)"
           ></div>
         </div>
 
@@ -124,6 +141,8 @@
               allowDrop(event);
               highlight('done');
             "
+            ontouchmove="handleTouchMove(event)"
+            ontouchend="handleTouchEnd(event)"
           ></div>
         </div>
       </section>
