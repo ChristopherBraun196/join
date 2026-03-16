@@ -34,7 +34,7 @@
           <span>
             <img src="./assets/icons/search.svg" class="search-icon" />
           </span>
-          <button class="primary-btn add-task">Add task +</button>
+          <button class="primary-btn add-task" onclick="openAddTaskDialog('todo')">Add task +</button>
         </div>
       </section>
 
@@ -42,7 +42,7 @@
         <div class="board-task">
           <div class="board-task-header">
             <h4>To do</h4>
-            <button class="plus-btn" onclick="openAddTaskDialog()">+</button>
+            <button class="plus-btn" onclick="openAddTaskDialog('todo')">+</button>
           </div>
           <div class="no-tasks-placeholder" id="placeholder-toDo">
             <p class="p-no-task">No Task</p>
@@ -66,7 +66,7 @@
         <div class="board-task">
           <div class="board-task-header">
             <h4>In progress</h4>
-            <button class="plus-btn" onclick="openAddTaskDialog()">+</button>
+            <button class="plus-btn" onclick="openAddTaskDialog('inProgress')">+</button>
           </div>
           <div class="no-tasks-placeholder" id="placeholder-inProgress">
             <p class="p-no-task">No Task</p>
@@ -90,7 +90,7 @@
         <div class="board-task">
           <div class="board-task-header">
             <h4>Await feedback</h4>
-            <button class="plus-btn">+</button>
+            <button class="plus-btn" onclick="openAddTaskDialog('await')">+</button>
           </div>
           <div class="no-tasks-placeholder" id="placeholder-await">
             <p class="p-no-task">No Task</p>
