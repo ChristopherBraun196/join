@@ -71,3 +71,6 @@ function loadSidebar(page) {
     sidebar.innerHTML = getSidebarTemplate(...args)
 }
 
+function getInitials(name) {
+    return name.split(' ').map(n => n[0]).join('').toUpperCase();
+}
