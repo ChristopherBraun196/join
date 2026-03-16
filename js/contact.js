@@ -20,6 +20,31 @@ document.getElementById('dialog-overlay').addEventListener('click', function (e)
   if (e.target === this) closeContactDialog();
 });
 
+function generateContactJson(contactID) {
+  return {
+    id: contactID,
+    name: getContactName(),
+    email: getContactEmailAdress(),
+    phone: getContactPhone(),
+    avatarColor: selectRandomAvatarColor()
+  };
+}
+
+function getContactName() {
+  return document.getElementById("input-name").value.trim();
+}
+
+function getContactEmailAdress() {
+  return document.getElementById("input-email").value.trim();
+}
+
+function getContactPhone() {
+  return document.getElementById("input-phone").value.trim();
+}
+
+function selectRandomAvatarColor() {
+  return AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
+}
 
 // Contact List Rendering
 
@@ -142,17 +167,9 @@ function openContactDetail(contact, event) {
 
 async function submitContact() {
   if (!validateInputs()) return;
-  const newContact = {
-    name: document.getElementById("input-name").value.trim(),
-    email: document.getElementById("input-email").value.trim(),
-    phone: document.getElementById("input-phone").value.trim(),
-  };
   try {
-    await fetch(`${DB_URL}/contacts.json`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newContact),
-    });
+    const contactID = crypto.randomUUID();
+    await putData("/contacts/contact-"+contactID, generateContactJson(contactID));
     closeContactDialog();
     loadContacts();
   } catch (error) {
