@@ -129,11 +129,22 @@ function updateNoTaskPlaceholders() {
   }
 }
 
-function openDialogBoard(id) {
+async function openDialogBoard(id) {
   const element = tasks.find((t) => t.id === id);
+  const assignedContacts = await getAssignedContacts(element.assignedTo);
   const dialogBoard = document.getElementById("openDialogBoard");
-  dialogBoard.innerHTML = getDialogBoardTemplate(element);
+  dialogBoard.innerHTML = getDialogBoardTemplate(element, assignedContacts);
   dialogBoard.showModal();
+}
+
+async function getAssignedContacts(assignedTo) {
+  const data = await loadData("/contacts");
+  if (!data || !assignedTo) return [];
+  const assignedIds = assignedTo.map(a => a.id.trim());
+  const result = Object.entries(data)
+    .map(([id, contact]) => ({ ...contact, id }))
+    .filter((contact) => assignedIds.includes(contact.id.trim()));
+  return result;
 }
 
 function closeDialogBoard() {
@@ -199,7 +210,7 @@ function calcSubtaskProgress(solved, total) {
 
 async function getAssignedToAvatars(allMembersOfThisTask) {
   let members = [];
-  if (allMembersOfThisTask == undefined) return "";  
+  if (allMembersOfThisTask == undefined) return "";
   const limit = 3;
   const totalMembers = allMembersOfThisTask.length;
   const displayCount = Math.min(totalMembers, limit);
@@ -211,27 +222,29 @@ async function getAssignedToAvatars(allMembersOfThisTask) {
 
   if (totalMembers > limit) {
     const overflow = totalMembers - limit;
-    members.push(`<div class="avatar overflow-badge" title="+${overflow} more">+${overflow}</div>`);
+    members.push(
+      `<div class="avatar overflow-badge" title="+${overflow} more">+${overflow}</div>`,
+    );
   }
   return members.join("");
 }
 
 async function getMemberAvatar(id) {
-  const member = await loadData("/contacts/"+id);
+  const member = await loadData("/contacts/" + id);
   if (!member) return "";
-  
+
   const name = member.name;
   const htmlTemplate = `<div class="avatar" style="background:${member["avatarColor"]}">${getInitials(name)}</div>`;
-  
+
   return htmlTemplate;
 }
 
 function formatDate(date) {
-  const [year, month, day] = date.split('-');
+  const [year, month, day] = date.split("-");
   return `${day}/${month}/${year}`;
 }
 
 function capitalize(fletter) {
-  if (!fletter) return '';
+  if (!fletter) return "";
   return fletter.charAt(0).toUpperCase() + fletter.slice(1);
 }
