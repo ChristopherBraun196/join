@@ -211,7 +211,7 @@ function getAddTaskDialogTemplate(status) {
     `;
 }
 
-function getToDoTemplate(element, solvedSubtasks, totalSubtasks, visibility="", progress) {
+async function getToDoTemplate(element, solvedSubtasks, totalSubtasks, visibility="", progress) {
   return `  
   <div class="task-card" draggable="true" onclick="openDialogBoard('${element["id"]}')" ondragstart="startDragging('${element["id"]}')" class="todo">
   <!-- Category Badge -->
@@ -230,7 +230,7 @@ function getToDoTemplate(element, solvedSubtasks, totalSubtasks, visibility="", 
 
   <div class="task-footer">
     <div class="avatars">
-      ${getAssignedToAvatars(element.assignedTo)}
+      ${await getAssignedToAvatars(element.assignedTo)}
     </div>
     <span><img src="./assets/icons/priority-${element["priority"]}.svg" /></span>
   </div>
