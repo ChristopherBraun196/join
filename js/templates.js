@@ -243,34 +243,39 @@ async function getToDoTemplate(
 </div>`;
 }
 
-function getDialogBoardTemplate(element) {
+function getDialogBoardTemplate(element, assignedContacts) {
   return `
     <div class="dialog-board-content">
         <div class="flex-sb">     
             <span class="category-badge" style="background-color:${element["categoryLabelColor"]}">${element["category"]}</span>
             <button onclick="closeDialogBoard()">✕</button>
         </div> 
-        
         <h2>${element.title}</h2>
         <p>${element.description}</p>
         <p>Due date: ${formatDate(element.dueDate)}</p>      
         <p>Priority: ${capitalize(element["priority"])} <img src="./assets/icons/priority-${element["priority"]}.svg" /></p>
-        <div>
+        <div class="contact-list">
             <p>Assigned To:</p>
-            <div style="color: red">  Add the contact </div> 
+            <p> ${assignedContacts.map(getAssignedContactTemplate).join("")}</p>
         </div>
-
         <div>
-        <p>Subtasks</p>
-            <div style="color: red">  Add the Subtasks </div>        
+            <p>Subtasks</p>
+            <div style="color: red">Add the Subtasks</div>        
         </div>
+       <div class="dialog-actions">
+        <button class="delete-edit-button"><img src="./assets/icons/delete.svg" alt="delete Button">Delete</button>
+        <div class="dialog-actions-divider"></div>
+        <button class="delete-edit-button"><img src="./assets/icons/edit.svg" alt="edit Button">Edit</button>
+</div>
+    </div>
+  `;
+}
 
-        <div>
-         <button>delete</button>
-         <button>Edit</button>
-        </div>
-
-
+function getAssignedContactTemplate(contact) {
+  return `
+    <div class="assigned-contact">
+      <span class="avatar" style="background-color:${contact.avatarColor}">${getInitials(contact.name)}</span>
+      <span>${contact.name}</span>
     </div>
   `;
 }

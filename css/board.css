@@ -304,11 +304,54 @@ dialog#openDialogBoard h2 {
 }
 
 dialog#openDialogBoard p {
-  margin-bottom: 16px;  
+  margin-bottom: 16px;
 }
 
 dialog#openDialogBoard p:has(img) {
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.contact-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.assigned-contact {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-left: 10px;
+  margin-bottom: 12px;
+}
+
+
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+}
+
+.dialog-actions-divider {
+  width: 1px;
+  height: 20px;
+  background-color: #ccc;
+}
+
+.delete-edit-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.delete-edit-button:hover {
+  /* text-decoration: underline;  placeholder.. hier wird noch angepasst!!! :) */
 }
