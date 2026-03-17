@@ -49,6 +49,7 @@ async function moveTo(newStatus) {
   const task = tasks.find((t) => t.id === currentDraggedElement);
   if (!task) return;
   const dragStatus = task.status;
+  if (dragStatus == newStatus) return;
   task.status = newStatus;
 
   await putData("/tasks/" + task.id, task);
