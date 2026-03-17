@@ -136,8 +136,6 @@
 
 .category-badge {
   display: inline-block;
-  background-color: #1fd7c1; /* color Technical Task */
-  background-color: #0038ff; /* color User Story */
   color: #fff;
   font-size: 13px;
   font-weight: 600;
@@ -257,22 +255,58 @@ dialog#openDialogBoard {
   border: none;
   border-radius: 16px;
   padding: 32px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-height: 700px;
+  width: 400px;
 }
 
 @keyframes slideIn {
   from {
-    transform: translateX(100%);
+    left: 100%;
     opacity: 0;
   }
   to {
-    transform: translateX(0);
+    left: 50%;
     opacity: 1;
   }
 }
 
-/* .dialog-board-content {
+.flex-sb {
   display: flex;
-  justify-content: center;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-} */
+}
+
+.flex-sb button {
+  background: none;
+  border: none;
+  font-size: 14px;
+  font-weight: bold;
+  width: 30px;
+  height: 30px;
+  margin-bottom: 12px;
+}
+
+.flex-sb button:hover {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+}
+
+dialog#openDialogBoard h2 {
+  font-size: 42x;
+  margin-bottom: 12px;
+  min-height: 116px;
+}
+
+dialog#openDialogBoard p {
+  margin-bottom: 16px;  
+}
+
+dialog#openDialogBoard p:has(img) {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

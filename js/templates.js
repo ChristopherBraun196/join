@@ -1,5 +1,5 @@
 function getLoginTemplate() {
-    return `
+  return `
         <div class="form-header">
             <h1>Log in</h1>
             <div class="spacer"></div>
@@ -25,7 +25,7 @@ function getLoginTemplate() {
 }
 
 function getSignupTemplate() {
-    return `
+  return `
     
         <div class="form-header">
             <span onclick="switchToLogin()" class="back"><img src="./assets/icons/arrow-back.svg" /></span>
@@ -67,7 +67,7 @@ function getSignupTemplate() {
 }
 
 function getSidebarTemplate(summary, addtask, board, contact, privacy, legal) {
-    return `
+  return `
         <img src="./assets/img/logo-light.svg" class="logo" />
         <nav>
             <a class="nav-link ${summary}" id="summary-link" href="./summary.html">
@@ -100,7 +100,7 @@ function getSidebarTemplate(summary, addtask, board, contact, privacy, legal) {
 }
 
 function getTopbarTemplate() {
-    return `
+  return `
         <a>Kanban Project Management Tool</a>
         <button id="help">
             <a href="help.html"><img src="./assets/icons/help.svg" /></a>
@@ -109,7 +109,7 @@ function getTopbarTemplate() {
 }
 
 function getAddTaskDialogTemplate(status) {
-    return `
+  return `
         <section id="add-task">
             <button onclick="closeAddTaskDialog()" id="close-dialog-btn" tabindex="1"><img src="../assets/icons/close.svg"></button>
             <h1>Add Task</h2>
@@ -211,7 +211,13 @@ function getAddTaskDialogTemplate(status) {
     `;
 }
 
-async function getToDoTemplate(element, solvedSubtasks, totalSubtasks, visibility="", progress) {
+async function getToDoTemplate(
+  element,
+  solvedSubtasks,
+  totalSubtasks,
+  visibility = "",
+  progress,
+) {
   return `  
   <div class="task-card" draggable="true" onclick="openDialogBoard('${element["id"]}')" ondragstart="startDragging('${element["id"]}')" class="todo">
   <!-- Category Badge -->
@@ -240,12 +246,31 @@ async function getToDoTemplate(element, solvedSubtasks, totalSubtasks, visibilit
 function getDialogBoardTemplate(element) {
   return `
     <div class="dialog-board-content">
-      <button onclick="closeDialogBoard()">✕</button>
-      <span class="category-badge">${element.category}</span>
-      <h2>${element.title}</h2>
-      <p>${element.description}</p>
-      <p>Due: ${element.dueDate}</p>
-      <p>Priority: ${element.priority}</p>
+        <div class="flex-sb">     
+            <span class="category-badge" style="background-color:${element["categoryLabelColor"]}">${element["category"]}</span>
+            <button onclick="closeDialogBoard()">✕</button>
+        </div> 
+        
+        <h2>${element.title}</h2>
+        <p>${element.description}</p>
+        <p>Due date: ${formatDate(element.dueDate)}</p>      
+        <p>Priority: ${capitalize(element["priority"])} <img src="./assets/icons/priority-${element["priority"]}.svg" /></p>
+        <div>
+            <p>Assigned To:</p>
+            <div style="color: red">  Add the contact </div> 
+        </div>
+
+        <div>
+        <p>Subtasks</p>
+            <div style="color: red">  Add the Subtasks </div>        
+        </div>
+
+        <div>
+         <button>delete</button>
+         <button>Edit</button>
+        </div>
+
+
     </div>
   `;
 }

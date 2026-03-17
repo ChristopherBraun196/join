@@ -225,3 +225,13 @@ async function getMemberAvatar(id) {
   
   return htmlTemplate;
 }
+
+function formatDate(date) {
+  const [year, month, day] = date.split('-');
+  return `${day}/${month}/${year}`;
+}
+
+function capitalize(fletter) {
+  if (!fletter) return '';
+  return fletter.charAt(0).toUpperCase() + fletter.slice(1);
+}
