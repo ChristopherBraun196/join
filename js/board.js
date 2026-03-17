@@ -25,7 +25,7 @@ async function renderToDo() {
     const element = toDo[i];
     const [solved, total, visibility] = await getSubtaskData(element);
 
-    document.getElementById("toDo").innerHTML += getToDoTemplate(
+    document.getElementById("toDo").innerHTML += await getToDoTemplate(
       element,
       solved,
       total,
@@ -43,7 +43,7 @@ async function renderInProgress() {
   for (let i = 0; i < progress.length; i++) {
     const element = progress[i];
     const [solved, total, visibility] = await getSubtaskData(element);
-    document.getElementById("inProgress").innerHTML += getToDoTemplate(
+    document.getElementById("inProgress").innerHTML += await getToDoTemplate(
       element,
       solved,
       total,
@@ -62,7 +62,7 @@ async function renderAwaitFeedback() {
   for (let i = 0; i < awaitFeedback.length; i++) {
     const element = awaitFeedback[i];
     const [solved, total, visibility] = await getSubtaskData(element);
-    document.getElementById("await").innerHTML += getToDoTemplate(
+    document.getElementById("await").innerHTML += await getToDoTemplate(
       element,
       solved,
       total,
@@ -80,7 +80,7 @@ async function renderDone() {
   for (let i = 0; i < done.length; i++) {
     const element = done[i];
     const [solved, total, visibility] = await getSubtaskData(element);
-    document.getElementById("done").innerHTML += getToDoTemplate(
+    document.getElementById("done").innerHTML += await getToDoTemplate(
       element,
       solved,
       total,
@@ -197,10 +197,31 @@ function calcSubtaskProgress(solved, total) {
   return (solved / total) * 100;
 }
 
-// temporary returns string with no content
-// logic in progress
-function getAssignedToAvatars() {
-  const member = { avatarColor: "", name: "" };
-  const htmlTemplate = `<div class="avatar" style="background:${member["avatarColor"]}">${getInitials(member["name"])}</div>`;
-  return "";
+async function getAssignedToAvatars(allMembersOfThisTask) {
+  let members = [];
+  if (allMembersOfThisTask == undefined) return "";  
+  const limit = 3;
+  const totalMembers = allMembersOfThisTask.length;
+  const displayCount = Math.min(totalMembers, limit);
+
+  for (let i = 0; i < displayCount; i++) {
+    const memberID = allMembersOfThisTask[i].id;
+    members.push(await getMemberAvatar(memberID));
+  }
+
+  if (totalMembers > limit) {
+    const overflow = totalMembers - limit;
+    members.push(`<div class="avatar overflow-badge" title="+${overflow} more">+${overflow}</div>`);
+  }
+  return members.join("");
+}
+
+async function getMemberAvatar(id) {
+  const member = await loadData("/contacts/"+id);
+  if (!member) return "";
+  
+  const name = member.name;
+  const htmlTemplate = `<div class="avatar" style="background:${member["avatarColor"]}">${getInitials(name)}</div>`;
+  
+  return htmlTemplate;
 }

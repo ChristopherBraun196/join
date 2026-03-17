@@ -214,6 +214,12 @@
   margin-left: 0;
 }
 
+.avatar.overflow-badge {
+  background-color: #999;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
 .menu-icon {
   display: flex;
   flex-direction: column;
