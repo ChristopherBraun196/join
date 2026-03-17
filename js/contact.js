@@ -126,10 +126,9 @@ function clearActiveContact() {
 function appendContactDetail(contact) {
   const main = document.querySelector(".main_contacts");
   const initials = getInitials(contact.name);
-  const color = getAvatarColor(contact.name);
   const detail = document.createElement("div");
   detail.className = "contact-detail";
-  detail.innerHTML = getContactDetailTemplate(contact, initials, color);
+  detail.innerHTML = getContactDetailTemplate(contact, initials, contact.avatarColor);
   main.appendChild(detail);
 }
 
