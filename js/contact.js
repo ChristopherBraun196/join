@@ -48,20 +48,10 @@ function selectRandomAvatarColor() {
 
 // Contact List Rendering
 
-const DB_URL = "https://join-database-3e254-default-rtdb.europe-west1.firebasedatabase.app";
-
 const AVATAR_COLORS = [
   "#FF7043", "#E91E8C", "#9C27B0", "#3F51B5",
   "#00BCD4", "#4CAF50", "#FF9800", "#795548"
 ];
-
-function getAvatarColor(name) {
-  let hash = 0;
-  for (let i = 0; i < name.length; i++) {
-    hash = name.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  return AVATAR_COLORS[Math.abs(hash) % AVATAR_COLORS.length];
-}
 
 function groupContactsByLetter(contacts) {
   const sorted = contacts.sort((a, b) => a.name.localeCompare(b.name));
@@ -76,10 +66,9 @@ function groupContactsByLetter(contacts) {
 
 function createContactItem(contact) {
   const initials = getInitials(contact.name);
-  const color = getAvatarColor(contact.name);
   const item = document.createElement("div");
   item.className = "contact-item";
-  item.innerHTML = getContactItemTemplate(contact, initials, color);
+  item.innerHTML = getContactItemTemplate(contact, initials, contact.avatarColor);
   item.addEventListener("click", (event) => openContactDetail(contact, event));
   return item;
 }
@@ -114,8 +103,7 @@ function renderContacts(contacts) {
 
 async function loadContacts() {
   try {
-    const response = await fetch(`${DB_URL}/contacts.json`);
-    const data = await response.json();
+    const data = await loadData("/contacts");
     if (!data) return;
     const contacts = Object.entries(data).map(([id, contact]) => ({ id, ...contact }));
     renderContacts(contacts);
@@ -174,7 +162,7 @@ async function submitContact() {
 
 async function deleteContact(contactId) {
   try {
-    await fetch(`${DB_URL}/contacts/${contactId}.json`, { method: "DELETE" });
+    await deleteData("/contacts/"+contactId);
     clearActiveContact();
     loadContacts();
   } catch (error) {
@@ -227,16 +215,14 @@ function editContact(contactId) {
 async function saveContact(contactId) {
   if (!validateInputs()) return;
   const updatedContact = {
+    id: contactId,
+    avatarColor: selectRandomAvatarColor(),
     name: document.getElementById("input-name").value.trim(),
     email: document.getElementById("input-email").value.trim(),
     phone: document.getElementById("input-phone").value.trim(),
   };
   try {
-    await fetch(`${DB_URL}/contacts/${contactId}.json`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updatedContact),
-    });
+    await putData("/contacts/contact-"+contactId, updatedContact);
     closeContactDialog();
     clearActiveContact();
     loadContacts();
