@@ -17,12 +17,14 @@ nav {
 main {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
+  justify-content: flex-start;
+  align-items: center;
   position: absolute;
   right: 0;
-  width: calc(100% - 240px);
-  height: 100%;
+  bottom: 0;
+  width: 100%;
+  max-width: calc(100% - 240px);
+  height: calc(100% - 150px);
 }
 
 /*Main für legal/help/privacy*/

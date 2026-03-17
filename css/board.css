@@ -1,9 +1,9 @@
 .board-bar {
-  padding-left: 100px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 1440px;
+  max-width: 1440px;
+  width: 100%;
 }
 
 .search-wrapper {
@@ -50,8 +50,10 @@
   display: flex;
   align-items: flex-start;
   margin-top: 80px;
-  padding-left: 100px;
   justify-content: space-around;
+  height: 80%;
+  max-width: 100%;
+  overflow: auto;
 }
 
 [draggable="true"]:active {
@@ -106,7 +108,7 @@
 }
 
 .drop-zone {
-  height: 230px;
+  min-height: 230px;
   width: 250px;
   border-radius: 16px;
   margin-top: 8px;
