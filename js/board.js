@@ -10,22 +10,24 @@ async function initBoard(site) {
 }
 
 async function renderAll() {
-  await renderToDo();
-  await renderInProgress();
-  await renderAwaitFeedback();
-  await renderDone();
+  await renderSection("toDo");
+  await renderSection("inProgress");
+  await renderSection("await");
+  await renderSection("done");
   updateNoTaskPlaceholders();
 }
 
-async function renderToDo() {
-  let toDo = tasks.filter((t) => t["status"] == "todo");
-  document.getElementById("toDo").innerHTML = "";
+async function renderSection(section) {
+  let taskStatus = tasks.filter((t) => t["status"] == section);
+  document.getElementById(section).innerHTML = getDropZoneTemplate(section);
+  const dropZone = document.getElementById(`dropzone-${section}`);
+  dropZone.innerHTML = "";
 
-  for (let i = 0; i < toDo.length; i++) {
-    const element = toDo[i];
+  for (let i = 0; i < taskStatus.length; i++) {
+    const element = taskStatus[i];
     const [solved, total, visibility] = await getSubtaskData(element);
 
-    document.getElementById("toDo").innerHTML += await getToDoTemplate(
+    dropZone.innerHTML += await getToDoTemplate(
       element,
       solved,
       total,
@@ -33,62 +35,6 @@ async function renderToDo() {
       calcSubtaskProgress(solved, total),
     );
   }
-  document.getElementById("toDo").innerHTML += getDropZoneTemplate("toDo");
-}
-
-async function renderInProgress() {
-  let progress = tasks.filter((t) => t["status"] == "inProgress");
-  document.getElementById("inProgress").innerHTML = "";
-
-  for (let i = 0; i < progress.length; i++) {
-    const element = progress[i];
-    const [solved, total, visibility] = await getSubtaskData(element);
-    document.getElementById("inProgress").innerHTML += await getToDoTemplate(
-      element,
-      solved,
-      total,
-      visibility,
-      calcSubtaskProgress(solved, total),
-    );
-  }
-  document.getElementById("inProgress").innerHTML +=
-    getDropZoneTemplate("inProgress");
-}
-
-async function renderAwaitFeedback() {
-  let awaitFeedback = tasks.filter((t) => t["status"] == "await");
-  document.getElementById("await").innerHTML = "";
-
-  for (let i = 0; i < awaitFeedback.length; i++) {
-    const element = awaitFeedback[i];
-    const [solved, total, visibility] = await getSubtaskData(element);
-    document.getElementById("await").innerHTML += await getToDoTemplate(
-      element,
-      solved,
-      total,
-      visibility,
-      calcSubtaskProgress(solved, total),
-    );
-  }
-  document.getElementById("await").innerHTML += getDropZoneTemplate("await");
-}
-
-async function renderDone() {
-  let done = tasks.filter((t) => t["status"] == "done");
-  document.getElementById("done").innerHTML = "";
-
-  for (let i = 0; i < done.length; i++) {
-    const element = done[i];
-    const [solved, total, visibility] = await getSubtaskData(element);
-    document.getElementById("done").innerHTML += await getToDoTemplate(
-      element,
-      solved,
-      total,
-      visibility,
-      calcSubtaskProgress(solved, total),
-    );
-  }
-  document.getElementById("done").innerHTML += getDropZoneTemplate("done");
 }
 
 function startDragging(id) {
@@ -102,10 +48,12 @@ function allowDrop(ev) {
 async function moveTo(newStatus) {
   const task = tasks.find((t) => t.id === currentDraggedElement);
   if (!task) return;
+  const dragStatus = task.status;
   task.status = newStatus;
 
   await putData("/tasks/" + task.id, task);
-  renderAll();
+  await renderSection(dragStatus);
+  await renderSection(newStatus);
 }
 
 function highlight(id) {
