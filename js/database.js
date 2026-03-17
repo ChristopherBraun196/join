@@ -1,8 +1,8 @@
-const URL = "https://join-database-3e254-default-rtdb.europe-west1.firebasedatabase.app/";
+const FB_URL = "https://join-database-3e254-default-rtdb.europe-west1.firebasedatabase.app/";
 
 async function loadData(path = "") {
   try {
-    let response = await fetch(URL + path + ".json");
+    let response = await fetch(FB_URL + path + ".json");
     return await response.json();
   } catch (error) {
     showMessage(error);
@@ -11,7 +11,7 @@ async function loadData(path = "") {
 
 async function postData(path = "", data = {}) {
   try {
-    let response = await fetch(URL + path + ".json", {
+    let response = await fetch(FB_URL + path + ".json", {
       method: "POST",
       header: {
         "Content-Type": "application/json",
@@ -28,7 +28,7 @@ async function postData(path = "", data = {}) {
 
 async function deleteData(path="") {
   try {
-    let response = await fetch(URL + path + ".json", {
+    let response = await fetch(FB_URL + path + ".json", {
       method: "DELETE",
     });
     return (responseToJson = await response.json());
@@ -40,7 +40,7 @@ async function deleteData(path="") {
 
 async function putData(path = "", data = {}) {
   try {
-    let response = await fetch(URL + path + ".json", {
+    let response = await fetch(FB_URL + path + ".json", {
       method: "PUT",
       header: {
         "Content-Type": "application/json",
