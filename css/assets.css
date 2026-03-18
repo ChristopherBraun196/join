@@ -124,3 +124,16 @@
     border-color: #FF8190 !important;
     background-color: #fff5f6;
 }
+
+input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: transparent;
+  content: url('../assets/icons/subtask-unchecked.svg');
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+input[type="checkbox"]:checked {
+  content: url('../assets/icons/subtask-checked.svg');
+}

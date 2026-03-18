@@ -301,20 +301,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   flex: 1;
 }
 
-/* Checkbox (Assigned To) */
-.custom-option input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-  accent-color: transparent;
-  content: url('../assets/icons/subtask-unchecked.svg');
-  flex-shrink: 0;
-  cursor: pointer;
-}
-
-.custom-option input[type="checkbox"]:checked {
-  content: url('../assets/icons/subtask-checked.svg');
-}
-
 /* Selected badges shown below Assigned To dropdown */
 #assigned-badges {
   display: flex;
