@@ -21,6 +21,11 @@ a {
     color: var(--highligted-color);
 }
 
+.no-decoration {
+    text-decoration: none;
+    list-style: none;
+}
+
 h1 {
     font-size: 60px;
     font-family: InterBold;
