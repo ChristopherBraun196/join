@@ -274,6 +274,9 @@ dialog#openDialogBoard {
   scrollbar-color: #ccc transparent;
   scrollbar-width: none;
   /* scrollbar-width: thin; wäre eine mögliche alternative */
+}
+
+dialog#openDialogBoard[open] {
   display: flex;
   flex-direction: column;
 }
