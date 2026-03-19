@@ -272,8 +272,14 @@ dialog#openDialogBoard {
   width: 435px;
   overflow-y: auto;
   scrollbar-color: #ccc transparent;
-  scrollbar-width: none; 
+  scrollbar-width: none;
   /* scrollbar-width: thin; wäre eine mögliche alternative */
+  display: flex;
+  flex-direction: column;
+}
+
+dialog#openDialogBoard footer {
+  margin-top: auto;
 }
 
 @keyframes slideIn {
