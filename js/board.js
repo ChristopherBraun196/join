@@ -4,9 +4,13 @@ let tasks = [];
 
 async function initBoard(site) {
   init(site);
+  await initTasks();
+  renderAll();
+}
+
+async function initTasks() {
   const data = await loadData("/tasks");
   tasks = Object.entries(data).map(([id, task]) => ({ ...task, id }));
-  renderAll();
 }
 
 async function renderAll() {
@@ -80,6 +84,7 @@ function updateNoTaskPlaceholders() {
 }
 
 async function openDialogBoard(id) {
+  await initTasks();
   const element = tasks.find((t) => t.id === id);
   const assignedContacts = await getAssignedContacts(element.assignedTo);
   const dialogBoard = document.getElementById("openDialogBoard");
@@ -97,9 +102,10 @@ async function getAssignedContacts(assignedTo) {
   return result;
 }
 
-function closeDialogBoard() {
+async function closeDialogBoard(section) {
   const dialogBoard = document.getElementById("openDialogBoard");
   dialogBoard.close();
+  await renderSection(section);
 }
 
 function handleTouchMove(e) {
@@ -205,13 +211,18 @@ function checkIfSubtaskActive(subtaskCompleted) {
   } else { return "";}
 }
 
-function toggleSubtask(id) {
-  // toggle logic comming soon  
-  return;
+async function toggleSubtask(subtaskIndex, isSubtaskCompleted, taskID) {
+  if (isSubtaskCompleted) {
+    await putData("/tasks/"+taskID+"/subtasks/"+subtaskIndex+"/completed", false);
+  } 
+  if (isSubtaskCompleted == false) {
+    await putData("/tasks/"+taskID+"/subtasks/"+subtaskIndex+"/completed", true);
+  }
+  await openDialogBoard(taskID);
 }
 
-function checkIfSubtasksAvaiable(subtasks) {
+function checkIfSubtasksAvaiable(subtasks, taskID) {
   if (subtasks) {
-    return subtasks.map(getSubtasksTemplate).join("")
+    return subtasks.map((s, index) => getSubtasksTemplate(s, taskID, index)).join("")
   } else {return "<p>No Subtask avaiable in this Task</p>"}
 }

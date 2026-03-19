@@ -245,7 +245,7 @@ function getDialogBoardTemplate(element, assignedContacts, subtasks) {
     <header>
         <div class="flex-sb">     
             <span class="category-badge" style="background-color:${element["categoryLabelColor"]}">${element["category"]}</span>
-            <button onclick="closeDialogBoard()">✕</button>
+            <button onclick="closeDialogBoard('${element.status}')">✕</button>
         </div> 
         <h2>${element.title}</h2>
     </header>
@@ -263,7 +263,7 @@ function getDialogBoardTemplate(element, assignedContacts, subtasks) {
         <div>
             <p>Subtasks</p>
             <ul id="subtasksk">
-                ${checkIfSubtasksAvaiable(subtasks)}
+                ${checkIfSubtasksAvaiable(subtasks, element.id)}
             </ul>        
         </div>
     </main>
@@ -290,11 +290,11 @@ function getAssignedContactTemplate(contact) {
   `;
 }
 
-function getSubtasksTemplate(subtask) {
+function getSubtasksTemplate(subtask, taskID, subtaskIndex) {
   return `
         <li class="no-decoration board-subtask">
             <label for="${subtask.id}">
-                <input type="checkbox" id="${subtask.id}" onclick="toggleSubtask('${subtask.id}')" ${checkIfSubtaskActive(subtask.completed)}>
+                <input type="checkbox" id="${subtask.id}" onclick="toggleSubtask('${subtaskIndex}', ${subtask.completed}, '${taskID}')" ${checkIfSubtaskActive(subtask.completed)}>
                 ${subtask.title}
             </label>
         </li>
