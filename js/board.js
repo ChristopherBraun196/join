@@ -83,14 +83,18 @@ async function openDialogBoard(id) {
   const element = tasks.find((t) => t.id === id);
   const assignedContacts = await getAssignedContacts(element.assignedTo);
   const dialogBoard = document.getElementById("openDialogBoard");
-  dialogBoard.innerHTML = getDialogBoardTemplate(element, assignedContacts, element.subtasks);
+  dialogBoard.innerHTML = getDialogBoardTemplate(
+    element,
+    assignedContacts,
+    element.subtasks,
+  );
   dialogBoard.showModal();
 }
 
 async function getAssignedContacts(assignedTo) {
   const data = await loadData("/contacts");
   if (!data || !assignedTo) return [];
-  const assignedIds = assignedTo.map(a => a.id.trim());
+  const assignedIds = assignedTo.map((a) => a.id.trim());
   const result = Object.entries(data)
     .map(([id, contact]) => ({ ...contact, id }))
     .filter((contact) => assignedIds.includes(contact.id.trim()));
@@ -100,6 +104,16 @@ async function getAssignedContacts(assignedTo) {
 function closeDialogBoard() {
   const dialogBoard = document.getElementById("openDialogBoard");
   dialogBoard.close();
+}
+
+async function deleteTask(id) {
+     showMessage("Task wurde gelöscht");
+        await deleteData(`/tasks/${id}`);
+        closeDialogBoard();
+        const data = await loadData("/tasks");
+        tasks = Object.entries(data).map(([id, task]) => ({ ...task, id }));
+        renderAll();
+    
 }
 
 function handleTouchMove(e) {
@@ -202,16 +216,20 @@ function capitalize(fletter) {
 function checkIfSubtaskActive(subtaskCompleted) {
   if (subtaskCompleted == true) {
     return "checked";
-  } else { return "";}
+  } else {
+    return "";
+  }
 }
 
 function toggleSubtask(id) {
-  // toggle logic comming soon  
+  // toggle logic comming soon
   return;
 }
 
 function checkIfSubtasksAvaiable(subtasks) {
   if (subtasks) {
-    return subtasks.map(getSubtasksTemplate).join("")
-  } else {return "<p>No Subtask avaiable in this Task</p>"}
+    return subtasks.map(getSubtasksTemplate).join("");
+  } else {
+    return "<p>No Subtask avaiable in this Task</p>";
+  }
 }
