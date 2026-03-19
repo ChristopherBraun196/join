@@ -1,3 +1,4 @@
+// General 
 function getLoginTemplate() {
   return `
         <div class="form-header">
@@ -108,6 +109,7 @@ function getTopbarTemplate() {
     `;
 }
 
+// Add Task
 function getAddTaskDialogTemplate(status) {
   return `
         <section id="add-task">
@@ -211,13 +213,8 @@ function getAddTaskDialogTemplate(status) {
     `;
 }
 
-async function getToDoTemplate(
-  element,
-  solvedSubtasks,
-  totalSubtasks,
-  visibility = "",
-  progress,
-) {
+// Board
+async function getToDoTemplate(element, solvedSubtasks, totalSubtasks, visibility = "", progress, ) {
   return `  
   <div class="task-card" draggable="true" onclick="openDialogBoard('${element["id"]}')" ondragstart="startDragging('${element["id"]}')" class="todo">
   <!-- Category Badge -->
@@ -243,14 +240,16 @@ async function getToDoTemplate(
 </div>`;
 }
 
-function getDialogBoardTemplate(element, assignedContacts) {
+function getDialogBoardTemplate(element, assignedContacts, subtasks) {
   return `
-    <div class="dialog-board-content">
+    <header>
         <div class="flex-sb">     
             <span class="category-badge" style="background-color:${element["categoryLabelColor"]}">${element["category"]}</span>
             <button onclick="closeDialogBoard()">✕</button>
         </div> 
         <h2>${element.title}</h2>
+    </header>
+    <main>
         <p>${element.description}</p>
         <p>Due date: ${formatDate(element.dueDate)}</p>      
         <p>Priority: ${capitalize(element["priority"])} <img src="./assets/icons/priority-${element["priority"]}.svg" /></p>
@@ -260,15 +259,23 @@ function getDialogBoardTemplate(element, assignedContacts) {
         </div>
         <div>
             <p>Subtasks</p>
-            <div style="color: red">Add the Subtasks</div>        
+            <ul id="subtasksk">
+                ${checkIfSubtasksAvaiable(subtasks)}
+            </ul>        
         </div>
-       <div class="dialog-actions">
-        <button class="delete-edit-button"><img src="./assets/icons/delete.svg" alt="delete Button">Delete</button>
-        <div class="dialog-actions-divider"></div>
-        <button class="delete-edit-button"><img src="./assets/icons/edit.svg" alt="edit Button">Edit</button>
-</div>
-    </div>
+    </main>
+    <footer>
+        <div class="dialog-actions">
+            <button class="delete-edit-button"><img src="./assets/icons/delete.svg" alt="delete Button">Delete</button>
+            <div class="dialog-actions-divider"></div>
+            <button class="delete-edit-button"><img src="./assets/icons/edit.svg" alt="edit Button">Edit</button>
+        </div>
+    </footer>
   `;
+}
+
+function getDropZoneTemplate(columnId) {
+  return `<div class="drop-zone" id="dropzone-${columnId}"></div>`;
 }
 
 function getAssignedContactTemplate(contact) {
@@ -280,10 +287,13 @@ function getAssignedContactTemplate(contact) {
   `;
 }
 
-function getDropZoneTemplate(columnId) {
-  return `<div class="drop-zone" id="dropzone-${columnId}"></div>`;
+function getSubtasksTemplate(subtask) {
+    return `
+        <li class="no-decoration board-subtask"><input type="checkbox" id="${subtask.id}" onclick="toggleSubtask('${subtask.id}')" ${checkIfSubtaskActive(subtask.completed)}>${subtask.title}</li>
+    `;
 }
 
+// Contacts
 function getContactItemTemplate(contact, initials, color) {
   return `
     <div class="contact-avatar" style="background-color: ${color};">

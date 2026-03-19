@@ -55,6 +55,7 @@ async function moveTo(newStatus) {
   await putData("/tasks/" + task.id, task);
   await renderSection(dragStatus);
   await renderSection(newStatus);
+  updateNoTaskPlaceholders();
 }
 
 function highlight(id) {
@@ -82,7 +83,7 @@ async function openDialogBoard(id) {
   const element = tasks.find((t) => t.id === id);
   const assignedContacts = await getAssignedContacts(element.assignedTo);
   const dialogBoard = document.getElementById("openDialogBoard");
-  dialogBoard.innerHTML = getDialogBoardTemplate(element, assignedContacts);
+  dialogBoard.innerHTML = getDialogBoardTemplate(element, assignedContacts, element.subtasks);
   dialogBoard.showModal();
 }
 
@@ -196,4 +197,21 @@ function formatDate(date) {
 function capitalize(fletter) {
   if (!fletter) return "";
   return fletter.charAt(0).toUpperCase() + fletter.slice(1);
+}
+
+function checkIfSubtaskActive(subtaskCompleted) {
+  if (subtaskCompleted == true) {
+    return "checked";
+  } else { return "";}
+}
+
+function toggleSubtask(id) {
+  // toggle logic comming soon  
+  return;
+}
+
+function checkIfSubtasksAvaiable(subtasks) {
+  if (subtasks) {
+    return subtasks.map(getSubtasksTemplate).join("")
+  } else {return "<p>No Subtask avaiable in this Task</p>"}
 }

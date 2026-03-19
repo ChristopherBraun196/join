@@ -47,6 +47,10 @@ button {
     cursor: pointer;
 }
 
+button, input {
+    border: unset;
+}
+
 /* Responsive Styling */
 
 @media (max-width: 768px) {
