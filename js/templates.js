@@ -1,4 +1,4 @@
-// General 
+// General
 function getLoginTemplate() {
   return `
         <div class="form-header">
@@ -251,11 +251,14 @@ function getDialogBoardTemplate(element, assignedContacts, subtasks) {
     </header>
     <main>
         <p>${element.description}</p>
-        <p>Due date: ${formatDate(element.dueDate)}</p>      
-        <p>Priority: ${capitalize(element["priority"])} <img src="./assets/icons/priority-${element["priority"]}.svg" /></p>
+        <p><span>Due date:</span><span>${formatDate(element.dueDate)}</span></p>      
+        <p>
+            <span>Priority:</span>
+            <span>${capitalize(element["priority"])} <img src="./assets/icons/priority-${element["priority"]}.svg" /></span>
+        </p>
         <div class="contact-list">
-            <p>Assigned To:</p>
-            <p> ${assignedContacts.map(getAssignedContactTemplate).join("")}</p>
+            <p class="dialog-gap">Assigned To:</p>
+            <p>${assignedContacts.map(getAssignedContactTemplate).join("")}</p>
         </div>
         <div>
             <p>Subtasks</p>
@@ -288,8 +291,13 @@ function getAssignedContactTemplate(contact) {
 }
 
 function getSubtasksTemplate(subtask) {
-    return `
-        <li class="no-decoration board-subtask"><input type="checkbox" id="${subtask.id}" onclick="toggleSubtask('${subtask.id}')" ${checkIfSubtaskActive(subtask.completed)}>${subtask.title}</li>
+  return `
+        <li class="no-decoration board-subtask">
+            <label for="${subtask.id}">
+                <input type="checkbox" id="${subtask.id}" onclick="toggleSubtask('${subtask.id}')" ${checkIfSubtaskActive(subtask.completed)}>
+                ${subtask.title}
+            </label>
+        </li>
     `;
 }
 

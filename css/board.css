@@ -252,6 +252,13 @@
   font-weight: 400;
 }
 
+dialog#openDialogBoard header,
+dialog#openDialogBoard main,
+dialog#openDialogBoard footer {
+  all: unset;
+  display: block;
+}
+
 dialog#openDialogBoard {
   animation: slideIn 0.3s ease-out;
   border: none;
@@ -262,7 +269,11 @@ dialog#openDialogBoard {
   left: 50%;
   transform: translate(-50%, -50%);
   min-height: 700px;
-  width: 400px;
+  width: 435px;
+  overflow-y: auto;
+  scrollbar-color: #ccc transparent;
+  scrollbar-width: none; 
+  /* scrollbar-width: thin; wäre eine mögliche alternative */
 }
 
 @keyframes slideIn {
@@ -298,19 +309,29 @@ dialog#openDialogBoard {
 }
 
 dialog#openDialogBoard h2 {
-  font-size: 42x;
+  font-size: 42px;
   margin-bottom: 12px;
-  min-height: 116px;
+  /* min-height: 116px; */
 }
 
 dialog#openDialogBoard p {
+  display: flex;
+  gap: 12px;
   margin-bottom: 16px;
+}
+
+dialog#openDialogBoard p span:first-child {
+  min-width: 115px;
 }
 
 dialog#openDialogBoard p:has(img) {
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.dialog-gap {
+  margin-top: 24px;
 }
 
 .contact-list {
@@ -327,8 +348,6 @@ dialog#openDialogBoard p:has(img) {
   margin-bottom: 12px;
 }
 
-
-
 .dialog-actions {
   display: flex;
   justify-content: flex-end;
@@ -340,6 +359,7 @@ dialog#openDialogBoard p:has(img) {
   width: 1px;
   height: 20px;
   background-color: #ccc;
+  margin-top: 28px;
 }
 
 .delete-edit-button {
@@ -350,8 +370,27 @@ dialog#openDialogBoard p:has(img) {
   border: none;
   cursor: pointer;
   font-size: 14px;
+  margin-top: 28px;
 }
 
 .delete-edit-button:hover {
-  /* text-decoration: underline;  placeholder.. hier wird noch angepasst!!! :) */
+  text-decoration: none;
+  font-weight: bolder;
+  color: var(--highligted-color);
+}
+
+.delete-edit-button:hover img {
+  filter: invert(58%) sepia(69%) saturate(456%) hue-rotate(163deg)
+    brightness(95%) contrast(93%);
+}
+
+.board-subtask label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.board-subtask {
+  margin-bottom: 8px;
 }
