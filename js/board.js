@@ -108,6 +108,16 @@ async function closeDialogBoard(section) {
   await renderSection(section);
 }
 
+async function deleteTask(id) {
+     showMessage("Task wurde gelöscht");
+        await deleteData(`/tasks/${id}`);
+        closeDialogBoard();
+        const data = await loadData("/tasks");
+        tasks = Object.entries(data).map(([id, task]) => ({ ...task, id }));
+        renderAll();
+    
+}
+
 function handleTouchMove(e) {
   e.preventDefault();
   const touch = e.touches[0];

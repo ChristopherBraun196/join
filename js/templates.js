@@ -214,7 +214,13 @@ function getAddTaskDialogTemplate(status) {
 }
 
 // Board
-async function getToDoTemplate(element, solvedSubtasks, totalSubtasks, visibility = "", progress, ) {
+async function getToDoTemplate(
+  element,
+  solvedSubtasks,
+  totalSubtasks,
+  visibility = "",
+  progress,
+) {
   return `  
   <div class="task-card" draggable="true" onclick="openDialogBoard('${element["id"]}')" ondragstart="startDragging('${element["id"]}')" class="todo">
   <!-- Category Badge -->
@@ -269,7 +275,9 @@ function getDialogBoardTemplate(element, assignedContacts, subtasks) {
     </main>
     <footer>
         <div class="dialog-actions">
-            <button class="delete-edit-button"><img src="./assets/icons/delete.svg" alt="delete Button">Delete</button>
+            <button class="delete-edit-button" onclick="deleteTask('${element.id}')">
+                <img src="./assets/icons/delete.svg" alt="delete Button">Delete
+            </button>
             <div class="dialog-actions-divider"></div>
             <button class="delete-edit-button"><img src="./assets/icons/edit.svg" alt="edit Button">Edit</button>
         </div>
