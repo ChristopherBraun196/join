@@ -18,6 +18,12 @@
   transform: translateY(-50%);
 }
 
+/* Ich finde die Lösung einfach nicht für den hover */
+.search-icon:hover {  
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 50%;  
+}
+
 .find-task {
   align-items: center;
   border: 1px gray solid;

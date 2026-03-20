@@ -25,14 +25,16 @@
         <h1>Board</h1>
         <div class="search-wrapper">
           <input
+            id="searchTask"
             class="find-task"
             type="text"
             role="search"
             placeholder="Find Task                                           |"
+            oninput="findTask()"
           />
-          <span>
+          <button class="search-btn" onclick="findTask()">
             <img src="./assets/icons/search.svg" class="search-icon" />
-          </span>
+          </button>
           <button
             class="primary-btn add-task"
             onclick="openAddTaskDialog('toDo')"
@@ -146,8 +148,7 @@
           ></div>
         </div>
       </section>
-     <span id="message-box"></span>
-    
+      <span id="message-box"></span>
     </main>
     <dialog id="openDialogBoard"></dialog>
     <script src="./script.js"></script>

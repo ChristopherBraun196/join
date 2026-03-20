@@ -88,14 +88,18 @@ async function openDialogBoard(id) {
   const element = tasks.find((t) => t.id === id);
   const assignedContacts = await getAssignedContacts(element.assignedTo);
   const dialogBoard = document.getElementById("openDialogBoard");
-  dialogBoard.innerHTML = getDialogBoardTemplate(element, assignedContacts, element.subtasks);
+  dialogBoard.innerHTML = getDialogBoardTemplate(
+    element,
+    assignedContacts,
+    element.subtasks,
+  );
   dialogBoard.showModal();
 }
 
 async function getAssignedContacts(assignedTo) {
   const data = await loadData("/contacts");
   if (!data || !assignedTo) return [];
-  const assignedIds = assignedTo.map(a => a.id.trim());
+  const assignedIds = assignedTo.map((a) => a.id.trim());
   const result = Object.entries(data)
     .map(([id, contact]) => ({ ...contact, id }))
     .filter((contact) => assignedIds.includes(contact.id.trim()));
@@ -109,13 +113,12 @@ async function closeDialogBoard(section) {
 }
 
 async function deleteTask(id) {
-     showMessage("Task wurde gelöscht");
-        await deleteData(`/tasks/${id}`);
-        closeDialogBoard();
-        const data = await loadData("/tasks");
-        tasks = Object.entries(data).map(([id, task]) => ({ ...task, id }));
-        renderAll();
-    
+  showMessage("Task wurde gelöscht");
+  await deleteData(`/tasks/${id}`);
+  closeDialogBoard();
+  const data = await loadData("/tasks");
+  tasks = Object.entries(data).map(([id, task]) => ({ ...task, id }));
+  renderAll();
 }
 
 function handleTouchMove(e) {
@@ -218,21 +221,76 @@ function capitalize(fletter) {
 function checkIfSubtaskActive(subtaskCompleted) {
   if (subtaskCompleted == true) {
     return "checked";
-  } else { return "";}
+  } else {
+    return "";
+  }
 }
 
 async function toggleSubtask(subtaskIndex, isSubtaskCompleted, taskID) {
   if (isSubtaskCompleted) {
-    await putData("/tasks/"+taskID+"/subtasks/"+subtaskIndex+"/completed", false);
-  } 
+    await putData(
+      "/tasks/" + taskID + "/subtasks/" + subtaskIndex + "/completed",
+      false,
+    );
+  }
   if (isSubtaskCompleted == false) {
-    await putData("/tasks/"+taskID+"/subtasks/"+subtaskIndex+"/completed", true);
+    await putData(
+      "/tasks/" + taskID + "/subtasks/" + subtaskIndex + "/completed",
+      true,
+    );
   }
   await openDialogBoard(taskID);
 }
 
 function checkIfSubtasksAvaiable(subtasks, taskID) {
   if (subtasks) {
-    return subtasks.map((s, index) => getSubtasksTemplate(s, taskID, index)).join("")
-  } else {return "<p>No Subtask avaiable in this Task</p>"}
+    return subtasks
+      .map((s, index) => getSubtasksTemplate(s, taskID, index))
+      .join("");
+  } else {
+    return "<p>No Subtask avaiable in this Task</p>";
+  }
+}
+
+async function findTask() {
+  const query = document.getElementById("searchTask").value.toLowerCase();
+
+  if (query.length < 1) {
+    renderAll();
+    return;
+  }
+
+  const matches = tasks.filter(
+    (t) =>
+      t.title.toLowerCase().includes(query) ||
+      t.description.toLowerCase().includes(query),
+  );
+
+  await renderFilteredTasks(matches);
+}
+
+async function renderFilteredTasks(filteredTasks) {
+  const sections = ["toDo", "inProgress", "await", "done"];
+
+  for (const section of sections) {
+    const container = document.getElementById(section);
+    document.getElementById(section).innerHTML = getDropZoneTemplate(section);
+    const dropZone = document.getElementById(`dropzone-${section}`);
+    dropZone.innerHTML = "";
+
+    const sectionTasks = filteredTasks.filter((t) => t.status === section);
+
+    for (const element of sectionTasks) {
+      const [solved, total, visibility] = await getSubtaskData(element);
+      dropZone.innerHTML += await getToDoTemplate(
+        element,
+        solved,
+        total,
+        visibility,
+        calcSubtaskProgress(solved, total),
+      );
+    }
+  }
+
+  updateNoTaskPlaceholders();
 }
