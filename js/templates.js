@@ -279,7 +279,9 @@ function getDialogBoardTemplate(element, assignedContacts, subtasks) {
                 <img src="./assets/icons/delete.svg" alt="delete Button">Delete
             </button>
             <div class="dialog-actions-divider"></div>
-            <button class="delete-edit-button"><img src="./assets/icons/edit.svg" alt="edit Button">Edit</button>
+           <button class="delete-edit-button" onclick="openEditTask('${element.id}')">
+    <img src="./assets/icons/edit.svg" alt="edit Button">Edit
+</button>
         </div>
     </footer>
   `;
@@ -352,5 +354,105 @@ function getContactDetailTemplate(contact, initials, color) {
       <p class="detail-info-title">Phone</p>
       <p class="detail-info-value" id="detail-phone">${contact.phone || "–"}</p>
     </div>
+  `;
+}
+
+function getDialogBoardEditTemplate(
+  element,
+  priorityButtons,
+  assignedHTML,
+  subtasksHTML,
+) {
+  return `
+    <header>
+        <div class="flex-sb">
+            <span class="category-badge" style="background-color:${element["categoryLabelColor"]}">${element["category"]}</span>
+            <button onclick="closeDialogBoard('${element.status}')">✕</button>
+        </div>
+        <label class="edit-margin" for="edit-title">Title</label>
+        <input type="text" id="edit-title" value="${element.title}" />
+    </header>
+    <main>
+        <label class="edit-margin" for="edit-description">Description</label>
+        <textarea id="edit-description">${element.description}</textarea>
+        <label class="edit-margin" for="edit-due-date">Due date</label>
+        <input type="date" id="edit-due-date" value="${element.dueDate}" />
+        <label class="edit-margin">Priority</label>
+        <div class="priority-buttons">${priorityButtons}</div>
+        <label class="edit-margin">Assigned To</label>
+        <div class="contacts-edit-list">${assignedHTML}</div>
+        <label class="edit-margin">Subtasks</label>
+        <div class="subtask-input-wrapper">
+            <input type="text" id="new-subtask-input" placeholder="Add new subtask" />
+            <div class="subtask-actions">
+                <button class="subtask-icon-btn" onclick="addSubtaskEdit('${element.id}')">✓</button>
+            </div>
+        </div>
+        <ul id="subtasksk">${subtasksHTML}</ul>
+    </main>
+    <footer>
+        <div class="dialog-actions">
+            <button class="save-edit-button" onclick="saveEditTask('${element.id}')">
+                Ok <img src="./assets/icons/check.svg" alt="save Button">
+            </button>
+        </div>
+    </footer>
+  `;
+}
+
+function getSubtasksTemplate(
+  subtask,
+  taskID,
+  subtaskIndex,
+  toggleFn = "toggleSubtask",
+) {
+  return `
+    <li class="no-decoration board-subtask">
+        <label for="${subtask.id}">
+            <input type="checkbox" id="${subtask.id}" 
+                   onclick="${toggleFn}('${subtaskIndex}', ${subtask.completed}, '${taskID}')" 
+                   ${checkIfSubtaskActive(subtask.completed)}>
+            ${subtask.title}
+        </label>
+    </li>
+  `;
+}
+
+function getPriorityButtonsTemplate(currentPriority) {
+  return ["urgent", "medium", "low"]
+    .map((p) => {
+      const active = currentPriority === p ? "active" : "";
+      return `<button class="prio-btn ${active}" data-priority="${p}" onclick="setEditPriority(event, '${p}')">
+      ${capitalize(p)} <span><img src="./assets/icons/priority-${p}.svg" /></span>
+    </button>`;
+    })
+    .join("");
+}
+
+function getContactOptionTemplate(id, contact, checked) {
+  return `
+    <div class="custom-option" onclick="toggleAssignedContact(event, '${id}')">
+      <span class="avatar" style="background:${contact.avatarColor}">${getInitials(contact.name)}</span>
+      <span>${contact.name}</span>
+      <input type="checkbox" value="${id}" ${checked} style="margin-left:auto" />
+    </div>`;
+}
+
+function getContactBadgeTemplate(contact) {
+  return `<div class="badge-avatar" style="background:${contact.avatarColor}">${getInitials(contact.name)}</div>`;
+}
+
+function getAssignedContactsEditTemplate(optionsHTML, badgesHTML) {
+  return `
+    <div class="custom-select-wrapper">
+      <div class="custom-select-trigger" onclick="toggleEditDropdown()">
+        <span>Select contacts to assign</span>
+        <img src="./assets/icons/arrow_drop_down.svg" class="select-arrow">
+      </div>
+      <div class="custom-select-dropdown" id="edit-assigned-dropdown">
+        <div class="custom-select-dropdown-inner">${optionsHTML}</div>
+      </div>
+    </div>
+    <div id="edit-assigned-badges" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">${badgesHTML}</div>
   `;
 }

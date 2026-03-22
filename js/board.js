@@ -1,4 +1,5 @@
 let currentDraggedElement;
+let currentEditTaskId = null;
 
 let tasks = [];
 
@@ -99,7 +100,12 @@ async function openDialogBoard(id) {
 async function getAssignedContacts(assignedTo) {
   const data = await loadData("/contacts");
   if (!data || !assignedTo) return [];
-  const assignedIds = assignedTo.map((a) => a.id.trim());
+
+  const assignedArray = Array.isArray(assignedTo)
+    ? assignedTo
+    : Object.values(assignedTo);
+
+  const assignedIds = assignedArray.map((a) => a.id.trim());
   const result = Object.entries(data)
     .map(([id, contact]) => ({ ...contact, id }))
     .filter((contact) => assignedIds.includes(contact.id.trim()));
@@ -293,4 +299,186 @@ async function renderFilteredTasks(filteredTasks) {
   }
 
   updateNoTaskPlaceholders();
+}
+
+async function openEditTask(taskId) {
+  currentEditTaskId = taskId;
+  const element = tasks.find((t) => t.id === taskId);
+  const assignedContacts = await getAssignedContacts(element.assignedTo);
+  const allContacts = await loadData("/contacts");
+  const assignedTo = element.assignedTo
+    ? Array.isArray(element.assignedTo)
+      ? element.assignedTo
+      : Object.values(element.assignedTo)
+    : [];
+  const assignedIds = assignedTo.map((a) => a.id);
+  const priorityButtons = getPriorityButtonsTemplate(element.priority);
+  const assignedHTML = buildAssignedContactsEdit(allContacts, assignedIds);
+  const subtasksHTML = getSubtasksEditTemplate(element.subtasks, taskId);
+
+  document.getElementById("openDialogBoard").innerHTML =
+    getDialogBoardEditTemplate(
+      element,
+      priorityButtons,
+      assignedHTML,
+      subtasksHTML,
+    );
+}
+
+async function saveEditTask(taskId) {
+  const element = tasks.find((t) => t.id === taskId);
+  const updatedData = {
+    ...element,
+    title: document.getElementById("edit-title").value,
+    description: document.getElementById("edit-description").value,
+    dueDate: document.getElementById("edit-due-date").value,
+    priority: currentEditPriority ?? element.priority,
+  };
+
+  await putData("/tasks/" + taskId, updatedData);
+
+  const index = tasks.findIndex((t) => t.id === taskId);
+  tasks[index] = updatedData;
+
+  await closeDialogBoard(element.status);
+}
+
+let currentEditPriority = null;
+
+function setEditPriority(event, priority) {
+  currentEditPriority = priority;
+  document
+    .querySelectorAll(".prio-btn")
+    .forEach((btn) => btn.classList.remove("active"));
+  event.currentTarget.classList.add("active");
+}
+
+async function toggleSubtaskEdit(subtaskIndex, isCompleted, taskId) {
+  await putData(
+    "/tasks/" + taskId + "/subtasks/" + subtaskIndex + "/completed",
+    !isCompleted,
+  );
+  await initTasks();
+  const element = tasks.find((t) => t.id === taskId);
+  const assignedContacts = await getAssignedContacts(element.assignedTo);
+  openEditTask(taskId);
+}
+
+function checkIfSubtasksAvaiableEdit(subtasks, taskID) {
+  if (subtasks) {
+    return subtasks
+      .map((s, index) =>
+        getSubtasksTemplate(s, taskID, index, "toggleSubtaskEdit"),
+      )
+      .join("");
+  } else {
+    return "<p>No Subtask available</p>";
+  }
+}
+
+function buildContactOptions(allContacts, assignedIds) {
+  return Object.entries(allContacts)
+    .map(([id, contact]) => {
+      const checked = assignedIds.includes(id) ? "checked" : "";
+      return getContactOptionTemplate(id, contact, checked);
+    })
+    .join("");
+}
+
+function buildContactBadges(allContacts, assignedIds) {
+  return Object.entries(allContacts)
+    .filter(([id]) => assignedIds.includes(id))
+    .map(([id, contact]) => getContactBadgeTemplate(contact))
+    .join("");
+}
+
+function buildAssignedContactsEdit(allContacts, assignedIds) {
+  const optionsHTML = buildContactOptions(allContacts, assignedIds);
+  const badgesHTML = buildContactBadges(allContacts, assignedIds);
+  return getAssignedContactsEditTemplate(optionsHTML, badgesHTML);
+}
+
+function getSubtasksEditTemplate(subtasks, taskId) {
+  if (!subtasks) return "<p>No Subtasks available</p>";
+  return subtasks
+    .map(
+      (s, index) => `
+    <li class="subtask-edit-item">
+      <span>• ${s.title}</span>
+      <div class="subtask-item-actions">
+        <button class="subtask-icon-btn" onclick="deleteSubtaskEdit('${taskId}', ${index})">🗑</button>
+      </div>
+    </li>
+  `,
+    )
+    .join("");
+}
+
+function getPriorityButtonsTemplate(currentPriority) {
+  return ["urgent", "medium", "low"]
+    .map((p) => {
+      const active = currentPriority === p ? "active" : "";
+      return `<button class="prio-btn ${active}" data-priority="${p}" onclick="setEditPriority(event, '${p}')">
+      ${capitalize(p)} <img src="./assets/icons/priority-${p}.svg" />
+    </button>`;
+    })
+    .join("");
+}
+
+async function toggleAssignedContact(event, contactId) {
+  const checkbox = event.currentTarget.querySelector("input[type='checkbox']");
+
+  if (event.target !== checkbox) {
+    checkbox.checked = !checkbox.checked;
+  }
+
+  const taskId = currentEditTaskId;
+  const element = tasks.find((t) => t.id === taskId);
+  let assignedTo = element.assignedTo
+    ? Array.isArray(element.assignedTo)
+      ? [...element.assignedTo]
+      : Object.values(element.assignedTo)
+    : [];
+
+  if (checkbox.checked) {
+    assignedTo.push({ id: contactId });
+  } else {
+    assignedTo = assignedTo.filter((a) => a.id !== contactId);
+  }
+
+  await putData("/tasks/" + taskId + "/assignedTo", assignedTo);
+  await initTasks();
+
+  const allContacts = await loadData("/contacts");
+  const assignedIds = assignedTo.map((a) => a.id);
+  document.getElementById("edit-assigned-badges").innerHTML =
+    buildContactBadges(allContacts, assignedIds);
+}
+
+async function addSubtaskEdit(taskId) {
+  const input = document.getElementById("new-subtask-input");
+  const title = input.value.trim();
+  if (!title) return;
+  const element = tasks.find((t) => t.id === taskId);
+  const subtasks = element.subtasks ? [...element.subtasks] : [];
+  subtasks.push({ title, completed: false });
+  await putData("/tasks/" + taskId + "/subtasks", subtasks);
+  await initTasks();
+  await openEditTask(taskId);
+}
+
+async function deleteSubtaskEdit(taskId, subtaskIndex) {
+  const element = tasks.find((t) => t.id === taskId);
+  const subtasks = [...element.subtasks];
+  subtasks.splice(subtaskIndex, 1);
+  await putData("/tasks/" + taskId + "/subtasks", subtasks);
+  await initTasks();
+  await openEditTask(taskId);
+}
+
+function toggleEditDropdown() {
+  const dropdown = document.getElementById("edit-assigned-dropdown");
+  const trigger = dropdown.previousElementSibling;
+  dropdown.classList.toggle("open");
+  trigger.classList.toggle("open");
 }
