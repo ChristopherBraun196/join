@@ -4,21 +4,17 @@ async function initSummary() {
 
   const tasks = Object.entries(data).map(([id, task]) => ({ ...task, id }));
 
-  // Zählen nach Status
   const toDoCount     = tasks.filter(t => t.status === "toDo").length;
   const doneCount     = tasks.filter(t => t.status === "done").length;
   const progressCount = tasks.filter(t => t.status === "inProgress").length;
   const feedbackCount = tasks.filter(t => t.status === "await").length;
   const boardCount    = tasks.length;
 
-  // Urgent Tasks (Priorität = urgent)
   const urgentTasks = tasks.filter(t => t.priority === "urgent");
   const urgentCount = urgentTasks.length;
 
-  // Nächste Deadline aus den Urgent Tasks
   const upcomingDeadline = getNextDeadline(urgentTasks);
 
-  // In die HTML-Elemente schreiben
   document.getElementById("todo_count").textContent     = toDoCount;
   document.getElementById("done_count").textContent     = doneCount;
   document.getElementById("progress_count").textContent = progressCount;
