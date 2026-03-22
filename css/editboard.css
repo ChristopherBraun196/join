@@ -39,7 +39,7 @@
 }
 
 .prio-btn.active img {
-    filter: brightness(0) invert(1);
+  filter: brightness(0) invert(1);
 }
 
 .custom-select-dropdown-inner {
@@ -80,6 +80,7 @@
   border-radius: 10px;
   background: white;
   padding: 0 12px;
+  margin-bottom: 12px;
 }
 
 .subtask-input-wrapper input {
@@ -95,21 +96,49 @@
 .subtask-icon-btn {
   background: transparent;
   border: none;
-  padding: 4px 8px;
-  cursor: pointer;
+  padding: 4px 8px;  
   font-size: 16px;
 }
 
 .subtask-edit-item {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   padding: 6px 10px;
   border-radius: 10px;
   font-size: 14px;
-  list-style: none;
+  margin-bottom: 6px;
 }
 
+.subtask-edit-item::before {
+  content: "•";
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+.subtask-edit-item:has(.subtask-edit-input) {
+  padding: 0;
+  background: #f0f4f8;
+}
+
+.subtask-edit-item .subtask-edit-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 6px 10px;
+  font-size: 14px;
+  outline: none;
+}
+
+.subtask-edit-item .subtask-text {
+  flex: 1;
+}
+
+.subtask-divider-edit {
+  width: 1px;
+  height: 16px;
+  background: var(--border-color);
+  margin: 8px 0px;
+}
 .subtask-edit-item:hover {
   background: #f0f4f8;
 }
@@ -119,6 +148,11 @@
 .subtask-item-actions {
   opacity: 0;
   transition: opacity 0.15s;
+  margin-left: auto;
+}
+
+.subtask-edit-item:has(.subtask-edit-input) .subtask-item-actions {
+  opacity: 1;
 }
 
 .save-edit-button {
@@ -126,16 +160,15 @@
   align-items: center;
   gap: 8px;
   padding: 14px 24px;
-  background: #2a3647;
+  background: var(--primary-color);
   color: white;
   border: none;
   border-radius: 10px;
-  font-size: 16px;
-  cursor: pointer;
+  font-size: 16px;  
   font-weight: 500;
 }
 
-.save-edit-button:hover{
-    background: var(--highligted-color);
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+.save-edit-button:hover {
+  background: var(--highligted-color);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
 }

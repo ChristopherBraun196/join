@@ -357,12 +357,7 @@ function getContactDetailTemplate(contact, initials, color) {
   `;
 }
 
-function getDialogBoardEditTemplate(
-  element,
-  priorityButtons,
-  assignedHTML,
-  subtasksHTML,
-) {
+function getDialogBoardEditTemplate(element, priorityButtons, assignedHTML, subtasksHTML) {
   return `
     <header>
         <div class="flex-sb">
@@ -383,9 +378,17 @@ function getDialogBoardEditTemplate(
         <div class="contacts-edit-list">${assignedHTML}</div>
         <label class="edit-margin">Subtasks</label>
         <div class="subtask-input-wrapper">
-            <input type="text" id="new-subtask-input" placeholder="Add new subtask" />
-            <div class="subtask-actions">
-                <button class="subtask-icon-btn" onclick="addSubtaskEdit('${element.id}')">✓</button>
+            <input type="text" id="new-subtask-input" placeholder="Add new subtask"
+                   oninput="onSubtaskInputEdit()"
+                   onkeydown="handleSubtaskKeyEdit(event, '${element.id}')">
+            <div id="subtask-confirm-btns-edit" class="subtask-confirm-btns">
+                <button class="subtask-icon-btn" type="button" onclick="clearSubtaskInputEdit()">
+                    <img src="./assets/icons/close.svg">
+                </button>
+                <div class="subtask-divider-edit"></div>
+                <button class="subtask-icon-btn" type="button" onclick="addSubtaskEdit('${element.id}')">
+                    <img src="./assets/icons/check-dark.svg">
+                </button>
             </div>
         </div>
         <ul id="subtasksk">${subtasksHTML}</ul>
@@ -454,5 +457,37 @@ function getAssignedContactsEditTemplate(optionsHTML, badgesHTML) {
       </div>
     </div>
     <div id="edit-assigned-badges" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">${badgesHTML}</div>
+  `;
+}
+
+function getSubtaskEditItemTemplate(subtask, taskId, index) {
+  return `
+    <li class="subtask-edit-item" data-task-id="${taskId}" data-index="${index}">
+      <span class="subtask-text" onclick="editSubtaskEditMode(this)">${subtask.title}</span>
+      <div class="subtask-item-actions">
+        <button class="subtask-icon-btn" type="button" onclick="editSubtaskEditMode(this.closest('li').querySelector('.subtask-text'))">
+          <img src="./assets/icons/edit.svg">
+        </button>
+        <div class="subtask-divider"></div>
+        <button class="subtask-icon-btn" type="button" onclick="deleteSubtaskEdit('${taskId}', ${index})">
+          <img src="./assets/icons/delete.svg">
+        </button>
+      </div>
+    </li>
+  `;
+}
+
+function getSubtaskEditingStateTemplate(currentText) {
+  return `
+    <input class="subtask-edit-input" type="text" value="${currentText}">
+    <div class="subtask-item-actions">
+      <button class="subtask-icon-btn" type="button" onclick="this.closest('li').remove()">
+        <img src="./assets/icons/delete.svg">
+      </button>
+      <div class="subtask-divider"></div>
+      <button class="subtask-icon-btn" type="button" onclick="confirmSubtaskEditMode(this)">
+        <img src="./assets/icons/check-dark.svg">
+      </button>
+    </div>
   `;
 }

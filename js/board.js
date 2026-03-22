@@ -399,19 +399,49 @@ function buildAssignedContactsEdit(allContacts, assignedIds) {
 }
 
 function getSubtasksEditTemplate(subtasks, taskId) {
-  if (!subtasks) return "<p>No Subtasks available</p>";
+  if (!subtasks) return "";
   return subtasks
-    .map(
-      (s, index) => `
-    <li class="subtask-edit-item">
-      <span>• ${s.title}</span>
-      <div class="subtask-item-actions">
-        <button class="subtask-icon-btn" onclick="deleteSubtaskEdit('${taskId}', ${index})">🗑</button>
-      </div>
-    </li>
-  `,
-    )
+    .map((s, i) => getSubtaskEditItemTemplate(s, taskId, i))
     .join("");
+}
+
+function onSubtaskInputEdit() {
+  const input = document.getElementById("new-subtask-input");
+  const btns = document.getElementById("subtask-confirm-btns-edit");
+  btns.classList.toggle("visible", input.value.trim().length > 0);
+}
+
+function clearSubtaskInputEdit() {
+  document.getElementById("new-subtask-input").value = "";
+  onSubtaskInputEdit();
+}
+
+function handleSubtaskKeyEdit(event, taskId) {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    addSubtaskEdit(taskId);
+  }
+  if (event.key === "Escape") clearSubtaskInputEdit();
+}
+
+function editSubtaskEditMode(span) {
+  const li = span.closest("li");
+  li.innerHTML = getSubtaskEditingStateTemplate(span.textContent);
+  li.querySelector("input").focus();
+}
+
+function confirmSubtaskEditMode(btn) {
+  const li = btn.closest("li");
+  const text = li.querySelector(".subtask-edit-input").value.trim();
+  if (!text) {
+    li.remove();
+    return;
+  }
+  li.outerHTML = getSubtaskEditItemTemplate(
+    { title: text },
+    li.dataset.taskId,
+    li.dataset.index,
+  );
 }
 
 function getPriorityButtonsTemplate(currentPriority) {
