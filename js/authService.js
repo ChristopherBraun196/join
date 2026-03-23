@@ -44,15 +44,36 @@ async function signup(name, email, password) {
                 showMessage("Passwort zu schwach (min. 6 Zeichen).");
                 break;
             default:
-                showMessage("Fehler: " + error.message);
+                showMessage("Anderer Fehler: " + error.message);
         }
     }
 }
 
 async function login(email, password) {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    console.log("Eingeloggt:", userCredential.user.uid);
-    showMessage("Eingeloggt:", userCredential.user.uid);
+    
+    try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        showMessage("Eingeloggt:", userCredential.user.uid);
+    } catch (error) {
+        switch (error.code) {
+            case "auth/ivalid-email":
+                showMessage("Falsche E-Mail.");
+                break;
+            case "auth/wrong-password":
+                showMessage("Falsches Passwort.");
+                break;
+            case "auth/user-not-found":
+                showMessage("Nutzer nicht gefunden.");
+                break;
+            case "too-many-requests":
+                showMessage("Zu viele Fehlversuche.");
+                break;
+            default:
+                showMessage("Anderer Fehler: " + error.message);
+                break;
+        }
+        
+    }
 }
 
 window.signup = signup;
