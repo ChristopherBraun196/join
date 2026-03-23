@@ -333,10 +333,10 @@ function getContactDetailTemplate(contact, initials, color) {
       <div class="contact-detail-name-actions">
         <h2>${contact.name}</h2>
         <div class="contact-detail-actions">
-          <button onclick="editContact('${contact.id}')" class="detail-action-btn">
+          <button onclick="editContact('contact-${contact.id}')" class="detail-action-btn">
             <img src="./assets/icons/edit.svg" alt="Edit"> Edit
           </button>
-          <button onclick="deleteContact('${contact.id}')" class="detail-action-btn">
+          <button onclick="deleteContact('contact-${contact.id}')" class="detail-action-btn">
             <img src="./assets/icons/delete.svg" alt="Delete"> Delete
           </button>
         </div>
