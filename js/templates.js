@@ -6,7 +6,7 @@ function getLoginTemplate() {
             <div class="spacer"></div>
         </div>
 
-        <form id="login-signup-form" onsubmit="return false">
+        <form id="login-signup-form" onsubmit="handleLogin(event); return false;">
             <div class="input-fields">
                 <div class="email-input">
                     <input class="form-input" type="email" placeholder="E-Mail" name="email" autocomplete="additional-name" required/>
@@ -34,7 +34,7 @@ function getSignupTemplate() {
             <div class="spacer"></div>
         </div>
 
-        <form id="login-signup-form" onsubmit="signup(); return false;">
+        <form id="login-signup-form" onsubmit="handleSignup(event); return false;"
             <div class="input-fields">
                 <div class="name-input">
                     <input class="form-input" type="text" placeholder="Full Name" name="fullname" autocomplete="name" required/>

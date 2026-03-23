@@ -1,48 +1,48 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="de">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Join | Log in</title>
-    <link rel="stylesheet" href="./style.css">
-    <link rel="stylesheet" href="./css/assets.css">
-    <link rel="stylesheet" href="./css/fonts.css">
-    <link rel="stylesheet" href="./css/standard.css">
-    <link rel="shortcut icon" href="./assets/img/logo-light.svg" type="image/x-icon">
-</head>
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./css/assets.css" />
+    <link rel="stylesheet" href="./css/fonts.css" />
+    <link rel="stylesheet" href="./css/standard.css" />
+    <link
+      rel="shortcut icon"
+      href="./assets/img/logo-light.svg"
+      type="image/x-icon"
+    />
+  </head>
 
-<body onload="switchToLogin();">
-    
+  <body onload="switchToLogin()">
     <header id="login-signup-navbar">
-        <nav>
-            <img src="./assets/img/logo-dark.svg" class="logo">
-            <div id="signup">
-                <p>Not a Join user?</p>
-                <button class="primary-btn btn" onclick="switchToSignup()">Sign up</button>
-            </div>
-        </nav>
+      <nav>
+        <img src="./assets/img/logo-dark.svg" class="logo" />
+        <div id="signup">
+          <p>Not a Join user?</p>
+          <button class="primary-btn btn" onclick="switchToSignup()">
+            Sign up
+          </button>
+        </div>
+      </nav>
     </header>
-    
+
     <main id="login-signup-main">
-        <section id="login-signup-section">
+      <section id="login-signup-section"></section>
 
-        </section>
-
-        <span id="message-box"></span>
+      <span id="message-box"></span>
     </main>
 
     <footer>
-        <div id="login-signup-privacy" class="privacy">
-            <a href="#">Privacy Policy</a>
-            <a href="#">Legal notice</a>
-        </div>
+      <div id="login-signup-privacy" class="privacy">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Legal notice</a>
+      </div>
     </footer>
-    
 
-
-<script src="./script.js"></script>
-<script src="./js/templates.js"></script>
-</body>
-
+    <script src="./script.js"></script>
+    <script src="./js/templates.js"></script>
+    <script type="module" src="./js/authService.js"></script>
+  </body>
 </html>
