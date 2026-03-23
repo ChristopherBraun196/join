@@ -4,7 +4,7 @@ import { getDatabase }            from "https://www.gstatic.com/firebasejs/12.11
 
 
 const firebaseConfig = {
-  apiKey: "AIzaSyB5idScQTFPtOmg1p-EEwpcZc1lmY9BkGo",
+  apiKey: "",
   authDomain: "join-database-3e254.firebaseapp.com",
   databaseURL: "https://join-database-3e254-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "join-database-3e254",
