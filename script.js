@@ -54,10 +54,6 @@ function showMessage(message) {
     }, 5000);
 }
 
-function signup() {
-    showMessage("Signup Test")
-}
-
 function loadSidebar(page) {
     const map = {
         summary: ['active', '', '', '', '', ''],
