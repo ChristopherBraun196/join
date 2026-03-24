@@ -70,11 +70,11 @@ async function signup(name, email, password) {
 
 function handleLoginError(error) {
   const messages = {
-    "auth/invalid-email":        "Falsche E-Mail.",
-    "auth/wrong-password":       "Falsches Passwort.",
-    "auth/user-not-found":       "Nutzer nicht gefunden.",
-    "auth/invalid-credential":   "E-Mail oder Passwort ist falsch.",
-    "auth/too-many-requests":    "Zu viele Fehlversuche. Bitte warte kurz.",
+    "auth/invalid-email": "Falsche E-Mail.",
+    "auth/wrong-password": "Falsches Passwort.",
+    "auth/user-not-found": "Nutzer nicht gefunden.",
+    "auth/invalid-credential": "E-Mail oder Passwort ist falsch.",
+    "auth/too-many-requests": "Zu viele Fehlversuche. Bitte warte kurz.",
   };
   showMessage(messages[error.code] || "Anderer Fehler: " + error.message);
 }
@@ -82,7 +82,10 @@ function handleLoginError(error) {
 async function login(email, password) {
   try {
     await signInWithEmailAndPassword(auth, email, password);
-    window.location.href = "./summary.html";
+    showMessage("Erfolgreich eingeloggt!");
+    setTimeout(() => {
+      window.location.href = "./summary.html";
+    }, 2000);
   } catch (error) {
     handleLoginError(error);
   }
@@ -96,14 +99,14 @@ async function handleLogin(event) {
 }
 
 async function handleSignup(event) {
-  const form     = document.getElementById("login-signup-form");
-  const name     = form.querySelector("input[name='fullname']").value;
-  const email    = form.querySelector("input[name='email']").value;
+  const form = document.getElementById("login-signup-form");
+  const name = form.querySelector("input[name='fullname']").value;
+  const email = form.querySelector("input[name='email']").value;
   const password = form.querySelector("input[name='password']").value;
   await signup(name, email, password);
 }
 
-window.signup      = signup;
-window.login       = login;
+window.signup = signup;
+window.login = login;
 window.handleLogin = handleLogin;
 window.handleSignup = handleSignup;
