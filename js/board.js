@@ -80,7 +80,11 @@ function updateNoTaskPlaceholders() {
     const column = document.getElementById(columns[i]);
     const placeholder = document.getElementById("placeholder-" + columns[i]);
     const hasTasks = column.querySelector(".task-card") !== null;
-    placeholder.style.display = hasTasks ? "none" : "flex";
+    if (!hasTasks) {
+      placeholder.classList.remove("hidden");
+    } else {
+      placeholder.classList.add("hidden");
+    }
   }
 }
 
