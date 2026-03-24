@@ -137,3 +137,41 @@ input[type="checkbox"] {
 input[type="checkbox"]:checked {
   content: url('../assets/icons/subtask-checked.svg');
 }
+
+.animated-img-wrapper {
+    position: fixed;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.8);
+
+    animation: fadeWrapper 2s ease forwards;
+    animation-delay: 0.1s; 
+}
+
+.animated-img {
+    width: 100px;
+    height: 120px;
+    animation: slideImg 2s ease forwards;
+}
+
+@keyframes slideImg {
+    from {
+        transform: translate(0, 0) scale(2);
+    }
+    to {
+        transform: translate(calc(-50vw + 98px), calc(-50vh + 100px)) scale(1);
+    }
+}
+
+@keyframes fadeWrapper {
+    from {
+        background: rgba(255, 255, 255, 1);
+    }
+    to {
+        background: rgba(255, 255, 255, 0);
+    }
+}

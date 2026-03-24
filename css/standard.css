@@ -51,6 +51,10 @@ button, input {
     border: unset;
 }
 
+.hide {
+    opacity: 0;
+}
+
 /* Responsive Styling */
 
 @media (max-width: 768px) {
