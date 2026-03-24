@@ -98,6 +98,19 @@ main {
   z-index: 1000;
 }
 
+.right-topbar-side {
+  display: flex;
+  gap: 16px;
+}
+
+.user-menue {
+  aspect-ratio: 1/1;
+  height: 40px;
+  background-color: aqua;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
 .line {
   width: 4px;
   height: 59px;

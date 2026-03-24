@@ -82,3 +82,8 @@ function loadSidebar(page) {
 function getInitials(name) {
     return name.split(' ').map(n => n[0]).join('').toUpperCase();
 }
+
+function setUserMenue() {
+    let htmlSnippet = `<div class="user-menue"></div>`;
+    return htmlSnippet;
+}
