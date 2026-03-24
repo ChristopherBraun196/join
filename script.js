@@ -3,6 +3,18 @@ const signupBtn = document.getElementById('signup');
 const messageElement = document.getElementById('message-box');
 const sidebar = document.getElementById('sidebar');
 
+const animatedImgWrapper = document.getElementById('animated-img-wrapper');
+const navLogo = document.getElementById('navbar-logo');
+
+if (animatedImgWrapper) {
+    animatedImgWrapper.addEventListener('animationend', (e) => {
+        if (e.target === animatedImgWrapper) {
+            animatedImgWrapper.style.display = 'none';
+            navLogo.classList.remove("hide");
+        }
+    });    
+}
+
 function init(site) {
     generateTopbar();
     loadSidebar(site);
