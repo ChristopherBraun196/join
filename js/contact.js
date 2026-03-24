@@ -46,6 +46,7 @@ function selectRandomAvatarColor() {
   return AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
 }
 
+
 // Contact List Rendering
 
 const AVATAR_COLORS = [
@@ -105,7 +106,7 @@ async function loadContacts() {
   try {
     const data = await loadData("/contacts");
     if (!data) return;
-    const contacts = Object.entries(data).map(([id, contact]) => ({ id, ...contact }));
+    const contacts = Object.entries(data).map(([id, contact]) => ({ ...contact, id }));
     renderContacts(contacts);
   } catch (error) {
     console.error("Fehler beim Laden der Kontakte:", error);
@@ -147,8 +148,8 @@ function openContactDetail(contact, event) {
 async function submitContact() {
   if (!validateInputs()) return;
   try {
-    const contactID = crypto.randomUUID();
-    await putData("/contacts/contact-"+contactID, generateContactJson(contactID));
+    const contactID = "contact-" + crypto.randomUUID();
+    await putData("/contacts/" + contactID, generateContactJson(contactID));
     closeContactDialog();
     loadContacts();
   } catch (error) {
@@ -161,7 +162,7 @@ async function submitContact() {
 
 async function deleteContact(contactId) {
   try {
-    await deleteData("/contacts/"+contactId);
+    await deleteData("/contacts/" + contactId);
     clearActiveContact();
     loadContacts();
   } catch (error) {
@@ -221,7 +222,7 @@ async function saveContact(contactId) {
     phone: document.getElementById("input-phone").value.trim(),
   };
   try {
-    await putData("/contacts/contact-"+contactId, updatedContact);
+    await putData("/contacts/" + contactId, updatedContact);
     closeContactDialog();
     clearActiveContact();
     loadContacts();
