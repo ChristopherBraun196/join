@@ -35,7 +35,7 @@
   font-size: 18px;
 }
 
-.add-task {
+.add-task-btn {
   width: 225px;
   border-radius: 8px;
   font-size: 22px;
@@ -45,7 +45,7 @@
   border: none;
 }
 
-.add-task:hover {
+.add-task-btn:hover {
   background-color: var(--highligted-color);
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
   cursor: pointer;

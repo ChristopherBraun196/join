@@ -1,4 +1,4 @@
-#add-task {
+.add-task {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -10,10 +10,14 @@
   height: calc(100% - 100px);
 }
 
+#add-task-dialog {
+  padding: 60px;
+}
+
 form {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   gap: 40px;
   width: 100%;
 }
@@ -143,6 +147,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   gap: 15px;
   width: 100%;
   font-size: 14px;
+  padding-bottom: 60px;
 }
 
 #task-btns {
@@ -184,9 +189,9 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   border-radius: calc(2 * var(--border-radius));
   border: none;
   width: 100%;
-  max-width: 1440px;
+  max-width: min(1280px, calc(100vw - 120px));
   height: 100%;
-  max-height: 800px;
+  max-height: min(800px, calc(100vh - 120px));
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -198,7 +203,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 #close-dialog-btn {
   position: absolute;
-  top: 0;
+  top: 66px;
   right: 60px;
   border: none;
   background-color: transparent;
@@ -401,6 +406,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   display: flex;
   flex-direction: column;
   margin-top: 6px;
+  max-height: 250px;
+  overflow: auto;
 }
 
 #subtask-list li {
