@@ -1,0 +1,140 @@
+#login-signup-main {
+  position: inherit;
+  display: flex;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  width: 100% !important;
+  max-width: none;
+  min-height: calc(100vh - 400px);
+}
+
+#login-signup-privacy {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  gap: 16px;
+}
+
+footer {
+  height: 200px;
+}
+
+#login-signup-privacy a {
+  color: #cdcdcd;
+  text-decoration: none;
+}
+#login-signup-privacy a:hover {
+  color: #2a3647;
+}
+
+#login-signup-navbar {
+  padding: 0 48px;
+}
+
+#login-signup-navbar nav {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-between;
+  align-items: center;
+  height: 200px;
+}
+
+#signup {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+#signup.hidden {
+  display: none;
+}
+
+#login-signup-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 500px;
+  min-height: 350px;
+  background-color: white;
+  gap: 24px;
+  border-radius: 30px;
+  padding: 50px;
+
+  box-shadow: 0 0 30px rgba(130, 130, 130, 0.515);
+}
+
+#login-signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.form-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  width: 100%;
+}
+
+.spacer {
+  height: 3px;
+  width: 150px;
+  background-color: #29abe2;
+  border-radius: 10px;
+}
+
+.input-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.name-input,
+.email-input,
+.pwd-input {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px #dbdcde;
+  border-style: solid;
+  padding: 0 12px;
+  width: 350px;
+  border-radius: 8px;
+}
+
+.input-icon {
+  width: 20px;
+  object-fit: cover;
+}
+
+.accept-input {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.login-btns {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  gap: 32px;
+}
+
+#guest-login-btn a {
+  color: #2a3647;
+}
+
+.back {
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%);
+}

@@ -1,0 +1,55 @@
+.privacy-legal-help-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start !important;
+  align-items: flex-start !important;
+  top: 100px;
+  right: 0;
+  width: calc(100% - 240px);
+  gap: 50px;
+  padding: 100px 100px;
+  height: auto;
+}
+
+.privacy {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 40px;
+}
+
+.privacy a {
+  color: #cdcdcd;
+  text-decoration: none;
+}
+
+.privacy a:hover {
+  color: white;
+}
+
+.legal a {
+  color: #29abe2;
+}
+
+.legal ol li {
+  margin-bottom: 20px;
+}
+
+.legal h2 {
+  font-size: 27px;
+  font-weight: bold;
+}
+
+.legal h3 {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.privacy .nav-link:hover {
+  color: #29a9e1;
+  background: none;
+  transform: scale(1.05);
+}
