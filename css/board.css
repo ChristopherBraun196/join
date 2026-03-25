@@ -20,12 +20,13 @@
   right: 200px;
   top: 50%;
   transform: translateY(-50%);
+  transition: .1s all ease-in;  
 }
 
-/* Ich finde die Lösung einfach nicht für den hover */
 .search-icon:hover {  
-  background: rgba(0, 0, 0, 0.1);
-  border-radius: 50%;  
+  -webkit-filter: drop-shadow(1px 1px 1px #22222280);
+  filter: drop-shadow(1px 1px 1px #22222280);
+  transition: .1s all ease-in;  
 }
 
 .find-task {
