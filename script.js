@@ -6,6 +6,7 @@ const sidebar = document.getElementById('sidebar');
 const animatedImgWrapper = document.getElementById('animated-img-wrapper');
 const navLogo = document.getElementById('navbar-logo');
 
+
 if (animatedImgWrapper) {
     animatedImgWrapper.addEventListener('animationend', (e) => {
         if (e.target === animatedImgWrapper) {
@@ -83,7 +84,14 @@ function getInitials(name) {
     return name.split(' ').map(n => n[0]).join('').toUpperCase();
 }
 
-function setUserMenue() {
-    let htmlSnippet = `<div class="user-menue"></div>`;
-    return htmlSnippet;
+function renderUserMenue() {
+    const user = window.currentUser;
+    const um = document.getElementById("user-menue");
+    if (!user) um.innerText = 'G';
+    else {
+        const initials = getInitials(user.name);
+        um.style.backgroundColor = user.avatarColor;
+        um.innerText = initials;
+    }
+    um.classList.add('show');
 }

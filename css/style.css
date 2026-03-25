@@ -103,12 +103,31 @@ main {
   gap: 16px;
 }
 
-.user-menue {
+#user-menue {
+  display:none; 
+  align-items:center; 
+  justify-content:center; 
+  color:white; 
+  font-family:InterBold; 
+  font-size:18px;
   aspect-ratio: 1/1;
   height: 40px;
-  background-color: aqua;
   border-radius: 50%;
   cursor: pointer;
+  transition: all .1s ease-in;
+  border: solid 2px var(--primary-color);
+  background-color: var(--highligted-color);
+}
+
+#user-menue.show {
+  display: flex;
+}
+
+#user-menue:hover {
+  border: solid 2px var(--highligted-color);
+  background-color: var(--primary-color);
+  transition: all .1s ease-in-out;
+  transform: scale(1.1);
 }
 
 .line {

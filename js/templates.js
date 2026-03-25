@@ -108,7 +108,8 @@ function getTopbarTemplate() {
         <button id="help">
             <a href="help.html"><img src="./assets/icons/help.svg" /></a>
         </button>
-        ${setUserMenue()}
+        <div id="user-menue">
+        </div>
   </div>
     `;
 }

@@ -11,6 +11,7 @@ onAuthStateChanged(auth, async (user) => {
     
     const contactSnap = await get(ref(db, `contacts/${contactId}`));
     window.currentUser = contactSnap.val();
+    renderUserMenue();
     if (homePaths.includes(path)) {
       window.location.href = "./summary.html";
     }
