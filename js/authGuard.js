@@ -1,17 +1,22 @@
-import { auth, db } from "./firebaseauth.js";
+import { auth, db } from "./firebaseAuth.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
 import { ref, get } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
+const homePaths = ["/", "/index.html", "index.html"];
+const path = window.location.pathname;
 
-onAuthStateChanged(auth, async (user) => {
-    console.log("Auth State:", user); // ← was kommt hier raus?
-
+onAuthStateChanged(auth, async (user) => {  
   if (user) {
     const snapshot = await get(ref(db, `users/${user.uid}`));
     const { contactId } = snapshot.val();
-
+    
     const contactSnap = await get(ref(db, `contacts/${contactId}`));
     window.currentUser = contactSnap.val();
+    if (homePaths.includes(path)) {
+      window.location.href = "./summary.html";
+    }
   } else {
-    window.location.href = "./index.html";
+    if (!homePaths.includes(path)) {
+      window.location.href = "./index.html";
+    }
   }
 });
