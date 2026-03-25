@@ -73,25 +73,6 @@
   font-weight: bold;
 }
 
-.subtask-input-wrapper {
-  display: flex;
-  align-items: center;
-  border: 1px solid #d1d1d1;
-  border-radius: 10px;
-  background: white;
-  padding: 0 12px;
-  margin-bottom: 12px;
-}
-
-.subtask-input-wrapper input {
-  flex: 1;
-  border: none;
-  outline: none;
-  padding: 12px 0;
-  font-size: 15px;
-  font-family: inherit;
-  background: transparent;
-}
 
 .subtask-icon-btn {
   background: transparent;

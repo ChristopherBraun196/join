@@ -4,8 +4,24 @@
     padding: 0;
 }
 
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  border-radius: var(--border-radius);
+}
+::-webkit-scrollbar-thumb {
+  background: #2A3647; 
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2A3647d0;
+  cursor: pointer;
+}
+
 :root {
     --primary-color: #2A3647;
+    --primary-color-light: #2a364750;
     --highligted-color: #29ABE2;
     --menu-color:#42526E;
     --border-color: #D1D1D1;
@@ -45,6 +61,7 @@ h4 {
 
 button {
     cursor: pointer;
+    background-color: unset;
 }
 
 button, input {

@@ -118,10 +118,10 @@ function getAddTaskDialogTemplate(status) {
   return `
     <section class="add-task" id="add-task-dialog-content">
       <header id="add-task-dialog-header">
-        <button onclick="closeAddTaskDialog()" id="close-dialog-btn" tabindex="1"><img src="../assets/icons/close.svg"></button>
         <h1>Add Task</h2>
+        <button onclick="closeAddTaskDialog()" id="close-dialog-btn" tabindex="1"><img src="../assets/icons/close.svg"></button>
       </header>
-      <form onsubmit="createTask('${status}'); return false;" id="add-task-form">
+      <form class="add-task-form" onsubmit="createTask('${status}'); return false;" id="add-task-form">
           <div id="left-side-form">
               <div id="task-title">
                   <label for="title">Title<span class="required">*</span></label>
@@ -136,7 +136,6 @@ function getAddTaskDialogTemplate(status) {
                   <input type="date" id="due-date" name="due-date" required onblur="validateOnBlur(this, 'Please pick a due date')" />
               </div>
           </div>
-          <div id="task-spacer"></div>
           <div id="right-side-task">
               <div id="task-priority">
                   <label for="priority">Priority</label>
@@ -209,7 +208,7 @@ function getAddTaskDialogTemplate(status) {
       <footer id="add-task-form-footer">
           <p><span class="required">*</span> This field is required</p>
           <div id="task-btns">
-              <button id="clear-task-form" type="button" onclick="clearAddTaskForm()">Clear <img src="./assets/icons/close.svg" alt="Cross icon"></button>
+              <button id="clear-task-form" type="button" onclick="clearAddTaskForm('${status}')">Clear <img src="./assets/icons/close.svg" alt="Cross icon"></button>
               <button id="create-task" class="primary-btn" form="add-task-form" type="submit">Create Task <img src="./assets/icons/check.svg" alt="Check icon"></button>
           </div>
       </footer>

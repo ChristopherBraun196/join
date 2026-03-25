@@ -14,9 +14,10 @@
 
     <main class="summary-add-task-board-main">
         <section class="add-task">
-            <h1>Add Task</h1>
-
-            <form onsubmit="createTask('toDo'); return false;" id="add-task-form">
+            <header id="add-task-header">
+                <h1>Add Task</h2>
+            </header>
+            <form class="add-task-form" onsubmit="createTask('toDo'); return false;" id="add-task-form">
                 <div id="left-side-form">
                     <div id="task-title">
                         <label for="title">Title<span class="required">*</span></label>
@@ -31,10 +32,9 @@
                         <input type="date" id="due-date" name="due-date" required onblur="validateOnBlur(this, 'Please pick a due date')" />
                     </div>
                 </div>
-                <div id="task-spacer"></div>
                 <div id="right-side-task">
                     <div id="task-priority">
-                        <label for="priority">Priority</label>
+                        <label for="task-priority-btns">Priority</label>
                         <div id="task-priority-btns">
                             <button class="priority-btn urgent" onclick="setPriority(this)" type="button">Urgent <span><img src="./assets/icons/priority-urgent.svg" alt="Urgent priority icon"></span></button>
                             <button class="priority-btn medium set" onclick="setPriority(this)" type="button">Medium<span><img src="./assets/icons/priority-medium.svg" alt="Medium priority icon"></span></button>
@@ -118,5 +118,6 @@
     <script src="./js/validation.js"></script>
     <script src="./js/templates.js"></script>
     <script src="./js/addTask.js"></script>
+    <script type="module" src="/js/authGuard.js"></script>
   </body>
 </html>

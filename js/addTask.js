@@ -23,8 +23,11 @@ function closeAddTaskDialog() {
     addTaskDialog.remove();
 }
 
-function clearAddTaskForm() {
-    
+function clearAddTaskForm(status) {
+    const dialogSection = document.querySelector('#add-task-dialog');
+    dialogSection.innerHTML = '';
+    dialogSection.innerHTML = getAddTaskDialogTemplate(status);
+    renderContacts();
 }
 
 function setPriority(clickedButton) {
