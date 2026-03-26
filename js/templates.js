@@ -19,7 +19,7 @@ function getLoginTemplate() {
             </div>
             <div class="login-btns">
                 <button id="login-btn" class="primary-btn btn" type="submit">Log in</button>
-                <button id="guest-login-btn" class="regular-btn btn" type="button"><a href="./summary.html">Guest Log in</a></button>
+                <button id="guest-login-btn" class="regular-btn btn" type="button" onclick="guestLogin()">Guest Log in</button>
             </div>
         </form>
     `;

@@ -1,12 +1,6 @@
 import { auth, db } from "./firebaseAuth.js";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
-import {
-  ref,
-  set,
-} from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, getAuth, signInAnonymously} from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+import { ref, set } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
 
 export const AVATAR_COLORS = [
   "#FF7043",
@@ -106,6 +100,16 @@ async function handleSignup(event) {
   await signup(name, email, password);
 }
 
+async function guestLogin() {
+  try {
+    await signInAnonymously(auth);
+    window.location.href = "./summary.html";
+  } catch (error) {
+    showMessage("Gast-Login fehlgeschlagen: " + error.message);
+  }
+}
+
+window.guestLogin = guestLogin;
 window.signup = signup;
 window.login = login;
 window.handleLogin = handleLogin;

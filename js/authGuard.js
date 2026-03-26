@@ -6,6 +6,14 @@ const path = window.location.pathname;
 
 onAuthStateChanged(auth, async (user) => {  
   if (user) {
+     if (user.isAnonymous) {
+      window.currentUser = { name: "Guest" };
+      renderUserMenue();
+      if (homePaths.includes(path)) {
+        window.location.href = "./summary.html";
+      }
+      return; // <-- kein DB-Lookup für Gäste
+    }
     const snapshot = await get(ref(db, `users/${user.uid}`));
     const { contactId } = snapshot.val();
     
