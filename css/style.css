@@ -39,7 +39,6 @@ nav {
 main {
   position: absolute;
   right: 0;
-  bottom: 0;
   max-width: calc(100% - 240px);
   min-height: calc(100% - 100px);
 }
@@ -48,10 +47,10 @@ main {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: center;
   width: 100%;
   height: auto;
   padding: 60px;
+  top: 100px;
 }
 
 .nav-link.active {
@@ -142,7 +141,7 @@ main {
   align-items: center;
   gap: 30px;
   padding-left: 100px;
-  padding-top: 100px;
+
   font-size: 27px;
 }
 

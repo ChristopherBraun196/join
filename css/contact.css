@@ -416,6 +416,6 @@
   right: 0;
   width: calc(100% - 600px);
   gap: 50px;
-  padding: 0px 100px;
+  padding: 60px 100px;
   height: auto;
 }
