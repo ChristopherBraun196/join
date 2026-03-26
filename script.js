@@ -95,3 +95,8 @@ function renderUserMenue() {
     }
     um.classList.add('show');
 }
+
+function toggleUserMenue() {
+    const dropdown = document.getElementById('user-menue-dropdown');
+    dropdown.classList.toggle('show');
+}

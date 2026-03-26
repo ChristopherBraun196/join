@@ -20,7 +20,7 @@ nav {
   justify-content: stretch;
   gap: 12px;
   text-decoration: none;
-  color: #cdcdcd;
+  color: var(--link-color);
   font-size: 16px;
   padding: 7px 56px;
   width: 100%;
@@ -120,6 +120,31 @@ main {
 
 #user-menue.show {
   display: flex;
+}
+
+#user-menue-dropdown { display: none; }
+#user-menue-dropdown.show {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 24px 18px;
+  position: absolute;
+  top: 100px;
+  right: 50px;
+  width: 150px;
+  height: 150px;
+  background-color: var(--primary-color);
+  border-radius: 16px 0 16px 16px;
+}
+
+#user-menue-dropdown a {
+  font-family: InterRegular;
+  color: var(--link-color);
+  font-size: 16px;
+}
+#user-menue-dropdown a:hover {
+  color: var(--highligted-color);
 }
 
 #user-menue:hover {

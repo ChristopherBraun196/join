@@ -108,7 +108,12 @@ function getTopbarTemplate() {
         <button id="help">
             <a href="help.html"><img src="./assets/icons/help.svg" /></a>
         </button>
-        <div id="user-menue">
+        <div id="user-menue" onclick="toggleUserMenue()">
+        </div>
+        <div id="user-menue-dropdown">
+          <a href="./legal.html">Legal Notice</a>
+          <a href="./privacy.html">Privacy Policy</a>
+          <a href="#" onclick="logout()">Log Out</a>
         </div>
   </div>
     `;
