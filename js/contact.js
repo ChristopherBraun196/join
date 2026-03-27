@@ -1,24 +1,26 @@
 // Dialog
 
 function openContactDialog() {
-  document.getElementById('dialog-overlay').classList.add('active');
+  document.getElementById("dialog-overlay").classList.add("active");
 }
 
 function closeContactDialog() {
-  document.getElementById('dialog-overlay').classList.remove('active');
+  document.getElementById("dialog-overlay").classList.remove("active");
   clearDialogInputs();
   resetDialog();
 }
 
 function clearDialogInputs() {
-  document.getElementById('input-name').value = '';
-  document.getElementById('input-email').value = '';
-  document.getElementById('input-phone').value = '';
+  document.getElementById("input-name").value = "";
+  document.getElementById("input-email").value = "";
+  document.getElementById("input-phone").value = "";
 }
 
-document.getElementById('dialog-overlay').addEventListener('click', function (e) {
-  if (e.target === this) closeContactDialog();
-});
+document
+  .getElementById("dialog-overlay")
+  .addEventListener("click", function (e) {
+    if (e.target === this) closeContactDialog();
+  });
 
 function generateContactJson(contactID) {
   return {
@@ -26,7 +28,7 @@ function generateContactJson(contactID) {
     name: getContactName(),
     email: getContactEmailAdress(),
     phone: getContactPhone(),
-    avatarColor: selectRandomAvatarColor()
+    avatarColor: selectRandomAvatarColor(),
   };
 }
 
@@ -46,12 +48,17 @@ function selectRandomAvatarColor() {
   return AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
 }
 
-
 // Contact List Rendering
 
 const AVATAR_COLORS = [
-  "#FF7043", "#E91E8C", "#9C27B0", "#3F51B5",
-  "#00BCD4", "#4CAF50", "#FF9800", "#795548"
+  "#FF7043",
+  "#E91E8C",
+  "#9C27B0",
+  "#3F51B5",
+  "#00BCD4",
+  "#4CAF50",
+  "#FF9800",
+  "#795548",
 ];
 
 function groupContactsByLetter(contacts) {
@@ -69,7 +76,11 @@ function createContactItem(contact) {
   const initials = getInitials(contact.name);
   const item = document.createElement("div");
   item.className = "contact-item";
-  item.innerHTML = getContactItemTemplate(contact, initials, contact.avatarColor);
+  item.innerHTML = getContactItemTemplate(
+    contact,
+    initials,
+    contact.avatarColor,
+  );
   item.addEventListener("click", (event) => openContactDetail(contact, event));
   return item;
 }
@@ -87,10 +98,14 @@ function createLetterDivider(letter) {
 function buildContactList(grouped) {
   const list = document.createElement("div");
   list.className = "contacts-list";
-  Object.keys(grouped).sort().forEach((letter) => {
-    list.appendChild(createLetterDivider(letter));
-    grouped[letter].forEach((contact) => list.appendChild(createContactItem(contact)));
-  });
+  Object.keys(grouped)
+    .sort()
+    .forEach((letter) => {
+      list.appendChild(createLetterDivider(letter));
+      grouped[letter].forEach((contact) =>
+        list.appendChild(createContactItem(contact)),
+      );
+    });
   return list;
 }
 
@@ -106,7 +121,10 @@ async function loadContacts() {
   try {
     const data = await loadData("/contacts");
     if (!data) return;
-    const contacts = Object.entries(data).map(([id, contact]) => ({ ...contact, id }));
+    const contacts = Object.entries(data).map(([id, contact]) => ({
+      ...contact,
+      id,
+    }));
     renderContacts(contacts);
   } catch (error) {
     console.error("Fehler beim Laden der Kontakte:", error);
@@ -115,11 +133,12 @@ async function loadContacts() {
 
 document.addEventListener("DOMContentLoaded", loadContacts);
 
-
 // Contact Detail
 
 function clearActiveContact() {
-  document.querySelectorAll(".contact-item").forEach((el) => el.classList.remove("active"));
+  document
+    .querySelectorAll(".contact-item")
+    .forEach((el) => el.classList.remove("active"));
   const existing = document.querySelector(".contact-detail");
   if (existing) existing.remove();
 }
@@ -129,7 +148,11 @@ function appendContactDetail(contact) {
   const initials = getInitials(contact.name);
   const detail = document.createElement("div");
   detail.className = "contact-detail";
-  detail.innerHTML = getContactDetailTemplate(contact, initials, contact.avatarColor);
+  detail.innerHTML = getContactDetailTemplate(
+    contact,
+    initials,
+    contact.avatarColor,
+  );
   main.appendChild(detail);
 }
 
@@ -142,10 +165,10 @@ function openContactDetail(contact, event) {
   appendContactDetail(contact);
 }
 
-
 // Contact Submit
 
 async function submitContact() {
+  if (isGuest()) return showMessage("Als Gast nicht möglich.");
   if (!validateInputs()) return;
   try {
     const contactID = "contact-" + crypto.randomUUID();
@@ -157,10 +180,10 @@ async function submitContact() {
   }
 }
 
-
 // Contact Delete
 
 async function deleteContact(contactId) {
+  if (isGuest()) return showMessage("Als Gast nicht möglich.");
   try {
     await deleteData("/contacts/" + contactId);
     clearActiveContact();
@@ -169,7 +192,6 @@ async function deleteContact(contactId) {
     console.error("Fehler beim Löschen des Kontakts:", error);
   }
 }
-
 
 // Contact Edit
 
@@ -191,14 +213,19 @@ function fillEditDialogInputs(currentContact) {
   document.getElementById("input-name").value = currentContact?.name || "";
   document.getElementById("input-email").value = currentContact?.email || "";
   const phoneEl = document.getElementById("detail-phone");
-  document.getElementById("input-phone").value = phoneEl ? phoneEl.textContent : "";
+  document.getElementById("input-phone").value = phoneEl
+    ? phoneEl.textContent
+    : "";
 }
 
 function setEditDialogButtons(contactId) {
   const cancelBtn = document.querySelector(".btn-cancel");
   const submitBtn = document.querySelector(".btn-submit");
   cancelBtn.textContent = "Delete ✕";
-  cancelBtn.onclick = () => { deleteContact(contactId); closeContactDialog(); };
+  cancelBtn.onclick = () => {
+    deleteContact(contactId);
+    closeContactDialog();
+  };
   submitBtn.textContent = "Save ✓";
   submitBtn.onclick = () => saveContact(contactId);
   document.querySelector(".close-btn").onclick = () => closeContactDialog();
@@ -206,6 +233,7 @@ function setEditDialogButtons(contactId) {
 }
 
 function editContact(contactId) {
+  if (isGuest()) return showMessage("Als Gast nicht möglich.");
   const currentContact = getActiveContactData(contactId);
   openContactDialog();
   fillEditDialogInputs(currentContact);
@@ -241,7 +269,6 @@ function resetDialog() {
   document.querySelector(".close-btn").onclick = closeContactDialog;
   document.querySelector(".dialog-left h1").textContent = "Add contact";
 }
-
 
 // Input Validation
 

@@ -6,6 +6,9 @@ const sidebar = document.getElementById('sidebar');
 const animatedImgWrapper = document.getElementById('animated-img-wrapper');
 const navLogo = document.getElementById('navbar-logo');
 
+function isGuest() {
+  return window.currentUser?.name === "Guest";
+}
 
 if (animatedImgWrapper) {
     animatedImgWrapper.addEventListener('animationend', (e) => {

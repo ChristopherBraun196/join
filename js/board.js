@@ -50,17 +50,24 @@ function allowDrop(ev) {
   ev.preventDefault();
 }
 
+async function reRenderColumns(...columns) {
+  for (const col of columns) await renderSection(col);
+  updateNoTaskPlaceholders();
+}
+
 async function moveTo(newStatus) {
   const task = tasks.find((t) => t.id === currentDraggedElement);
   if (!task) return;
-  const dragStatus = task.status;
-  if (dragStatus == newStatus) return;
-  task.status = newStatus;
+  const oldStatus = task.status;
+  if (oldStatus == newStatus) return;
 
-  await putData("/tasks/" + task.id, task);
-  await renderSection(dragStatus);
-  await renderSection(newStatus);
-  updateNoTaskPlaceholders();
+  task.status = newStatus;
+  try {
+    await putData("/tasks/" + task.id, task);
+  } catch {
+    task.status = oldStatus;
+  }
+  await reRenderColumns(oldStatus, newStatus);
 }
 
 function highlight(id) {
@@ -123,12 +130,15 @@ async function closeDialogBoard(section) {
 }
 
 async function deleteTask(id) {
-  showMessage("Task wurde gelöscht");
-  await deleteData(`/tasks/${id}`);
-  closeDialogBoard();
-  const data = await loadData("/tasks");
-  tasks = Object.entries(data).map(([id, task]) => ({ ...task, id }));
-  renderAll();
+  if (isGuest()) return showMessage("Als Gast nicht möglich.");
+  try {
+    await deleteData(`/tasks/${id}`);
+    showMessage("Task wurde gelöscht");
+    closeDialogBoard();
+    const data = await loadData("/tasks");
+    tasks = Object.entries(data).map(([id, task]) => ({ ...task, id }));
+    renderAll();
+  } catch (error) {}
 }
 
 function handleTouchMove(e) {
@@ -306,6 +316,7 @@ async function renderFilteredTasks(filteredTasks) {
 }
 
 async function openEditTask(taskId) {
+  if (isGuest()) return showMessage("Als Gast nicht möglich.");
   currentEditTaskId = taskId;
   const element = tasks.find((t) => t.id === taskId);
   const assignedContacts = await getAssignedContacts(element.assignedTo);
@@ -330,6 +341,7 @@ async function openEditTask(taskId) {
 }
 
 async function saveEditTask(taskId) {
+  if (isGuest()) return showMessage("Als Gast nicht möglich.");
   const element = tasks.find((t) => t.id === taskId);
   const updatedData = {
     ...element,
