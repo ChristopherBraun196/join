@@ -16,6 +16,10 @@
   transform: scale(1.05);
 }
 
+.summary_bubble:hover a{
+  color: white;
+}
+
 .icon-wrapper {
   display: inline-block;
   cursor: pointer;
