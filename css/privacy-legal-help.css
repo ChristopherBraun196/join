@@ -21,29 +21,29 @@
   margin-bottom: 40px;
 }
 
-.privacy a {
-  color: #cdcdcd;
+.privacy-legal-help-main a{
+  color: #29abe2;
   text-decoration: none;
 }
 
-.privacy a:hover {
+.privacy-legal-help-main a:hover {
   color: white;
 }
 
-.legal a {
+.privacy-legal-help-main a {
   color: #29abe2;
 }
 
-.legal ol li {
+.privacy-legal-help-main ol li {
   margin-bottom: 20px;
 }
 
-.legal h2 {
+.privacy-legal-help-main h2 {
   font-size: 27px;
   font-weight: bold;
 }
 
-.legal h3 {
+.privacy-legal-help-main h3 {
   font-size: 20px;
   font-weight: bold;
 }
