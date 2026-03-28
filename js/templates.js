@@ -69,7 +69,7 @@ function getSignupTemplate() {
 
 function getSidebarTemplate(summary, addtask, board, contact, privacy, legal) {
   return `
-        <img src="./assets/img/logo-light.svg" class="logo" />
+        <img src="./assets/img/logo-light.svg" class="logo sidebar_logo" />
         <nav>
             <a class="nav-link ${summary}" id="summary-link" href="./summary.html">
                 <img src="./assets/icons/summary_icon.svg" class="nav-link-icon ${summary}" />
@@ -103,6 +103,7 @@ function getSidebarTemplate(summary, addtask, board, contact, privacy, legal) {
 function getTopbarTemplate() {
   return `
   <a>Kanban Project Management Tool</a>
+  <img src="/assets/img/logo-dark.svg" class="topbar_logo">
   
   <div class="right-topbar-side">
         <button id="help">

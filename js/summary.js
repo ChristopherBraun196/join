@@ -22,6 +22,19 @@ async function initSummary() {
   document.getElementById("board_count").textContent    = boardCount;
   document.getElementById("urgent_count").textContent   = urgentCount;
   document.getElementById("deadline").textContent       = upcomingDeadline;
+
+  if (window.innerWidth <= 1200) {
+    const welcomeMsg = document.querySelector('.welcome_msg');
+    if (!welcomeMsg) return;
+
+    setTimeout(() => {
+      welcomeMsg.classList.add('fade-out');
+
+      welcomeMsg.addEventListener('transitionend', () => {
+        welcomeMsg.classList.add('hidden');
+      }, { once: true });
+    }, 1000);
+  }
 }
 
 function getNextDeadline(urgentTasks) {
