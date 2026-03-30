@@ -102,7 +102,7 @@ function getSidebarTemplate(summary, addtask, board, contact, privacy, legal) {
 
 function getTopbarTemplate() {
   return `
-  <a>Kanban Project Management Tool</a>
+  <p id="slogan">Kanban Project Management Tool</p>
   <img src="/assets/img/logo-dark.svg" class="topbar_logo">
   
   <div class="right-topbar-side">

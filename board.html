@@ -1,159 +1,140 @@
 <!doctype html>
 <html lang="de">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Join | Board</title>
-    <link
-      rel="shortcut icon"
-      href="./assets/img/logo-light.svg"
-      type="image/x-icon"
-    />
-    <link rel="stylesheet" href="/main.css" />
-  </head>
 
-  <body onload="initBoard('board')">
-    <aside id="sidebar"></aside>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Join | Board</title>
+  <link rel="shortcut icon" href="./assets/img/logo-light.svg" type="image/x-icon" />
+  <link rel="stylesheet" href="/main.css" />
+</head>
 
-    <main class="summary-add-task-board-main" id="board-main">
-      <section class="board-bar">
-        <h1>Board</h1>
-        <div class="search-wrapper">
-          <input
-            id="searchTask"
-            class="find-task"
-            type="text"
-            role="search"
-            placeholder="Find Task                                           |"
-            oninput="findTask()"
-          />
+<body onload="initBoard('board')">
+  <aside id="sidebar"></aside>
+
+  <main class="summary-add-task-board-main" id="board-main">
+    <section class="board-bar" >
+      <h1>Board</h1>
+      <div class="search-wrapper">
+        <div class="search-input-group">
+          <input id="searchTask" class="find-task" type="text" role="search" placeholder="Find Task"
+            oninput="findTask()" />
+          <div id="search-spacer"></div>
           <button class="search-btn" onclick="findTask()">
             <img src="./assets/icons/search.svg" class="search-icon" />
           </button>
-          <button
-            class="primary-btn add-task-btn"
-            onclick="openAddTaskDialog('toDo')"
-          >
-            Add task +
+        </div>
+        <button class="primary-btn add-task-btn" onclick="openAddTaskDialog('toDo')">
+          Add task +
+        </button>
+      </div>
+    </section>
+
+    <section class="board-bar-mobile">
+      <div id="board-header">
+        <h1>Board</h1>
+        <button class="add-task-btn-mobile" onclick="openAddTaskDialog('toDo')">+</button>
+      </div>
+      <div class="search-wrapper">
+        <div class="search-input-group">
+          <input id="searchTask" class="find-task" type="text" role="search" placeholder="Find Task"
+            oninput="findTask()" />
+          <div id="search-spacer"></div>
+          <button class="search-btn" onclick="findTask()">
+            <img src="./assets/icons/search.svg" class="search-icon" />
           </button>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <section class="progress-board">
-        <div class="board-task">
-          <div class="board-task-header">
-            <h4>To do</h4>
-            <button class="plus-btn" onclick="openAddTaskDialog('toDo')">
-              +
-            </button>
-          </div>
-          <div class="no-tasks-placeholder hidden" id="placeholder-toDo">
-            <p class="p-no-task">No Tasks to do</p>
-          </div>
+    <section class="progress-board">
+    <div class="board-task">
+        <div class="board-task-header">
+          <h4>To do</h4>
+          <button class="plus-btn" onclick="openAddTaskDialog('toDo')">
+            +
+          </button>
+        </div>
+        <div class="no-tasks-placeholder hidden" id="placeholder-toDo">
+          <p class="p-no-task">No Tasks to do</p>
+        </div>
 
-          <div
-            id="toDo"
-            ondrop="
+        <div id="toDo" class="task-cards" ondrop="
               moveTo('toDo');
               removeHighlight('toDo');
-            "
-            ondragleave="removeHighlight('toDo')"
-            ondragover="
+            " ondragleave="removeHighlight('toDo')" ondragover="
               allowDrop(event);
               highlight('toDo');
-            "
-            ontouchmove="handleTouchMove(event)"
-            ontouchend="handleTouchEnd(event)"
-          ></div>
+            " ontouchmove="handleTouchMove(event)" ontouchend="handleTouchEnd(event)"></div>
+      </div>
+
+      <div class="board-task">
+        <div class="board-task-header">
+          <h4>In progress</h4>
+          <button class="plus-btn" onclick="openAddTaskDialog('inProgress')">
+            +
+          </button>
+        </div>
+        <div class="no-tasks-placeholder hidden" id="placeholder-inProgress">
+          <p class="p-no-task">No Tasks in Progress</p>
         </div>
 
-        <div class="board-task">
-          <div class="board-task-header">
-            <h4>In progress</h4>
-            <button class="plus-btn" onclick="openAddTaskDialog('inProgress')">
-              +
-            </button>
-          </div>
-          <div class="no-tasks-placeholder hidden" id="placeholder-inProgress">
-            <p class="p-no-task">No Tasks in Progress</p>
-          </div>
-
-          <div
-            id="inProgress"
-            ondrop="
+        <div id="inProgress" class="task-cards" ondrop="
               moveTo('inProgress');
               removeHighlight('inProgress');
-            "
-            ondragleave="removeHighlight('inProgress')"
-            ondragover="
+            " ondragleave="removeHighlight('inProgress')" ondragover="
               allowDrop(event);
               highlight('inProgress');
-            "
-            ontouchmove="handleTouchMove(event)"
-            ontouchend="handleTouchEnd(event)"
-          ></div>
-        </div>
+            " ontouchmove="handleTouchMove(event)" ontouchend="handleTouchEnd(event)"></div>
+      </div>
 
-        <div class="board-task">
-          <div class="board-task-header">
-            <h4>Await feedback</h4>
-            <button class="plus-btn" onclick="openAddTaskDialog('await')">
-              +
-            </button>
-          </div>
-          <div class="no-tasks-placeholder hidden" id="placeholder-await">
-            <p class="p-no-task">No Task to await feedback</p>
-          </div>
-          <div
-            id="await"
-            ondrop="
+      <div class="board-task">
+        <div class="board-task-header">
+          <h4>Await feedback</h4>
+          <button class="plus-btn" onclick="openAddTaskDialog('await')">
+            +
+          </button>
+        </div>
+        <div class="no-tasks-placeholder hidden" id="placeholder-await">
+          <p class="p-no-task">No Task to await feedback</p>
+        </div>
+        <div id="await" class="task-cards" ondrop="
               moveTo('await');
               removeHighlight('await');
-            "
-            ondragleave="removeHighlight('await')"
-            ondragover="
+            " ondragleave="removeHighlight('await')" ondragover="
               allowDrop(event);
               highlight('await');
-            "
-            ontouchmove="handleTouchMove(event)"
-            ontouchend="handleTouchEnd(event)"
-          ></div>
-        </div>
+            " ontouchmove="handleTouchMove(event)" ontouchend="handleTouchEnd(event)"></div>
+      </div>
 
-        <div class="board-task">
-          <div class="board-task-header">
-            <h4>Done</h4>
-          </div>
-          <div class="no-tasks-placeholder hidden" id="placeholder-done">
-            <p class="p-no-task">No Task is done</p>
-          </div>
-          <div
-            id="done"
-            ondrop="
+      <div class="board-task">
+        <div class="board-task-header">
+          <h4>Done</h4>
+        </div>
+        <div class="no-tasks-placeholder hidden" id="placeholder-done">
+          <p class="p-no-task">No Task is done</p>
+        </div>
+        <div id="done" class="task-cards" ondrop="
               moveTo('done');
               removeHighlight('done');
-            "
-            ondragleave="removeHighlight('done')"
-            ondragover="
+            " ondragleave="removeHighlight('done')" ondragover="
               allowDrop(event);
               highlight('done');
-            "
-            ontouchmove="handleTouchMove(event)"
-            ontouchend="handleTouchEnd(event)"
-          ></div>
-        </div>
-      </section>
-      <span id="message-box"></span>
-    </main>
-    <dialog id="openDialogBoard"></dialog>
+            " ontouchmove="handleTouchMove(event)" ontouchend="handleTouchEnd(event)"></div>
+      </div>
+    </section>
+    <span id="message-box"></span>
+  </main>
+  <dialog id="openDialogBoard"></dialog>
 
-    <script type="module" src="./js/authGuard.js"></script>
-    <script src="./script.js"></script>
-    <!-- <script src="./js/database.js"></script> -->
-    <script type="module" src="./js/database.js"></script>
-    <script src="./js/validation.js"></script>
-    <script src="./js/templates.js"></script>
-    <script src="./js/addTask.js"></script>
-    <script src="./js/board.js"></script>
-  </body>
+  <script type="module" src="./js/authGuard.js"></script>
+  <script src="./script.js"></script>
+  <!-- <script src="./js/database.js"></script> -->
+  <script type="module" src="./js/database.js"></script>
+  <script src="./js/validation.js"></script>
+  <script src="./js/templates.js"></script>
+  <script src="./js/addTask.js"></script>
+  <script src="./js/board.js"></script>
+</body>
+
 </html>
