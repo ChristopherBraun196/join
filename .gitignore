@@ -3,3 +3,5 @@ js/AuthServiceGitignore.js
 /FirebaseRules.js
 
 /gitignore
+.gitignore
+/notes
