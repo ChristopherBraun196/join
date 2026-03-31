@@ -60,7 +60,8 @@
 .summary_grid {
   padding-left: 100px;
   padding-top: 50px;
-  width: 560px;
+  max-width: 560px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 28px;
@@ -72,6 +73,12 @@
   gap: 32px;
 }
 
+#all-deadlines-counter { 
+  display: flex; 
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+}
 .summary_row_last {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -152,7 +159,7 @@
   padding-left: 80px;
 }
 
-.morning_msg {
+#greeting-msg {
   font-size: 47px;
 }
 
@@ -166,4 +173,5 @@
   font-size: 64px;
   color: #29abe2;
   font-weight: bold;
+  text-align: center;
 }
