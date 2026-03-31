@@ -232,3 +232,57 @@ function toggleEditDropdown() {
   dropdown.classList.toggle("open");
   trigger.classList.toggle("open");
 }
+
+/**
+ * Returns the HTML for the priority selection buttons.
+ * @param {string} currentPriority - The currently active priority (e.g. "urgent")
+ * @returns {string} HTML string of all priority button elements
+ */
+
+function getPriorityButtonsTemplate(currentPriority) {
+  return ["urgent", "medium", "low"]
+    .map((p) => {
+      const active = currentPriority === p ? "active" : "";
+      return `<button class="prio-btn ${active}" data-priority="${p}" onclick="setEditPriority(event, '${p}')">
+      ${capitalize(p)} <img src="./assets/icons/priority-${p}.svg" />
+    </button>`;
+    })
+    .join("");
+}
+
+/**
+ * Toggles a contact's assignment on a task and updates the UI.
+ * @param {MouseEvent} event - The click event from the contact option
+ * @param {string} contactId - The ID of the contact to toggle
+ * @returns {Promise<void>}
+ */
+
+async function toggleAssignedContact(event, contactId) {
+  const checkbox = event.currentTarget.querySelector("input[type='checkbox']");
+
+  if (event.target !== checkbox) {
+    checkbox.checked = !checkbox.checked;
+  }
+
+  const taskId = currentEditTaskId;
+  const element = tasks.find((t) => t.id === taskId);
+  let assignedTo = element.assignedTo
+    ? Array.isArray(element.assignedTo)
+      ? [...element.assignedTo]
+      : Object.values(element.assignedTo)
+    : [];
+
+  if (checkbox.checked) {
+    assignedTo.push({ id: contactId });
+  } else {
+    assignedTo = assignedTo.filter((a) => a.id !== contactId);
+  }
+
+  await putData("/tasks/" + taskId + "/assignedTo", assignedTo);
+  await initTasks();
+
+  const allContacts = await loadData("/contacts");
+  const assignedIds = assignedTo.map((a) => a.id);
+  document.getElementById("edit-assigned-badges").innerHTML =
+    buildContactBadges(allContacts, assignedIds);
+}

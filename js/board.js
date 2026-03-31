@@ -3,24 +3,46 @@ let currentEditTaskId = null;
 
 let tasks = [];
 
+/**
+ * Initializes the board by running setup, loading tasks and rendering. 
+ * @param {string} site - The current site/page identifier
+ * @returns {Promise<void>}
+ */
+
 async function initBoard(site) {
   init(site);
   await initTasks();
   renderAll();
 }
 
+/**
+ * Initializes the tasks by loading them from the database.
+ * @returns {Promise<void>}
+ */
+
 async function initTasks() {
   const data = await loadData("/tasks");
   tasks = Object.entries(data).map(([id, task]) => ({ ...task, id }));
 }
+
+/**
+ * Renders all task sections on the board.
+ * @returns {Promise<void>}
+ */
 
 async function renderAll() {
   await renderSection("toDo");
   await renderSection("inProgress");
   await renderSection("await");
   await renderSection("done");
-  updateNoTaskPlaceholders();
+  updateNoTaskPlaceholders();  
 }
+
+/**
+ * Render all Tasks and give the status on the Board
+ * @param {string} section - The column name (e.g. "toDo", "inProgress")
+ * @returns {Promoise<void>} 
+ */
 
 async function renderSection(section) {
   let taskStatus = tasks.filter((t) => t["status"] == section);
@@ -41,19 +63,40 @@ async function renderSection(section) {
     );
   }
 }
+/**
+ * Starts Dragging the selected tasks
+ * @param {string} id - The ID of the task being dragged
+ */
 
 function startDragging(id) {
   currentDraggedElement = id;
 }
 
+/**
+ * Allows a dragged element to be dropped on this target.
+ * @param {DragEvent} ev - The drag event
+ */
+
 function allowDrop(ev) {
   ev.preventDefault();
 }
+
+/**
+ * Renders the given columns and updates the placeholders.
+ * @param  {...string} columns - Column names to re-render (e.g. "toDo", "done")
+ * @returns {Promise<void>}
+ */
 
 async function reRenderColumns(...columns) {
   for (const col of columns) await renderSection(col);
   updateNoTaskPlaceholders();
 }
+
+/**
+ * Moves the dragged task to a new status column.
+ * @param {string} newStatus - The target column name (e.g. "toDo", "done")
+ * @returns {Promise<void>}
+ */
 
 async function moveTo(newStatus) {
   const task = tasks.find((t) => t.id === currentDraggedElement);
@@ -69,16 +112,29 @@ async function moveTo(newStatus) {
   }
   await reRenderColumns(oldStatus, newStatus);
 }
+/**
+ * Highlights the dropzone when hovering over it.
+ * @param {string} id - The column ID of the dropzone to highlight
+ */
 
 function highlight(id) {
   const dropzone = document.getElementById("dropzone-" + id);
   if (dropzone) dropzone.classList.add("drag-area-highlight");
 }
 
+/**
+ * Removes the highlight from the dropzone after dragging.
+ * @param {string} id - The column ID of the dropzone to unhighlight
+ */
+
 function removeHighlight(id) {
   const dropzone = document.getElementById("dropzone-" + id);
   if (dropzone) dropzone.classList.remove("drag-area-highlight");
 }
+
+/**
+ * * Shows or hides the "no tasks" placeholder for each column.
+ */
 
 function updateNoTaskPlaceholders() {
   const columns = ["toDo", "inProgress", "await", "done"];
@@ -95,6 +151,12 @@ function updateNoTaskPlaceholders() {
   }
 }
 
+/**
+ * Loads and returns all contacts assigned to a task.
+ * @param {Array|Object} assignedTo - The assigned contacts as array or object
+ * @returns {Promise<Object[]>} Array of matching contact objects
+ */
+
 async function getAssignedContacts(assignedTo) {
   const data = await loadData("/contacts");
   if (!data || !assignedTo) return [];
@@ -110,6 +172,11 @@ async function getAssignedContacts(assignedTo) {
   return result;
 }
 
+/**
+ * Handles touch movement for drag-and-drop on mobile devices.
+ * @param {TouchEvent} e - The touch move event
+ */
+
 function handleTouchMove(e) {
   e.preventDefault();
   const touch = e.touches[0];
@@ -124,6 +191,11 @@ function handleTouchMove(e) {
   if (column) highlight(column.id);
 }
 
+/**
+ * Handles the end of a touch drag-and-drop interaction.
+ * @param {TouchEvent} e - The touch end event
+ */
+
 function handleTouchEnd(e) {
   const touch = e.changedTouches[0];
   const target = document.elementFromPoint(touch.clientX, touch.clientY);
@@ -136,6 +208,12 @@ function handleTouchEnd(e) {
 
   if (column) moveTo(column.id);
 }
+
+
+/**
+ *  Filters tasks on the board based on the search input.
+ * @returns {Promise<void>}
+ */
 
 async function findTask() {
   const query = document.getElementById("searchTask").value.toLowerCase();
@@ -154,6 +232,12 @@ async function findTask() {
   await renderFilteredTasks(matches);
 }
 
+/**
+ *  Renders filtered tasks into their respective columns.
+ * @param {Object[]} filteredTasks - Array of task objects to render
+ * @returns {Promise<void>}
+ */
+
 async function renderFilteredTasks(filteredTasks) {
   const sections = ["toDo", "inProgress", "await", "done"];
 
@@ -168,17 +252,21 @@ async function renderFilteredTasks(filteredTasks) {
     for (const element of sectionTasks) {
       const [solved, total, visibility] = await getSubtaskData(element);
       dropZone.innerHTML += await getToDoTemplate(
-        element,
-        solved,
-        total,
-        visibility,
+        element, solved, total, visibility,
         calcSubtaskProgress(solved, total),
       );
     }
   }
-
   updateNoTaskPlaceholders();
 }
+
+/**
+ * Toggles the completed state of a subtask and refreshes the edit dialog.
+ * @param {number} subtaskIndex - The index of the subtask in the subtasks array
+ * @param {boolean} isCompleted - The current completed state of the subtask
+ * @param {string} taskId - The ID of the parent task
+ * @returns {Promise<void>}
+ */
 
 async function toggleSubtaskEdit(subtaskIndex, isCompleted, taskId) {
   await putData(
@@ -190,6 +278,13 @@ async function toggleSubtaskEdit(subtaskIndex, isCompleted, taskId) {
   const assignedContacts = await getAssignedContacts(element.assignedTo);
   openEditTask(taskId);
 }
+
+/**
+ * Returns the subtask HTML for the edit dialog, or a fallback message.
+ * @param {Object[]} subtasks - Array of subtask objects
+ * @param {string} taskID - The ID of the parent task
+ * @returns {string} HTML string of all subtasks or fallback message
+ */
 
 function checkIfSubtasksAvaiableEdit(subtasks, taskID) {
   if (subtasks) {
@@ -203,6 +298,13 @@ function checkIfSubtasksAvaiableEdit(subtasks, taskID) {
   }
 }
 
+/**
+ * Builds the HTML for all contact options in the assignment dropdown.
+ * @param {Object} allContacts - All contacts from the database
+ * @param {string[]} assignedIds - Array of already assigned contact IDs
+ * @returns {string} HTML string of all contact option elements
+ */
+
 function buildContactOptions(allContacts, assignedIds) {
   return Object.entries(allContacts)
     .map(([id, contact]) => {
@@ -212,6 +314,13 @@ function buildContactOptions(allContacts, assignedIds) {
     .join("");
 }
 
+/**
+ * Builds the HTML badges for all assigned contacts.
+ * @param {Object} allContacts - All contacts from the database
+ * @param {string[]} assignedIds - Array of assigned contact IDs
+ * @returns {string} HTML string of contact badge elements
+ */
+
 function buildContactBadges(allContacts, assignedIds) {
   return Object.entries(allContacts)
     .filter(([id]) => assignedIds.includes(id))
@@ -219,11 +328,24 @@ function buildContactBadges(allContacts, assignedIds) {
     .join("");
 }
 
+/**
+ * Builds the full assigned contacts section for the edit dialog.
+ * @param {Object} allContacts - All contacts from the database
+ * @param {string[]} assignedIds - Array of assigned contact IDs
+ * @returns {string} HTML string of the assigned contacts edit section
+ */
+
 function buildAssignedContactsEdit(allContacts, assignedIds) {
   const optionsHTML = buildContactOptions(allContacts, assignedIds);
   const badgesHTML = buildContactBadges(allContacts, assignedIds);
   return getAssignedContactsEditTemplate(optionsHTML, badgesHTML);
 }
+
+/**
+ * Handles keyboard input for the subtask field in edit mode.
+ * @param {KeyboardEvent} event - The keyboard event
+ * @param {string} taskId - The ID of the parent task
+ */
 
 function handleSubtaskKeyEdit(event, taskId) {
   if (event.key === "Enter") {
@@ -233,11 +355,21 @@ function handleSubtaskKeyEdit(event, taskId) {
   if (event.key === "Escape") clearSubtaskInputEdit();
 }
 
+/**
+ * Switches a subtask list item into editing mode.
+ * @param {HTMLElement} span - The subtask span element that was clicked
+ */
+
 function editSubtaskEditMode(span) {
   const li = span.closest("li");
   li.innerHTML = getSubtaskEditingStateTemplate(span.textContent);
   li.querySelector("input").focus();
 }
+
+/**
+ * Confirms the subtask edit and updates the list item.
+ * @param {HTMLElement} btn - The confirm button that was clicked
+ */
 
 function confirmSubtaskEditMode(btn) {
   const li = btn.closest("li");
@@ -251,45 +383,4 @@ function confirmSubtaskEditMode(btn) {
     li.dataset.taskId,
     li.dataset.index,
   );
-}
-
-function getPriorityButtonsTemplate(currentPriority) {
-  return ["urgent", "medium", "low"]
-    .map((p) => {
-      const active = currentPriority === p ? "active" : "";
-      return `<button class="prio-btn ${active}" data-priority="${p}" onclick="setEditPriority(event, '${p}')">
-      ${capitalize(p)} <img src="./assets/icons/priority-${p}.svg" />
-    </button>`;
-    })
-    .join("");
-}
-
-async function toggleAssignedContact(event, contactId) {
-  const checkbox = event.currentTarget.querySelector("input[type='checkbox']");
-
-  if (event.target !== checkbox) {
-    checkbox.checked = !checkbox.checked;
-  }
-
-  const taskId = currentEditTaskId;
-  const element = tasks.find((t) => t.id === taskId);
-  let assignedTo = element.assignedTo
-    ? Array.isArray(element.assignedTo)
-      ? [...element.assignedTo]
-      : Object.values(element.assignedTo)
-    : [];
-
-  if (checkbox.checked) {
-    assignedTo.push({ id: contactId });
-  } else {
-    assignedTo = assignedTo.filter((a) => a.id !== contactId);
-  }
-
-  await putData("/tasks/" + taskId + "/assignedTo", assignedTo);
-  await initTasks();
-
-  const allContacts = await loadData("/contacts");
-  const assignedIds = assignedTo.map((a) => a.id);
-  document.getElementById("edit-assigned-badges").innerHTML =
-    buildContactBadges(allContacts, assignedIds);
 }

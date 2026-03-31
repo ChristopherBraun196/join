@@ -5,3 +5,5 @@ js/AuthServiceGitignore.js
 /gitignore
 .gitignore
 /notes
+
+**/.DS_Store
