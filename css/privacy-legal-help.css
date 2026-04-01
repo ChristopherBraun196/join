@@ -53,3 +53,32 @@
   background: none;
   transform: scale(1.05);
 }
+
+@media (max-width: 1200px) {
+  .privacy-legal-help-main {
+    width: 100%;
+    padding: 60px 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .privacy-legal-help-main {
+    padding: 40px 32px;
+    gap: 30px;
+  }
+
+  .privacy-legal-help-main h2 {
+    font-size: 22px;
+  }
+
+  .privacy-legal-help-main h3 {
+    font-size: 17px;
+  }
+}
+
+@media (max-width: 480px) {
+  .privacy-legal-help-main {
+    padding: 24px 16px;
+    gap: 20px;
+  }
+}
