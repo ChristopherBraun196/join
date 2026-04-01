@@ -23,6 +23,12 @@ if (animatedImgWrapper) {
         }
     });    
 }
+document.addEventListener('cancel', (e) => {
+  if (e.target.tagName === 'DIALOG') e.preventDefault();
+}, true);
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && document.querySelector('dialog[open]')) e.preventDefault();
+});
 
 /**
  * Initializes the page by generating the topbar and loading the sidebar.
@@ -153,10 +159,16 @@ function renderUserMenue() {
  * Toggles the visibility of the user menu dropdown.
  */
 
-function toggleUserMenue() {
+function toggleUserMenue(event) {
+    event.stopPropagation();
     const dropdown = document.getElementById('user-menue-dropdown');
     dropdown.classList.toggle('show');
 }
+
+document.addEventListener('click', function () {
+    const dropdown = document.getElementById('user-menue-dropdown');
+    if (dropdown) dropdown.classList.remove('show');
+});
 
 /**
  * Generates a RFC 4122 compliant UUID v4.
