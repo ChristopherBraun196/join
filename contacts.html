@@ -21,6 +21,7 @@
     </aside>
 
     <main class="main_contacts">
+      <button class="back-to-contacts" onclick="backToContacts()"><img src="./assets/icons/arrow-back.svg" /></button>
       <div class="headline">
         <h1>Contacts</h1>
         <div class="line"></div>
@@ -28,6 +29,11 @@
       </div>
       <span id="message-box"></span>
     </main>
+
+    <button class="fab-add-contact" onclick="openContactDialog()">
+      <img src="./assets/icons/person_add.svg" class="nav-link-icon active" />
+    </button>
+
 
     <div id="dialog-overlay" class="dialog-overlay">
       <div class="dialog-box">

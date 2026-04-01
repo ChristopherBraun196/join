@@ -390,7 +390,6 @@
   left:240px;
   width: 460px;
   box-shadow: 0px 1px 5px rgb(138, 138, 138);
-  height: 1000px;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -409,7 +408,7 @@
 }
 
 .main_contacts{
-   display: flex;
+  display: flex;
   flex-direction: column;
   justify-content: start;
   top: 100px;
@@ -418,4 +417,191 @@
   gap: 50px;
   padding: 60px 100px;
   height: auto;
+}
+
+.back-to-contacts,
+.fab-add-contact {
+  display: none;
+}
+
+@media (max-width: 1200px) {
+  #sidebar_contacts {
+    left: 0;
+    width: 100%;
+    top: 100px;
+    height: calc(100vh - 170px);
+    box-shadow: none;
+    padding: 16px 0;
+  }
+
+  .add_contact {
+    display: none;
+  }
+
+  .main_contacts {
+    position: fixed;
+    top: 100px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    padding: 20px 20px 90px;
+    height: calc(100vh - 170px);
+    overflow-y: auto;
+    display: none;
+    background: #f6f7f8;
+    z-index: 200;
+    gap: 24px;
+  }
+
+  .main_contacts.contact-open {
+    display: flex;
+  }
+
+  .contact-detail {
+    padding-top: 0;
+    padding-left: 0;
+    gap: 24px;
+  }
+
+  .contact-detail-header {
+    gap: 20px;
+  }
+
+  .contact-detail-avatar {
+    width: 80px;
+    height: 80px;
+    font-size: 28px;
+  }
+
+  .contact-detail-name-actions h2 {
+    font-size: 28px;
+  }
+
+  .contact-detail-actions {
+    display: flex;
+  }
+
+  .back-to-contacts {
+    display: block;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .back-to-contacts img {
+    width: 28px;
+    height: 28px;
+  }
+
+  .fab-add-contact {
+    display: flex;
+    position: fixed;
+    bottom: 80px;
+    right: 16px;
+    width: 56px;
+    height: 56px;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    z-index: 500;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    border: none;
+    cursor: pointer;
+  }
+
+  .fab-add-contact img {
+    width: 28px;
+    height: 28px;
+  }
+
+  .contact-item {
+    width: 90%;
+  }
+
+  .contacts-list {
+    padding-bottom: 140px;
+  }
+
+  .dialog-box {
+    width: 92vw;
+    max-width: 400px;
+    height: auto;
+    flex-direction: column;
+    border-radius: 24px;
+    position: relative;
+  }
+
+  .dialog-left {
+    width: 100%;
+    padding: 28px 24px 56px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .dialog-logo {
+    display: none;
+  }
+
+  .dialog-left h1 {
+    font-size: 30px;
+  }
+
+  .dialog-left p {
+    font-size: 15px;
+    margin-top: 4px;
+  }
+
+  .logo-underline {
+    display: block;
+    margin-top: 8px;
+  }
+
+  .dialog-right {
+    width: 100%;
+    padding: 24px 24px 28px;
+    position: static;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    color: white;
+  }
+
+  .dialog-content {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .new-contact-avatar {
+    display: block;
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    margin-top: -69px;
+    position: relative;
+    z-index: 5;
+  }
+
+  .dialog-fields {
+    width: 100%;
+    max-width: none;
+  }
+
+  .dialog-actions {
+    margin-top: 16px;
+    gap: 8px;
+  }
+
+  .btn-submit {
+    flex: 1;
+  }
 }

@@ -1,3 +1,5 @@
+let mobileActiveContact = null;
+
 const AVATAR_COLORS = [
   "#FF7043",
   "#E91E8C",
@@ -208,6 +210,10 @@ function clearActiveContact() {
     .forEach((el) => el.classList.remove("active"));
   const existing = document.querySelector(".contact-detail");
   if (existing) existing.remove();
+  document.querySelector(".main_contacts").classList.remove("contact-open");
+  document.getElementById("sidebar_contacts").style.display = "";
+  document.querySelector(".fab-add-contact").style.display = "";
+  mobileActiveContact = null;
 }
 
 /**
@@ -240,8 +246,19 @@ function openContactDetail(contact, event) {
   clearActiveContact();
   if (isAlreadyActive) return;
   clickedItem.classList.add("active");
+  mobileActiveContact = contact;
   appendContactDetail(contact);
+  if (window.innerWidth <= 1200) {
+    document.querySelector(".main_contacts").classList.add("contact-open");
+    document.getElementById("sidebar_contacts").style.display = "none";
+    document.querySelector(".fab-add-contact").style.display = "none";
+  }
 }
+
+function backToContacts() {
+  clearActiveContact();
+}
+
 
 /**
  * Creates a new contact in Firebase and refreshes the contact list.
