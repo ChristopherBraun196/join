@@ -254,6 +254,7 @@ main {
     top: 100px;
     min-height: 0;
     max-height: calc(100% - 170px) !important;
+    overflow-y: auto;
   }
 
   .headline {
