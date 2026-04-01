@@ -22,6 +22,12 @@ onAuthStateChanged(auth, async (user) => {
   }
 });
 
+/**
+ * Returns a time-based greeting string.
+ * @param {string} timeString - The current time in HH:MM:SS format
+ * @returns {string} A greeting string (e.g. "Good morning,")
+ */
+
 function getGreeting(timeString) {
   const hour = parseInt(timeString.split(':')[0], 10);
   let greetingPart;
@@ -42,6 +48,11 @@ function getGreeting(timeString) {
   }
   return greetingPart;
 }
+
+/**
+ * Sets the greeting message and user name in the summary page.
+ * @param {string} name - The display name of the current user
+ */
 
 function setGreeting(name) {
   const greeting = getGreeting(currentTime);

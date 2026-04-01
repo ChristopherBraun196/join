@@ -1,3 +1,8 @@
+/**
+ * Initializes the summary page by loading tasks and updating all counters.
+ * @returns {Promise<void>}
+ */
+
 async function initSummary() {
   const data = await loadData("/tasks");
   if (!data) return;
@@ -36,6 +41,12 @@ async function initSummary() {
     }, 1000);
   }
 }
+
+/**
+ * Returns the nearest upcoming deadline from a list of urgent tasks.
+ * @param {Object[]} urgentTasks - Array of urgent task objects
+ * @returns {string} The formatted deadline date or "No deadline"
+ */
 
 function getNextDeadline(urgentTasks) {
   const withDeadline = urgentTasks

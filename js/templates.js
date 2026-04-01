@@ -1,4 +1,8 @@
-// General
+/**
+ * Returns the HTML template for the login form.
+ * @returns {string} HTML string of the login form
+ */
+
 function getLoginTemplate() {
   return `
         <div class="form-header">
@@ -24,6 +28,11 @@ function getLoginTemplate() {
         </form>
     `;
 }
+
+/**
+ * Returns the HTML template for the signup form.
+ * @returns {string} HTML string of the signup form
+ */
 
 function getSignupTemplate() {
   return `
@@ -67,6 +76,17 @@ function getSignupTemplate() {
     `;
 }
 
+/**
+ * Returns the HTML template for the sidebar navigation.
+ * @param {string} summary - Active class for summary link
+ * @param {string} addtask - Active class for add task link
+ * @param {string} board - Active class for board link
+ * @param {string} contact - Active class for contacts link
+ * @param {string} privacy - Active class for privacy link
+ * @param {string} legal - Active class for legal link
+ * @returns {string} HTML string of the sidebar
+ */
+
 function getSidebarTemplate(summary, addtask, board, contact, privacy, legal) {
   return `
         <img src="./assets/img/logo-light.svg" class="logo sidebar_logo" />
@@ -100,6 +120,11 @@ function getSidebarTemplate(summary, addtask, board, contact, privacy, legal) {
     `;
 }
 
+/**
+ * Returns the HTML template for the topbar.
+ * @returns {string} HTML string of the topbar
+ */
+
 function getTopbarTemplate() {
   return `
   <p id="slogan">Kanban Project Management Tool</p>
@@ -120,7 +145,12 @@ function getTopbarTemplate() {
     `;
 }
 
-// Add Task
+/**
+ * Returns the HTML template for the add task dialog.
+ * @param {string} status - The initial status for the new task
+ * @returns {string} HTML string of the add task dialog
+ */
+
 function getAddTaskDialogTemplate(status) {
   return `
     <section class="add-task" id="add-task-dialog-content">
@@ -223,7 +253,16 @@ function getAddTaskDialogTemplate(status) {
   `;
 }
 
-// Board
+/**
+ * Returns the HTML template for a task card on the board.
+ * @param {Object} element - The task object
+ * @param {number} solvedSubtasks - The number of completed subtasks
+ * @param {number} totalSubtasks - The total number of subtasks
+ * @param {string} visibility - CSS class to show or hide the progress bar
+ * @param {number} progress - The progress percentage (0-100)
+ * @returns {Promise<string>} HTML string of the task card
+ */
+
 async function getToDoTemplate(
   element,
   solvedSubtasks,
@@ -255,6 +294,14 @@ async function getToDoTemplate(
   </div>
 </div>`;
 }
+
+/**
+ * Returns the HTML template for the task detail dialog.
+ * @param {Object} element - The task object
+ * @param {Object[]} assignedContacts - Array of assigned contact objects
+ * @param {Object[]} subtasks - Array of subtask objects
+ * @returns {string} HTML string of the task detail dialog
+ */
 
 function getDialogBoardTemplate(element, assignedContacts, subtasks) {
   return `
@@ -297,9 +344,21 @@ function getDialogBoardTemplate(element, assignedContacts, subtasks) {
   `;
 }
 
+/**
+ * Returns the HTML template for a column drop zone.
+ * @param {string} columnId - The ID of the column
+ * @returns {string} HTML string of the drop zone
+ */
+
 function getDropZoneTemplate(columnId) {
   return `<div class="drop-zone" id="dropzone-${columnId}"></div>`;
 }
+
+/**
+ * Returns the HTML template for an assigned contact in the task dialog.
+ * @param {Object} contact - The contact object
+ * @returns {string} HTML string of the assigned contact
+ */
 
 function getAssignedContactTemplate(contact) {
   return `
@@ -309,6 +368,15 @@ function getAssignedContactTemplate(contact) {
     </div>
   `;
 }
+
+/**
+ * Returns the HTML template for a subtask list item.
+ * @param {Object} subtask - The subtask object
+ * @param {string} taskID - The ID of the parent task
+ * @param {number} subtaskIndex - The index of the subtask
+ * @param {string} toggleFn - The toggle function name to call on click
+ * @returns {string} HTML string of the subtask list item
+ */
 
 function getSubtasksTemplate(subtask, taskID, subtaskIndex) {
   return `
@@ -321,7 +389,14 @@ function getSubtasksTemplate(subtask, taskID, subtaskIndex) {
     `;
 }
 
-// Contacts
+/**
+ * Returns the HTML template for a contact list item.
+ * @param {Object} contact - The contact object
+ * @param {string} initials - The initials of the contact
+ * @param {string} color - The avatar background color
+ * @returns {string} HTML string of the contact list item
+ */
+
 function getContactItemTemplate(contact, initials, color) {
   return `
     <div class="contact-avatar" style="background-color: ${color};">
@@ -333,6 +408,14 @@ function getContactItemTemplate(contact, initials, color) {
     </div>
   `;
 }
+
+/**
+ * Returns the HTML template for the contact detail view.
+ * @param {Object} contact - The contact object
+ * @param {string} initials - The initials of the contact
+ * @param {string} color - The avatar background color
+ * @returns {string} HTML string of the contact detail view
+ */
 
 function getContactDetailTemplate(contact, initials, color) {
   return `
@@ -366,6 +449,15 @@ function getContactDetailTemplate(contact, initials, color) {
     </div>
   `;
 }
+
+/**
+ * Returns the HTML template for the task edit dialog.
+ * @param {Object} element - The task object
+ * @param {string} priorityButtons - HTML string of the priority buttons
+ * @param {string} assignedHTML - HTML string of the assigned contacts section
+ * @param {string} subtasksHTML - HTML string of the subtasks list
+ * @returns {string} HTML string of the task edit dialog
+ */
 
 function getDialogBoardEditTemplate(element, priorityButtons, assignedHTML, subtasksHTML) {
   return `

@@ -1,6 +1,12 @@
 import { db } from "./firebaseAuth.js";
 import { ref, get, set, remove } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
 
+/**
+ * Loads data from Firebase at the given path.
+ * @param {string} path - The database path to read from
+ * @returns {Promise<Object|null>} The data at the given path or null
+ */
+
 async function loadData(path = "") {
   try {
     const snapshot = await get(ref(db, path));
@@ -9,6 +15,13 @@ async function loadData(path = "") {
     showMessage(error);
   }
 }
+
+/**
+ * Creates a new entry at the given path with a generated UUID as key.
+ * @param {string} path - The database path to write to
+ * @param {Object} data - The data to store
+ * @returns {Promise<Object>} An object containing the generated key
+ */
 
 async function postData(path = "", data = {}) {
   try {
@@ -19,6 +32,12 @@ async function postData(path = "", data = {}) {
     showMessage(error);
   }
 }
+/**
+ * Writes data to Firebase at the given path, overwriting existing data.
+ * @param {string} path - The database path to write to
+ * @param {Object} data - The data to store
+ * @returns {Promise<void>}
+ */
 
 async function putData(path = "", data = {}) {
   try {
@@ -28,6 +47,12 @@ async function putData(path = "", data = {}) {
     throw error;
   }
 }
+
+/**
+ * Deletes data from Firebase at the given path.
+ * @param {string} path - The database path to delete
+ * @returns {Promise<void>}
+ */
 
 async function deleteData(path = "") {
   try {
@@ -42,61 +67,3 @@ window.loadData = loadData;
 window.postData = postData;
 window.putData = putData;
 window.deleteData = deleteData;
-
-
-// const FB_URL = "https://join-database-3e254-default-rtdb.europe-west1.firebasedatabase.app/";
-
-// async function loadData(path = "") {
-//   try {
-//     let response = await fetch(FB_URL + path + ".json");
-//     return await response.json();
-//   } catch (error) {
-//     showMessage(error);
-//   }
-// }
-
-// async function postData(path = "", data = {}) {
-//   try {
-//     let response = await fetch(FB_URL + path + ".json", {
-//       method: "POST",
-//       header: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify(data),
-//     });
-  
-//     return (responseToJson = await response.json());
-
-//   } catch (error) {
-//     showMessage(error);
-//   }
-// }
-
-// async function deleteData(path="") {
-//   try {
-//     let response = await fetch(FB_URL + path + ".json", {
-//       method: "DELETE",
-//     });
-//     return (responseToJson = await response.json());
-    
-//   } catch (error) {
-//     showMessage(error);
-//   }
-// }
-
-// async function putData(path = "", data = {}) {
-//   try {
-//     let response = await fetch(FB_URL + path + ".json", {
-//       method: "PUT",
-//       header: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify(data),
-//     });
-    
-//     return (responseToJson = await response.json());
-//   } catch (error) {
-//     showMessage(error);
-//   }
-// }
-
