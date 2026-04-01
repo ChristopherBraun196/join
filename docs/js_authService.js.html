@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: js/authService.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: js/authService.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { auth, db } from "./firebaseAuth.js";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, getAuth, signInAnonymously} from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+import { ref, set } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
+
+
+export const AVATAR_COLORS = [
+  "#FF7043",
+  "#E91E8C",
+  "#9C27B0",
+  "#3F51B5",
+  "#00BCD4",
+  "#4CAF50",
+  "#FF9800",
+  "#795548",
+];
+
+/**
+ * Returns a randomly selected avatar color from the predefined color list.
+ * @returns {string} A hex color code
+ */
+
+export function selectRandomAvatarColor() {
+  return AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
+}
+
+/**
+ * Creates a contact entry in the database for a newly registered user.
+ * @param {string} uid - The Firebase user ID
+ * @param {string} name - The full name of the user
+ * @param {string} email - The email address of the user
+ * @returns {Promise&lt;string>} The generated contact ID
+ */
+
+async function createContactEntry(uid, name, email) {
+  const contactId = `contact-${crypto.randomUUID()}`;
+  await set(ref(db, `contacts/${contactId}`), {
+    id: contactId,
+    name: name,
+    email: email,
+    avatarColor: selectRandomAvatarColor(),
+    uid: uid,
+  });
+  return contactId;
+}
+
+/**
+ * Creates a user entry in the database linking the user to their contact.
+ * @param {string} uid - The Firebase user ID
+ * @param {string} contactId - The associated contact ID
+ * @returns {Promise&lt;void>}
+ */
+
+async function createUserEntry(uid, contactId) {
+  await set(ref(db, `users/${uid}`), {
+    contactId: contactId,
+  });
+}
+
+/**
+ * Displays an error message based on the Firebase signup error code.
+ * @param {Error} error - The Firebase error object
+ */
+
+function handleSignupError(error) {
+  const messages = {
+    "auth/email-already-in-use": "Diese E-Mail ist bereits registriert.",
+    "auth/invalid-email": "Ungültige E-Mail-Adresse.",
+    "auth/weak-password": "Passwort zu schwach (min. 6 Zeichen).",
+  };
+  showMessage(messages[error.code] || "Anderer Fehler: " + error.message);
+}
+
+/**
+ * Registers a new user with email and password and redirects to the summary page.
+ * @param {string} name - The full name of the user
+ * @param {string} email - The email address of the user
+ * @param {string} password - The password for the new account
+ * @returns {Promise&lt;void>}
+ */
+
+async function signup(name, email, password) {
+  try {
+    const { user } = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password,
+    );
+    const contactId = await createContactEntry(user.uid, name, email);
+    await createUserEntry(user.uid, contactId);
+    showMessage("Signup erfolgreich!");
+    setTimeout(() => {
+      window.location.href = "./summary.html";
+    }, 1000);
+  } catch (error) {
+    handleSignupError(error);
+  }
+}
+
+/**
+ * Displays an error message based on the Firebase login error code.
+ * @param {Error} error - The Firebase error object
+ */
+
+function handleLoginError(error) {
+  const messages = {
+    "auth/invalid-email": "Falsche E-Mail.",
+    "auth/wrong-password": "Falsches Passwort.",
+    "auth/user-not-found": "Nutzer nicht gefunden.",
+    "auth/invalid-credential": "E-Mail oder Passwort ist falsch.",
+    "auth/too-many-requests": "Zu viele Fehlversuche. Bitte warte kurz.",
+  };
+  showMessage(messages[error.code] || "Anderer Fehler: " + error.message);
+}
+
+/**
+ * Signs in a user with email and password and redirects to the summary page.
+ * @param {string} email - The email address of the user
+ * @param {string} password - The user's password
+ * @returns {Promise&lt;void>}
+ */
+
+async function login(email, password) {
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    showMessage("Erfolgreich eingeloggt!");
+    setTimeout(() => {
+      window.location.href = "./summary.html";
+    }, 2000);
+  } catch (error) {
+    handleLoginError(error);
+  }
+}
+
+/**
+ * Reads the login form values and triggers the login process.
+ * @param {Event} event - The form submit event
+ * @returns {Promise&lt;void>}
+ */
+
+async function handleLogin(event) {
+  const form = document.getElementById("login-signup-form");
+  const email = form.querySelector("input[name='email']").value;
+  const password = form.querySelector("input[name='password']").value;
+  await login(email, password);
+}
+
+/**
+ * Reads the signup form values and triggers the signup process.
+ * @param {Event} event - The form submit event
+ * @returns {Promise&lt;void>}
+ */
+
+async function handleSignup(event) {
+  const form = document.getElementById("login-signup-form");
+  const name = form.querySelector("input[name='fullname']").value;
+  const email = form.querySelector("input[name='email']").value;
+  const password = form.querySelector("input[name='password']").value;
+  await signup(name, email, password);
+}
+
+/**
+ * Signs in the user anonymously as a guest and redirects to the summary page.
+ * @returns {Promise&lt;void>}
+ */
+
+async function guestLogin() {
+  try {
+    await signInAnonymously(auth);
+    window.location.href = "./summary.html";
+  } catch (error) {
+    showMessage("Gast-Login fehlgeschlagen: " + error.message);
+  }
+}
+
+window.guestLogin = guestLogin;
+window.signup = signup;
+window.login = login;
+window.handleLogin = handleLogin;
+window.handleSignup = handleSignup;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addSubtask">addSubtask</a></li><li><a href="global.html#addSubtaskEdit">addSubtaskEdit</a></li><li><a href="global.html#allowDrop">allowDrop</a></li><li><a href="global.html#appendContactDetail">appendContactDetail</a></li><li><a href="global.html#buildAssignedContactsEdit">buildAssignedContactsEdit</a></li><li><a href="global.html#buildContactBadges">buildContactBadges</a></li><li><a href="global.html#buildContactList">buildContactList</a></li><li><a href="global.html#buildContactOptions">buildContactOptions</a></li><li><a href="global.html#calcSubtaskProgress">calcSubtaskProgress</a></li><li><a href="global.html#capitalize">capitalize</a></li><li><a href="global.html#checkIfSubtaskActive">checkIfSubtaskActive</a></li><li><a href="global.html#checkIfSubtasksAvaiable">checkIfSubtasksAvaiable</a></li><li><a href="global.html#checkIfSubtasksAvaiableEdit">checkIfSubtasksAvaiableEdit</a></li><li><a href="global.html#clearActiveContact">clearActiveContact</a></li><li><a href="global.html#clearAddTaskForm">clearAddTaskForm</a></li><li><a href="global.html#clearDialogInputs">clearDialogInputs</a></li><li><a href="global.html#clearFieldError">clearFieldError</a></li><li><a href="global.html#clearSubtaskInput">clearSubtaskInput</a></li><li><a href="global.html#clearSubtaskInputEdit">clearSubtaskInputEdit</a></li><li><a href="global.html#closeAddTaskDialog">closeAddTaskDialog</a></li><li><a href="global.html#closeContactDialog">closeContactDialog</a></li><li><a href="global.html#closeDialogBoard">closeDialogBoard</a></li><li><a href="global.html#confirmEditSubtask">confirmEditSubtask</a></li><li><a href="global.html#confirmSubtaskEditMode">confirmSubtaskEditMode</a></li><li><a href="global.html#createContactEntry">createContactEntry</a></li><li><a href="global.html#createContactItem">createContactItem</a></li><li><a href="global.html#createLetterDivider">createLetterDivider</a></li><li><a href="global.html#createSubtaskItem">createSubtaskItem</a></li><li><a href="global.html#createTask">createTask</a></li><li><a href="global.html#createUserEntry">createUserEntry</a></li><li><a href="global.html#deleteContact">deleteContact</a></li><li><a href="global.html#deleteData">deleteData</a></li><li><a href="global.html#deleteSubtaskEdit">deleteSubtaskEdit</a></li><li><a href="global.html#deleteTask">deleteTask</a></li><li><a href="global.html#editContact">editContact</a></li><li><a href="global.html#editSubtask">editSubtask</a></li><li><a href="global.html#editSubtaskEditMode">editSubtaskEditMode</a></li><li><a href="global.html#fillEditDialogInputs">fillEditDialogInputs</a></li><li><a href="global.html#findTask">findTask</a></li><li><a href="global.html#focusSubtaskInput">focusSubtaskInput</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#formatLabel">formatLabel</a></li><li><a href="global.html#generateContactJson">generateContactJson</a></li><li><a href="global.html#generateDialog">generateDialog</a></li><li><a href="global.html#generateTaskJson">generateTaskJson</a></li><li><a href="global.html#generateTopbar">generateTopbar</a></li><li><a href="global.html#getActiveContactData">getActiveContactData</a></li><li><a href="global.html#getAmountSolvedSubtasks">getAmountSolvedSubtasks</a></li><li><a href="global.html#getAssignedContacts">getAssignedContacts</a></li><li><a href="global.html#getAssignedTo">getAssignedTo</a></li><li><a href="global.html#getAssignedToAvatars">getAssignedToAvatars</a></li><li><a href="global.html#getContactEmailAdress">getContactEmailAdress</a></li><li><a href="global.html#getContactName">getContactName</a></li><li><a href="global.html#getContactPhone">getContactPhone</a></li><li><a href="global.html#getErrorElement">getErrorElement</a></li><li><a href="global.html#getGreeting">getGreeting</a></li><li><a href="global.html#getInitials">getInitials</a></li><li><a href="global.html#getMemberAvatar">getMemberAvatar</a></li><li><a href="global.html#getNextDeadline">getNextDeadline</a></li><li><a href="global.html#getNumberOfSubtasks">getNumberOfSubtasks</a></li><li><a href="global.html#getPriorityButtonsTemplate">getPriorityButtonsTemplate</a></li><li><a href="global.html#getSubtaskData">getSubtaskData</a></li><li><a href="global.html#getSubtasks">getSubtasks</a></li><li><a href="global.html#getSubtasksEditTemplate">getSubtasksEditTemplate</a></li><li><a href="global.html#getTaskCategory">getTaskCategory</a></li><li><a href="global.html#getTaskCategoryLabelColor">getTaskCategoryLabelColor</a></li><li><a href="global.html#getTaskDescription">getTaskDescription</a></li><li><a href="global.html#getTaskDueDate">getTaskDueDate</a></li><li><a href="global.html#getTaskPriority">getTaskPriority</a></li><li><a href="global.html#getTaskTitle">getTaskTitle</a></li><li><a href="global.html#groupContactsByLetter">groupContactsByLetter</a></li><li><a href="global.html#guestLogin">guestLogin</a></li><li><a href="global.html#handleLogin">handleLogin</a></li><li><a href="global.html#handleLoginError">handleLoginError</a></li><li><a href="global.html#handleSignup">handleSignup</a></li><li><a href="global.html#handleSignupError">handleSignupError</a></li><li><a href="global.html#handleSubtaskKey">handleSubtaskKey</a></li><li><a href="global.html#handleSubtaskKeyEdit">handleSubtaskKeyEdit</a></li><li><a href="global.html#handleTouchEnd">handleTouchEnd</a></li><li><a href="global.html#handleTouchMove">handleTouchMove</a></li><li><a href="global.html#highlight">highlight</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#initAddTask">initAddTask</a></li><li><a href="global.html#initBoard">initBoard</a></li><li><a href="global.html#initSummary">initSummary</a></li><li><a href="global.html#initTasks">initTasks</a></li><li><a href="global.html#isFieldEmpty">isFieldEmpty</a></li><li><a href="global.html#isGuest">isGuest</a></li><li><a href="global.html#loadContacts">loadContacts</a></li><li><a href="global.html#loadData">loadData</a></li><li><a href="global.html#loadSidebar">loadSidebar</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#logout">logout</a></li><li><a href="global.html#moveTo">moveTo</a></li><li><a href="global.html#onSubtaskInput">onSubtaskInput</a></li><li><a href="global.html#onSubtaskInputEdit">onSubtaskInputEdit</a></li><li><a href="global.html#openAddTaskDialog">openAddTaskDialog</a></li><li><a href="global.html#openContactDetail">openContactDetail</a></li><li><a href="global.html#openContactDialog">openContactDialog</a></li><li><a href="global.html#openDialogBoard">openDialogBoard</a></li><li><a href="global.html#openEditTask">openEditTask</a></li><li><a href="global.html#postData">postData</a></li><li><a href="global.html#putData">putData</a></li><li><a href="global.html#reRenderColumns">reRenderColumns</a></li><li><a href="global.html#removeHighlight">removeHighlight</a></li><li><a href="global.html#removeSubtask">removeSubtask</a></li><li><a href="global.html#renderAll">renderAll</a></li><li><a href="global.html#renderContacts">renderContacts</a></li><li><a href="global.html#renderFilteredTasks">renderFilteredTasks</a></li><li><a href="global.html#renderSection">renderSection</a></li><li><a href="global.html#renderSelectedAvatars">renderSelectedAvatars</a></li><li><a href="global.html#renderUserMenue">renderUserMenue</a></li><li><a href="global.html#resetDialog">resetDialog</a></li><li><a href="global.html#saveContact">saveContact</a></li><li><a href="global.html#saveEditTask">saveEditTask</a></li><li><a href="global.html#selectCategory">selectCategory</a></li><li><a href="global.html#selectRandomAvatarColor">selectRandomAvatarColor</a></li><li><a href="global.html#setEditDialogButtons">setEditDialogButtons</a></li><li><a href="global.html#setEditPriority">setEditPriority</a></li><li><a href="global.html#setGreeting">setGreeting</a></li><li><a href="global.html#setPriority">setPriority</a></li><li><a href="global.html#setTopbar">setTopbar</a></li><li><a href="global.html#showFieldError">showFieldError</a></li><li><a href="global.html#showMessage">showMessage</a></li><li><a href="global.html#signup">signup</a></li><li><a href="global.html#startDragging">startDragging</a></li><li><a href="global.html#submitContact">submitContact</a></li><li><a href="global.html#switchToLogin">switchToLogin</a></li><li><a href="global.html#switchToSignup">switchToSignup</a></li><li><a href="global.html#toggleAssignedContact">toggleAssignedContact</a></li><li><a href="global.html#toggleContact">toggleContact</a></li><li><a href="global.html#toggleDropdown">toggleDropdown</a></li><li><a href="global.html#toggleEditDropdown">toggleEditDropdown</a></li><li><a href="global.html#toggleSubtask">toggleSubtask</a></li><li><a href="global.html#toggleSubtaskEdit">toggleSubtaskEdit</a></li><li><a href="global.html#toggleUserMenue">toggleUserMenue</a></li><li><a href="global.html#updateAssignedBadges">updateAssignedBadges</a></li><li><a href="global.html#updateNoTaskPlaceholders">updateNoTaskPlaceholders</a></li><li><a href="global.html#validateForm">validateForm</a></li><li><a href="global.html#validateInputs">validateInputs</a></li><li><a href="global.html#validateOnBlur">validateOnBlur</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Apr 01 2026 18:14:10 GMT+0200 (Central European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
