@@ -154,6 +154,7 @@
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.09);
   transition: box-shadow 0.2s;
   margin-bottom: 20px;
+  cursor: pointer;
 }
 
 .task-card:hover {
