@@ -30,6 +30,11 @@ onAuthStateChanged(auth, async (user) => {
   }
 });
 
+/**
+ * Signs out the current user from Firebase.
+ * @returns {Promise<void>}
+ */
+
 async function logout() {
   await signOut(auth);
 }
