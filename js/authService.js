@@ -32,7 +32,7 @@ export function selectRandomAvatarColor() {
  */
 
 async function createContactEntry(uid, name, email) {
-  const contactId = `contact-${crypto.randomUUID()}`;
+  const contactId = `contact-${generateUUID()}`;
   await set(ref(db, `contacts/${contactId}`), {
     id: contactId,
     name: name,

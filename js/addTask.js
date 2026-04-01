@@ -437,7 +437,7 @@ function getAssignedTo() {
 function getSubtasks() {
     return [...document.querySelectorAll('#subtask-list li')]
         .map(li => ({
-            id:        "subtask-"+crypto.randomUUID(),
+            id:        "subtask-"+generateUUID(),
             title:     li.querySelector('.subtask-text').textContent,
             completed: false
         }));
@@ -450,7 +450,7 @@ function getSubtasks() {
  */
 
 async function createTask(status) {
-    const taskID = crypto.randomUUID();
+    const taskID = generateUUID();
     let task = generateTaskJson(taskID, status);    
     await putData("/tasks/task-"+taskID, task);
     location.href = "./board.html";

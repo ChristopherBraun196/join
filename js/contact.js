@@ -252,7 +252,7 @@ async function submitContact() {
   if (isGuest()) return showMessage("Als Gast nicht möglich.");
   if (!validateInputs()) return;
   try {
-    const contactID = "contact-" + crypto.randomUUID();
+    const contactID = "contact-" + generateUUID();
     await putData("/contacts/" + contactID, generateContactJson(contactID));
     closeContactDialog();
     loadContacts();
