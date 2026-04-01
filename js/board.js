@@ -1,6 +1,5 @@
 let currentDraggedElement;
 let currentEditTaskId = null;
-
 let tasks = [];
 
 /**
