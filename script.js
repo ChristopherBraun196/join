@@ -10,7 +10,6 @@ const navLogo = document.getElementById('navbar-logo');
  * Checks whether the current user is a guest.
  * @returns {boolean} True if the current user is a guest, false otherwise
  */
-
 function isGuest() {
   return window.currentUser?.name === "Guest";
 }
@@ -34,7 +33,6 @@ document.addEventListener('keydown', (e) => {
  * Initializes the page by generating the topbar and loading the sidebar.
  * @param {string} site - The current page identifier
  */
-
 function init(site) {
     generateTopbar();
     loadSidebar(site);
@@ -43,7 +41,6 @@ function init(site) {
 /**
  * Creates and appends an empty add task dialog element to the main content area.
  */
-
 function generateDialog() {
     let main = document.querySelector('main');
     let dialogSection = document.createElement("dialog");
@@ -55,7 +52,6 @@ function generateDialog() {
 /**
  * Creates and appends the topbar element to the body.
  */
-
 function generateTopbar() {
     let body = document.querySelector('body');
     let header = document.createElement('header');
@@ -67,7 +63,6 @@ function generateTopbar() {
 /**
  * Renders the topbar template into the topbar element.
  */
-
 function setTopbar() {
     const topbar = document.getElementById('topbar');
     topbar.innerHTML = getTopbarTemplate();
@@ -76,7 +71,6 @@ function setTopbar() {
 /**
  * Switches the login/signup section to the signup form.
  */
-
 function switchToSignup() {
     loginSignupSection.innerHTML = getSignupTemplate();
     signupBtn.classList.add('hidden');
@@ -86,7 +80,6 @@ function switchToSignup() {
 /**
  * Switches the login/signup section to the login form.
  */
-
 function switchToLogin() {
     loginSignupSection.innerHTML = getLoginTemplate();
     signupBtn.classList.remove('hidden');
@@ -97,7 +90,6 @@ function switchToLogin() {
  * Displays a temporary message in the message box for 5 seconds.
  * @param {string} message - The message to display
  */
-
 function showMessage(message) {
     messageElement.classList.add('visible');
     const msgNode = document.createElement('p');
@@ -115,7 +107,6 @@ function showMessage(message) {
  * Loads the sidebar with the active navigation link for the given page.
  * @param {string} page - The current page identifier (e.g. "summary", "board")
  */
-
 function loadSidebar(page) {
     const map = {
         summary: ['active', '', '', '', '', ''],
@@ -134,7 +125,6 @@ function loadSidebar(page) {
  * @param {string} name - The full name to extract initials from
  * @returns {string} The uppercase initials
  */
-
 function getInitials(name) {
     return name.split(' ').map(n => n[0]).join('').toUpperCase();
 }
@@ -142,7 +132,6 @@ function getInitials(name) {
 /**
  * Renders the user menu with the current user's initials and avatar color.
  */
-
 function renderUserMenue() {
     const user = window.currentUser;
     const um = document.getElementById("user-menue");
@@ -158,7 +147,6 @@ function renderUserMenue() {
 /**
  * Toggles the visibility of the user menu dropdown.
  */
-
 function toggleUserMenue(event) {
     event.stopPropagation();
     const dropdown = document.getElementById('user-menue-dropdown');

@@ -5,7 +5,6 @@ let currentEditPriority = null;
  * @param {string} id - The ID of the task to display
  * @returns {Promise<void>}
  */
-
 async function openDialogBoard(id) {
   await initTasks();
   const element = tasks.find((t) => t.id === id);
@@ -24,7 +23,6 @@ async function openDialogBoard(id) {
  * @param {string} section - The column name to re-render after closing
  * @returns {Promise<void>}
  */
-
 async function closeDialogBoard(section) {
   const dialogBoard = document.getElementById("openDialogBoard");
   dialogBoard.close();
@@ -36,7 +34,6 @@ async function closeDialogBoard(section) {
  * @param {string} id - The ID of the task to delete
  * @returns {Promise<void>}
  */
-
 async function deleteTask(id) {
   if (isGuest()) return showMessage("Als Gast nicht möglich.");
   try {
@@ -54,7 +51,6 @@ async function deleteTask(id) {
  * @param {Object} element - The task object
  * @returns {Promise<Array>} Array of [solved, total, visibility]
  */
-
 async function getSubtaskData(element) {
   const solved = await getAmountSolvedSubtasks(element["id"]);
   const total = await getNumberOfSubtasks(element["id"]);
@@ -68,7 +64,6 @@ async function getSubtaskData(element) {
  * @param {string} taskID - The ID of the task
  * @returns {Promise<string>} The amount of completed subtasks as a string
  */
-
 async function getAmountSolvedSubtasks(taskID) {
   const task = await loadData("/tasks/" + taskID);
   if (task.subtasks === undefined) return 0;
@@ -84,7 +79,6 @@ async function getAmountSolvedSubtasks(taskID) {
  * @param {string} taskID - The ID of the task
  * @returns {Promise<number>} The total number of subtasks
  */
-
 async function getNumberOfSubtasks(taskID) {
   const task = await loadData("/tasks/" + taskID);
   if (task.subtasks === undefined) return 0;
@@ -97,7 +91,6 @@ async function getNumberOfSubtasks(taskID) {
  * @param {Object[]} allMembersOfThisTask - Array of assigned member objects
  * @returns {Promise<string>} HTML string of avatar elements
  */
-
 async function getAssignedToAvatars(allMembersOfThisTask) {
   let members = [];
   if (allMembersOfThisTask == undefined) return "";
@@ -118,12 +111,12 @@ async function getAssignedToAvatars(allMembersOfThisTask) {
   }
   return members.join("");
 }
+
 /**
  * Returns the avatar HTML for a single contact by ID.
  * @param {string} id - The contact ID to load the avatar for
  * @returns {Promise<string>} HTML string of the avatar element
  */
-
 async function getMemberAvatar(id) {
   const member = await loadData("/contacts/" + id);
   if (!member) return "";
@@ -141,7 +134,6 @@ async function getMemberAvatar(id) {
  * @param {string} taskID - The ID of the parent task
  * @returns {Promise<void>}
  */
-
 async function toggleSubtask(subtaskIndex, isSubtaskCompleted, taskID) {
   if (isSubtaskCompleted) {
     await putData(
@@ -164,7 +156,6 @@ async function toggleSubtask(subtaskIndex, isSubtaskCompleted, taskID) {
  * @param {number} total - The total number of subtasks
  * @returns {number} The progress percentage (0–100)
  */
-
 function calcSubtaskProgress(solved, total) {
   return (solved / total) * 100;
 }
@@ -174,7 +165,6 @@ function calcSubtaskProgress(solved, total) {
  * @param {string} date - The date string in YYYY-MM-DD format
  * @returns {string} The formatted date string in DD/MM/YYYY format
  */
-
 function formatDate(date) {
   const [year, month, day] = date.split("-");
   return `${day}/${month}/${year}`;
@@ -185,7 +175,6 @@ function formatDate(date) {
  * @param {string} fletter - The string to capitalize
  * @returns {string} The string with the first letter capitalized
  */
-
 function capitalize(fletter) {
   if (!fletter) return "";
   return fletter.charAt(0).toUpperCase() + fletter.slice(1);
@@ -196,7 +185,6 @@ function capitalize(fletter) {
  * @param {boolean} subtaskCompleted - The completed state of the subtask
  * @returns {string} "checked" or empty string
  */
-
 function checkIfSubtaskActive(subtaskCompleted) {
   if (subtaskCompleted == true) {
     return "checked";
@@ -211,7 +199,6 @@ function checkIfSubtaskActive(subtaskCompleted) {
  * @param {string} taskID - The ID of the parent task
  * @returns {string} HTML string of all subtasks or fallback message
  */
-
 function checkIfSubtasksAvaiable(subtasks, taskID) {
   if (subtasks) {
     return subtasks
@@ -227,7 +214,6 @@ function checkIfSubtasksAvaiable(subtasks, taskID) {
  * @param {string} taskId - The ID of the task to edit
  * @returns {Promise<void>}
  */
-
 async function openEditTask(taskId) {
   if (isGuest()) return showMessage("Als Gast nicht möglich.");
   currentEditTaskId = taskId;
@@ -258,7 +244,6 @@ async function openEditTask(taskId) {
  * @param {string} taskId - The ID of the task to save
  * @returns {Promise<void>}
  */
-
 async function saveEditTask(taskId) {
   if (isGuest()) return showMessage("Als Gast nicht möglich.");
   const element = tasks.find((t) => t.id === taskId);
@@ -283,7 +268,6 @@ async function saveEditTask(taskId) {
  * @param {MouseEvent} event - The click event from the priority button
  * @param {string} priority - The selected priority (e.g. "urgent", "medium", "low")
  */
-
 function setEditPriority(event, priority) {
   currentEditPriority = priority;
   document
@@ -298,7 +282,6 @@ function setEditPriority(event, priority) {
  * @param {string} taskId - The ID of the parent task
  * @returns {string} HTML string of all subtask edit items
  */
-
 function getSubtasksEditTemplate(subtasks, taskId) {
   if (!subtasks) return "";
   return subtasks
@@ -309,7 +292,6 @@ function getSubtasksEditTemplate(subtasks, taskId) {
 /**
  * Toggles the visibility of the subtask confirm buttons based on the input value.
  */
-
 function onSubtaskInputEdit() {
   const input = document.getElementById("new-subtask-input");
   const btns = document.getElementById("subtask-confirm-btns-edit");
@@ -319,7 +301,6 @@ function onSubtaskInputEdit() {
 /**
  * Clears the subtask input field and updates the button visibility.
  */
-
 function clearSubtaskInputEdit() {
   document.getElementById("new-subtask-input").value = "";
   onSubtaskInputEdit();
@@ -330,7 +311,6 @@ function clearSubtaskInputEdit() {
  * @param {string} taskId - The ID of the parent task
  * @returns {Promise<void>}
  */
-
 async function addSubtaskEdit(taskId) {
   const input = document.getElementById("new-subtask-input");
   const title = input.value.trim();
@@ -349,7 +329,6 @@ async function addSubtaskEdit(taskId) {
  * @param {number} subtaskIndex - The index of the subtask to delete
  * @returns {Promise<void>}
  */
-
 async function deleteSubtaskEdit(taskId, subtaskIndex) {
   const element = tasks.find((t) => t.id === taskId);
   const subtasks = [...element.subtasks];
@@ -362,7 +341,6 @@ async function deleteSubtaskEdit(taskId, subtaskIndex) {
 /**
  * Toggles the open state of the assigned contacts dropdown in the edit dialog.
  */
-
 function toggleEditDropdown() {
   const dropdown = document.getElementById("edit-assigned-dropdown");
   const trigger = dropdown.previousElementSibling;
@@ -371,29 +349,11 @@ function toggleEditDropdown() {
 }
 
 /**
- * Returns the HTML for the priority selection buttons.
- * @param {string} currentPriority - The currently active priority (e.g. "urgent")
- * @returns {string} HTML string of all priority button elements
- */
-
-function getPriorityButtonsTemplate(currentPriority) {
-  return ["urgent", "medium", "low"]
-    .map((p) => {
-      const active = currentPriority === p ? "active" : "";
-      return `<button class="prio-btn ${active}" data-priority="${p}" onclick="setEditPriority(event, '${p}')">
-      ${capitalize(p)} <img src="./assets/icons/priority-${p}.svg" />
-    </button>`;
-    })
-    .join("");
-}
-
-/**
  * Toggles a contact's assignment on a task and updates the UI.
  * @param {MouseEvent} event - The click event from the contact option
  * @param {string} contactId - The ID of the contact to toggle
  * @returns {Promise<void>}
  */
-
 async function toggleAssignedContact(event, contactId) {
   const checkbox = event.currentTarget.querySelector("input[type='checkbox']");
 

@@ -2,7 +2,6 @@
  * Returns the HTML template for the login form.
  * @returns {string} HTML string of the login form
  */
-
 function getLoginTemplate() {
   return `
         <div class="form-header">
@@ -33,7 +32,6 @@ function getLoginTemplate() {
  * Returns the HTML template for the signup form.
  * @returns {string} HTML string of the signup form
  */
-
 function getSignupTemplate() {
   return `
     
@@ -86,7 +84,6 @@ function getSignupTemplate() {
  * @param {string} legal - Active class for legal link
  * @returns {string} HTML string of the sidebar
  */
-
 function getSidebarTemplate(summary, addtask, board, contact, privacy, legal) {
   return `
         <img src="./assets/img/logo-light.svg" class="logo sidebar_logo" />
@@ -124,7 +121,6 @@ function getSidebarTemplate(summary, addtask, board, contact, privacy, legal) {
  * Returns the HTML template for the topbar.
  * @returns {string} HTML string of the topbar
  */
-
 function getTopbarTemplate() {
   return `
   <p id="slogan">Kanban Project Management Tool</p>
@@ -150,7 +146,6 @@ function getTopbarTemplate() {
  * @param {string} status - The initial status for the new task
  * @returns {string} HTML string of the add task dialog
  */
-
 function getAddTaskDialogTemplate(status) {
   return `
     <section class="add-task" id="add-task-dialog-content">
@@ -262,7 +257,6 @@ function getAddTaskDialogTemplate(status) {
  * @param {number} progress - The progress percentage (0-100)
  * @returns {Promise<string>} HTML string of the task card
  */
-
 async function getToDoTemplate(
   element,
   solvedSubtasks,
@@ -302,7 +296,6 @@ async function getToDoTemplate(
  * @param {Object[]} subtasks - Array of subtask objects
  * @returns {string} HTML string of the task detail dialog
  */
-
 function getDialogBoardTemplate(element, assignedContacts, subtasks) {
   return `
     <header>
@@ -349,7 +342,6 @@ function getDialogBoardTemplate(element, assignedContacts, subtasks) {
  * @param {string} columnId - The ID of the column
  * @returns {string} HTML string of the drop zone
  */
-
 function getDropZoneTemplate(columnId) {
   return `<div class="drop-zone" id="dropzone-${columnId}"></div>`;
 }
@@ -359,7 +351,6 @@ function getDropZoneTemplate(columnId) {
  * @param {Object} contact - The contact object
  * @returns {string} HTML string of the assigned contact
  */
-
 function getAssignedContactTemplate(contact) {
   return `
     <div class="assigned-contact">
@@ -377,7 +368,6 @@ function getAssignedContactTemplate(contact) {
  * @param {string} toggleFn - The toggle function name to call on click
  * @returns {string} HTML string of the subtask list item
  */
-
 function getSubtasksTemplate(subtask, taskID, subtaskIndex) {
   return `
         <li class="no-decoration board-subtask">
@@ -396,7 +386,6 @@ function getSubtasksTemplate(subtask, taskID, subtaskIndex) {
  * @param {string} color - The avatar background color
  * @returns {string} HTML string of the contact list item
  */
-
 function getContactItemTemplate(contact, initials, color) {
   return `
     <div class="contact-avatar" style="background-color: ${color};">
@@ -416,7 +405,6 @@ function getContactItemTemplate(contact, initials, color) {
  * @param {string} color - The avatar background color
  * @returns {string} HTML string of the contact detail view
  */
-
 function getContactDetailTemplate(contact, initials, color) {
   return `
     <div class="contact-detail-header">
@@ -458,7 +446,6 @@ function getContactDetailTemplate(contact, initials, color) {
  * @param {string} subtasksHTML - HTML string of the subtasks list
  * @returns {string} HTML string of the task edit dialog
  */
-
 function getDialogBoardEditTemplate(element, priorityButtons, assignedHTML, subtasksHTML) {
   return `
     <header>
@@ -505,6 +492,14 @@ function getDialogBoardEditTemplate(element, priorityButtons, assignedHTML, subt
   `;
 }
 
+/**
+ * Returns the HTML template for a subtask list item with a configurable toggle function.
+ * @param {Object} subtask - The subtask object
+ * @param {string} taskID - The ID of the parent task
+ * @param {number} subtaskIndex - The index of the subtask
+ * @param {string} toggleFn - The toggle function name to call on click
+ * @returns {string} HTML string of the subtask list item
+ */
 function getSubtasksTemplate(
   subtask,
   taskID,
@@ -523,6 +518,12 @@ function getSubtasksTemplate(
   `;
 }
 
+
+/**
+ * Returns the HTML template for the priority buttons in the edit dialog.
+ * @param {string} currentPriority - The currently active priority (e.g. "urgent")
+ * @returns {string} HTML string of the priority buttons
+ */
 function getPriorityButtonsTemplate(currentPriority) {
   return ["urgent", "medium", "low"]
     .map((p) => {
@@ -534,6 +535,13 @@ function getPriorityButtonsTemplate(currentPriority) {
     .join("");
 }
 
+/**
+ * Returns the HTML template for a contact option in the assignment dropdown.
+ * @param {string} id - The contact ID
+ * @param {Object} contact - The contact object
+ * @param {string} checked - The checked attribute string if selected
+ * @returns {string} HTML string of the contact option
+ */
 function getContactOptionTemplate(id, contact, checked) {
   return `
     <div class="custom-option" onclick="toggleAssignedContact(event, '${id}')">
@@ -543,10 +551,21 @@ function getContactOptionTemplate(id, contact, checked) {
     </div>`;
 }
 
+/**
+ * Returns the HTML template for a contact badge.
+ * @param {Object} contact - The contact object
+ * @returns {string} HTML string of the contact badge
+ */
 function getContactBadgeTemplate(contact) {
   return `<div class="badge-avatar" style="background:${contact.avatarColor}">${getInitials(contact.name)}</div>`;
 }
 
+/**
+ * Returns the HTML template for the assigned contacts section in the edit dialog.
+ * @param {string} optionsHTML - HTML string of the contact options
+ * @param {string} badgesHTML - HTML string of the contact badges
+ * @returns {string} HTML string of the assigned contacts edit section
+ */
 function getAssignedContactsEditTemplate(optionsHTML, badgesHTML) {
   return `
     <div class="custom-select-wrapper">
@@ -562,6 +581,13 @@ function getAssignedContactsEditTemplate(optionsHTML, badgesHTML) {
   `;
 }
 
+/**
+ * Returns the HTML template for a subtask edit list item.
+ * @param {Object} subtask - The subtask object
+ * @param {string} taskId - The ID of the parent task
+ * @param {number} index - The index of the subtask
+ * @returns {string} HTML string of the subtask edit list item
+ */
 function getSubtaskEditItemTemplate(subtask, taskId, index) {
   return `
     <li class="subtask-edit-item" data-task-id="${taskId}" data-index="${index}">
@@ -579,6 +605,11 @@ function getSubtaskEditItemTemplate(subtask, taskId, index) {
   `;
 }
 
+/**
+ * Returns the HTML template for a subtask in editing state.
+ * @param {string} currentText - The current subtask title
+ * @returns {string} HTML string of the subtask editing state
+ */
 function getSubtaskEditingStateTemplate(currentText) {
   return `
     <input class="subtask-edit-input" type="text" value="${currentText}">

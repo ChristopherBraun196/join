@@ -18,7 +18,6 @@ export const AVATAR_COLORS = [
  * Returns a randomly selected avatar color from the predefined color list.
  * @returns {string} A hex color code
  */
-
 export function selectRandomAvatarColor() {
   return AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
 }
@@ -30,7 +29,6 @@ export function selectRandomAvatarColor() {
  * @param {string} email - The email address of the user
  * @returns {Promise<string>} The generated contact ID
  */
-
 async function createContactEntry(uid, name, email) {
   const contactId = `contact-${generateUUID()}`;
   await set(ref(db, `contacts/${contactId}`), {
@@ -49,7 +47,6 @@ async function createContactEntry(uid, name, email) {
  * @param {string} contactId - The associated contact ID
  * @returns {Promise<void>}
  */
-
 async function createUserEntry(uid, contactId) {
   await set(ref(db, `users/${uid}`), {
     contactId: contactId,
@@ -60,7 +57,6 @@ async function createUserEntry(uid, contactId) {
  * Displays an error message based on the Firebase signup error code.
  * @param {Error} error - The Firebase error object
  */
-
 function handleSignupError(error) {
   const messages = {
     "auth/email-already-in-use": "Diese E-Mail ist bereits registriert.",
@@ -77,7 +73,6 @@ function handleSignupError(error) {
  * @param {string} password - The password for the new account
  * @returns {Promise<void>}
  */
-
 async function signup(name, email, password) {
   try {
     const { user } = await createUserWithEmailAndPassword(
@@ -100,7 +95,6 @@ async function signup(name, email, password) {
  * Displays an error message based on the Firebase login error code.
  * @param {Error} error - The Firebase error object
  */
-
 function handleLoginError(error) {
   const messages = {
     "auth/invalid-email": "Falsche E-Mail.",
@@ -118,7 +112,6 @@ function handleLoginError(error) {
  * @param {string} password - The user's password
  * @returns {Promise<void>}
  */
-
 async function login(email, password) {
   try {
     await signInWithEmailAndPassword(auth, email, password);
@@ -136,7 +129,6 @@ async function login(email, password) {
  * @param {Event} event - The form submit event
  * @returns {Promise<void>}
  */
-
 async function handleLogin(event) {
   const form = document.getElementById("login-signup-form");
   const email = form.querySelector("input[name='email']").value;
@@ -149,7 +141,6 @@ async function handleLogin(event) {
  * @param {Event} event - The form submit event
  * @returns {Promise<void>}
  */
-
 async function handleSignup(event) {
   const form = document.getElementById("login-signup-form");
   const name = form.querySelector("input[name='fullname']").value;
@@ -162,7 +153,6 @@ async function handleSignup(event) {
  * Signs in the user anonymously as a guest and redirects to the summary page.
  * @returns {Promise<void>}
  */
-
 async function guestLogin() {
   try {
     await signInAnonymously(auth);

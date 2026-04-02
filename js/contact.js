@@ -1,20 +1,13 @@
 let mobileActiveContact = null;
 
 const AVATAR_COLORS = [
-  "#FF7043",
-  "#E91E8C",
-  "#9C27B0",
-  "#3F51B5",
-  "#00BCD4",
-  "#4CAF50",
-  "#FF9800",
-  "#795548",
+  "#FF7043",  "#E91E8C",  "#9C27B0",  "#3F51B5",  
+  "#00BCD4",  "#4CAF50",  "#FF9800",  "#795548",
 ];
 
 /**
  * Opens the contact dialog overlay.
  */
-
 function openContactDialog() {
   document.getElementById("dialog-overlay").classList.add("active");
 }
@@ -22,7 +15,6 @@ function openContactDialog() {
 /**
  * Closes the contact dialog overlay
  */
-
 function closeContactDialog() {
   document.getElementById("dialog-overlay").classList.remove("active");
   clearDialogInputs();
@@ -49,7 +41,6 @@ document
  * @param {string} contactID - The ID of the contact in Firebase
  * @returns {Object} The generated contact object
  */
-
 function generateContactJson(contactID) {
   return {
     id: contactID,
@@ -64,7 +55,6 @@ function generateContactJson(contactID) {
  * Returns the name value from the contact dialog input.
  * @returns {string} The trimmed name input value
  */
-
 function getContactName() {
   return document.getElementById("input-name").value.trim();
 }
@@ -73,10 +63,10 @@ function getContactName() {
  * Returns the email value from the contact dialog input.
  * @returns {string} The trimmed email input value
  */
-
 function getContactEmailAdress() {
   return document.getElementById("input-email").value.trim();
 }
+
 /**
  * Returns the phone value from the contact dialog input.
  * @returns {string} The trimmed phone input value
@@ -89,7 +79,6 @@ function getContactPhone() {
  * Returns a randomly selected avatar color from the predefined color list.
  * @returns {string} A hex color code
  */
-
 function selectRandomAvatarColor() {
   return AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)];
 }
@@ -99,7 +88,6 @@ function selectRandomAvatarColor() {
  * @param {Object[]} contacts - Array of contact objects
  * @returns {Object} An object with letters as keys and contact arrays as values
  */
-
 function groupContactsByLetter(contacts) {
   const sorted = contacts.sort((a, b) => a.name.localeCompare(b.name));
   const grouped = {};
@@ -116,7 +104,6 @@ function groupContactsByLetter(contacts) {
  * @param {Object} contact - The contact object
  * @returns {HTMLElement} The created contact item element
  */
-
 function createContactItem(contact) {
   const initials = getInitials(contact.name);
   const item = document.createElement("div");
@@ -135,7 +122,6 @@ function createContactItem(contact) {
  * @param {string} letter - The letter to display as a section header
  * @returns {HTMLElement} The created divider element
  */
-
 function createLetterDivider(letter) {
   const divider = document.createElement("div");
   divider.className = "contact-divider";
@@ -151,7 +137,6 @@ function createLetterDivider(letter) {
  * @param {Object} grouped - An object with letters as keys and contact arrays as values
  * @returns {HTMLElement} The created contact list element
  */
-
 function buildContactList(grouped) {
   const list = document.createElement("div");
   list.className = "contacts-list";
@@ -170,7 +155,6 @@ function buildContactList(grouped) {
  * Renders the contacts list grouped alphabetically into the sidebar.
  * @param {Object[]} contacts - Array of contact objects to render
  */
-
 function renderContacts(contacts) {
   const sidebar = document.getElementById("sidebar_contacts");
   const existingList = sidebar.querySelector(".contacts-list");
@@ -183,7 +167,6 @@ function renderContacts(contacts) {
  * Loads all contacts from Firebase and renders them into the sidebar.
  * @returns {Promise<void>}
  */
-
 async function loadContacts() {
   try {
     const data = await loadData("/contacts");
@@ -203,7 +186,6 @@ document.addEventListener("DOMContentLoaded", loadContacts);
 /**
  * Clears the active contact selection and removes the detail view.
  */
-
 function clearActiveContact() {
   document
     .querySelectorAll(".contact-item")
@@ -220,7 +202,6 @@ function clearActiveContact() {
  * Appends the contact detail view to the main content area.
  * @param {Object} contact - The contact object to display
  */
-
 function appendContactDetail(contact) {
   const main = document.querySelector(".main_contacts");
   const initials = getInitials(contact.name);
@@ -239,7 +220,6 @@ function appendContactDetail(contact) {
  * @param {Object} contact - The contact object to display
  * @param {MouseEvent} event - The click event from the contact item
  */
-
 function openContactDetail(contact, event) {
   const clickedItem = event.currentTarget;
   const isAlreadyActive = clickedItem.classList.contains("active");
@@ -255,16 +235,17 @@ function openContactDetail(contact, event) {
   }
 }
 
+/**
+ * Clears the active contact and returns to the contact list.
+ */
 function backToContacts() {
   clearActiveContact();
 }
-
 
 /**
  * Creates a new contact in Firebase and refreshes the contact list.
  * @returns {Promise<void>}
  */
-
 async function submitContact() {
   if (isGuest()) return showMessage("Als Gast nicht möglich.");
   if (!validateInputs()) return;
@@ -283,7 +264,6 @@ async function submitContact() {
  * @param {string} contactId - The ID of the contact to delete
  * @returns {Promise<void>}
  */
-
 async function deleteContact(contactId) {
   if (isGuest()) return showMessage("Als Gast nicht möglich.");
   try {
@@ -300,7 +280,6 @@ async function deleteContact(contactId) {
  * @param {string} contactId - The ID of the contact
  * @returns {Object|null} The active contact data or null if none is active
  */
-
 function getActiveContactData(contactId) {
   let currentContact = null;
   document.querySelectorAll(".contact-item").forEach((item) => {
@@ -319,7 +298,6 @@ function getActiveContactData(contactId) {
  * Fills the contact dialog inputs with the current contact's data.
  * @param {Object} currentContact - The contact object with name, email and phone
  */
-
 function fillEditDialogInputs(currentContact) {
   document.getElementById("input-name").value = currentContact?.name || "";
   document.getElementById("input-email").value = currentContact?.email || "";
@@ -333,7 +311,6 @@ function fillEditDialogInputs(currentContact) {
  * Sets up the edit dialog buttons for deleting and saving a contact.
  * @param {string} contactId - The ID of the contact to edit
  */
-
 function setEditDialogButtons(contactId) {
   const cancelBtn = document.querySelector(".btn-cancel");
   const submitBtn = document.querySelector(".btn-submit");
@@ -352,7 +329,6 @@ function setEditDialogButtons(contactId) {
  * Opens the contact dialog in edit mode for the given contact.
  * @param {string} contactId - The ID of the contact to edit
  */
-
 function editContact(contactId) {
   if (isGuest()) return showMessage("Als Gast nicht möglich.");
   const currentContact = getActiveContactData(contactId);
@@ -366,7 +342,6 @@ function editContact(contactId) {
  * @param {string} contactId - The ID of the contact to save
  * @returns {Promise<void>}
  */
-
 async function saveContact(contactId) {
   if (!validateInputs()) return;
   const updatedContact = {
@@ -389,7 +364,6 @@ async function saveContact(contactId) {
 /**
  * Resets the contact dialog to its default "Add contact" state.
  */
-
 function resetDialog() {
   const cancelBtn = document.querySelector(".btn-cancel");
   const submitBtn = document.querySelector(".btn-submit");
@@ -405,7 +379,6 @@ function resetDialog() {
  * Validates the contact dialog input fields.
  * @returns {boolean} True if all inputs are valid, false otherwise
  */
-
 function validateInputs() {
   const nameInput = document.getElementById("input-name");
   const emailInput = document.getElementById("input-email");

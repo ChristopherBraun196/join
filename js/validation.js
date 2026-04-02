@@ -3,7 +3,6 @@
  * @param {HTMLElement} input - The input element to validate
  * @param {string} message - The error message to display if the field is empty
  */
-
 function validateOnBlur(input, message = 'This field is required') {
     if (isFieldEmpty(input)) {
         showFieldError(input, message);
@@ -17,7 +16,6 @@ function validateOnBlur(input, message = 'This field is required') {
  * @param {HTMLFormElement} form - The form element to validate
  * @returns {boolean} True if all required fields are filled, false otherwise
  */
-
 function validateForm(form) {
     const fields = form.querySelectorAll('input[required], textarea[required]');
     let isValid = true;
@@ -40,7 +38,6 @@ function validateForm(form) {
  * @param {HTMLElement} input - The input element to check
  * @returns {boolean} True if the field is empty, false otherwise
  */
-
 function isFieldEmpty(input) {
     return input.value.trim() === '';
 }
@@ -50,7 +47,6 @@ function isFieldEmpty(input) {
  * @param {HTMLElement} input - The input element to mark as invalid
  * @param {string} message - The error message to display
  */
-
 function showFieldError(input, message) {
     input.classList.add('input-error');
 
@@ -68,7 +64,6 @@ function showFieldError(input, message) {
  * Clears the error state and hides the error message of an input field.
  * @param {HTMLElement} input - The input element to clear the error from
  */
-
 function clearFieldError(input) {
     input.classList.remove('input-error');
     const errorEl = getErrorElement(input);
@@ -80,7 +75,6 @@ function clearFieldError(input) {
  * @param {HTMLElement} input - The input element to search from
  * @returns {HTMLElement|null} The error element or null if not found
  */
-
 function getErrorElement(input) {
     const next = input.nextElementSibling;
     return next?.classList.contains('field-error-msg') ? next : null;

@@ -7,7 +7,6 @@ let tasks = [];
  * @param {string} site - The current site/page identifier
  * @returns {Promise<void>}
  */
-
 async function initBoard(site) {
   init(site);
   await initTasks();
@@ -18,7 +17,6 @@ async function initBoard(site) {
  * Initializes the tasks by loading them from the database.
  * @returns {Promise<void>}
  */
-
 async function initTasks() {
   const data = await loadData("/tasks");
   tasks = Object.entries(data).map(([id, task]) => ({ ...task, id }));
@@ -28,7 +26,6 @@ async function initTasks() {
  * Renders all task sections on the board.
  * @returns {Promise<void>}
  */
-
 async function renderAll() {
   await renderSection("toDo");
   await renderSection("inProgress");
@@ -42,7 +39,6 @@ async function renderAll() {
  * @param {string} section - The column name (e.g. "toDo", "inProgress")
  * @returns {Promoise<void>} 
  */
-
 async function renderSection(section) {
   let taskStatus = tasks.filter((t) => t["status"] == section);
   document.getElementById(section).innerHTML = getDropZoneTemplate(section);
@@ -62,11 +58,11 @@ async function renderSection(section) {
     );
   }
 }
+
 /**
  * Starts Dragging the selected tasks
  * @param {string} id - The ID of the task being dragged
  */
-
 function startDragging(id) {
   currentDraggedElement = id;
 }
@@ -75,7 +71,6 @@ function startDragging(id) {
  * Allows a dragged element to be dropped on this target.
  * @param {DragEvent} ev - The drag event
  */
-
 function allowDrop(ev) {
   ev.preventDefault();
 }
@@ -85,7 +80,6 @@ function allowDrop(ev) {
  * @param  {...string} columns - Column names to re-render (e.g. "toDo", "done")
  * @returns {Promise<void>}
  */
-
 async function reRenderColumns(...columns) {
   for (const col of columns) await renderSection(col);
   updateNoTaskPlaceholders();
@@ -96,7 +90,6 @@ async function reRenderColumns(...columns) {
  * @param {string} newStatus - The target column name (e.g. "toDo", "done")
  * @returns {Promise<void>}
  */
-
 async function moveTo(newStatus) {
   const task = tasks.find((t) => t.id === currentDraggedElement);
   if (!task) return;
@@ -111,11 +104,11 @@ async function moveTo(newStatus) {
   }
   await reRenderColumns(oldStatus, newStatus);
 }
+
 /**
  * Highlights the dropzone when hovering over it.
  * @param {string} id - The column ID of the dropzone to highlight
  */
-
 function highlight(id) {
   const dropzone = document.getElementById("dropzone-" + id);
   if (dropzone) dropzone.classList.add("drag-area-highlight");
@@ -125,7 +118,6 @@ function highlight(id) {
  * Removes the highlight from the dropzone after dragging.
  * @param {string} id - The column ID of the dropzone to unhighlight
  */
-
 function removeHighlight(id) {
   const dropzone = document.getElementById("dropzone-" + id);
   if (dropzone) dropzone.classList.remove("drag-area-highlight");
@@ -134,7 +126,6 @@ function removeHighlight(id) {
 /**
  * * Shows or hides the "no tasks" placeholder for each column.
  */
-
 function updateNoTaskPlaceholders() {
   const columns = ["toDo", "inProgress", "await", "done"];
 
@@ -155,7 +146,6 @@ function updateNoTaskPlaceholders() {
  * @param {Array|Object} assignedTo - The assigned contacts as array or object
  * @returns {Promise<Object[]>} Array of matching contact objects
  */
-
 async function getAssignedContacts(assignedTo) {
   const data = await loadData("/contacts");
   if (!data || !assignedTo) return [];
@@ -175,7 +165,6 @@ async function getAssignedContacts(assignedTo) {
  * Handles touch movement for drag-and-drop on mobile devices.
  * @param {TouchEvent} e - The touch move event
  */
-
 function handleTouchMove(e) {
   e.preventDefault();
   const touch = e.touches[0];
@@ -194,7 +183,6 @@ function handleTouchMove(e) {
  * Handles the end of a touch drag-and-drop interaction.
  * @param {TouchEvent} e - The touch end event
  */
-
 function handleTouchEnd(e) {
   const touch = e.changedTouches[0];
   const target = document.elementFromPoint(touch.clientX, touch.clientY);
@@ -213,7 +201,6 @@ function handleTouchEnd(e) {
  *  Filters tasks on the board based on the search input.
  * @returns {Promise<void>}
  */
-
 async function findTask() {
   const query = document.getElementById("searchTask").value.toLowerCase();
 
@@ -236,7 +223,6 @@ async function findTask() {
  * @param {Object[]} filteredTasks - Array of task objects to render
  * @returns {Promise<void>}
  */
-
 async function renderFilteredTasks(filteredTasks) {
   const sections = ["toDo", "inProgress", "await", "done"];
 
@@ -266,7 +252,6 @@ async function renderFilteredTasks(filteredTasks) {
  * @param {string} taskId - The ID of the parent task
  * @returns {Promise<void>}
  */
-
 async function toggleSubtaskEdit(subtaskIndex, isCompleted, taskId) {
   await putData(
     "/tasks/" + taskId + "/subtasks/" + subtaskIndex + "/completed",
@@ -284,7 +269,6 @@ async function toggleSubtaskEdit(subtaskIndex, isCompleted, taskId) {
  * @param {string} taskID - The ID of the parent task
  * @returns {string} HTML string of all subtasks or fallback message
  */
-
 function checkIfSubtasksAvaiableEdit(subtasks, taskID) {
   if (subtasks) {
     return subtasks
@@ -303,7 +287,6 @@ function checkIfSubtasksAvaiableEdit(subtasks, taskID) {
  * @param {string[]} assignedIds - Array of already assigned contact IDs
  * @returns {string} HTML string of all contact option elements
  */
-
 function buildContactOptions(allContacts, assignedIds) {
   return Object.entries(allContacts)
     .map(([id, contact]) => {
@@ -319,7 +302,6 @@ function buildContactOptions(allContacts, assignedIds) {
  * @param {string[]} assignedIds - Array of assigned contact IDs
  * @returns {string} HTML string of contact badge elements
  */
-
 function buildContactBadges(allContacts, assignedIds) {
   return Object.entries(allContacts)
     .filter(([id]) => assignedIds.includes(id))
@@ -333,7 +315,6 @@ function buildContactBadges(allContacts, assignedIds) {
  * @param {string[]} assignedIds - Array of assigned contact IDs
  * @returns {string} HTML string of the assigned contacts edit section
  */
-
 function buildAssignedContactsEdit(allContacts, assignedIds) {
   const optionsHTML = buildContactOptions(allContacts, assignedIds);
   const badgesHTML = buildContactBadges(allContacts, assignedIds);
@@ -345,7 +326,6 @@ function buildAssignedContactsEdit(allContacts, assignedIds) {
  * @param {KeyboardEvent} event - The keyboard event
  * @param {string} taskId - The ID of the parent task
  */
-
 function handleSubtaskKeyEdit(event, taskId) {
   if (event.key === "Enter") {
     event.preventDefault();
@@ -358,7 +338,6 @@ function handleSubtaskKeyEdit(event, taskId) {
  * Switches a subtask list item into editing mode.
  * @param {HTMLElement} span - The subtask span element that was clicked
  */
-
 function editSubtaskEditMode(span) {
   const li = span.closest("li");
   li.innerHTML = getSubtaskEditingStateTemplate(span.textContent);
@@ -369,7 +348,6 @@ function editSubtaskEditMode(span) {
  * Confirms the subtask edit and updates the list item.
  * @param {HTMLElement} btn - The confirm button that was clicked
  */
-
 function confirmSubtaskEditMode(btn) {
   const li = btn.closest("li");
   const text = li.querySelector(".subtask-edit-input").value.trim();
@@ -382,4 +360,20 @@ function confirmSubtaskEditMode(btn) {
     li.dataset.taskId,
     li.dataset.index,
   );
+}
+
+/**
+ * Returns the HTML for the priority selection buttons.
+ * @param {string} currentPriority - The currently active priority (e.g. "urgent")
+ * @returns {string} HTML string of all priority button elements
+ */
+function getPriorityButtonsTemplate(currentPriority) {
+  return ["urgent", "medium", "low"]
+    .map((p) => {
+      const active = currentPriority === p ? "active" : "";
+      return `<button class="prio-btn ${active}" data-priority="${p}" onclick="setEditPriority(event, '${p}')">
+      ${capitalize(p)} <img src="./assets/icons/priority-${p}.svg" />
+    </button>`;
+    })
+    .join("");
 }
