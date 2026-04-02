@@ -74,6 +74,7 @@ function setTopbar() {
 function switchToSignup() {
     loginSignupSection.innerHTML = getSignupTemplate();
     signupBtn.classList.add('hidden');
+    document.getElementById('signupResponsiv').classList.add('hidden');
     document.title = "Join | Sign up";
 }
 
@@ -83,6 +84,7 @@ function switchToSignup() {
 function switchToLogin() {
     loginSignupSection.innerHTML = getLoginTemplate();
     signupBtn.classList.remove('hidden');
+    document.getElementById('signupResponsiv').classList.remove('hidden');
     document.title = "Join | Log in"
 }
 

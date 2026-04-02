@@ -49,8 +49,8 @@ footer {
   gap: 32px;
 }
 
-#signup.hidden {
-  display: none;
+#signup.hidden, #signupResponsiv.hidden {
+    display: none;
 }
 
 #login-signup-section {
@@ -144,15 +144,38 @@ footer {
 }
 
 @media (max-width: 575px) {
+  #login-signup-navbar nav{
+    align-items: flex-start;
 
-  #login-signup-navbar nav {
+  }
+
+  #login-signup-navbar{
+    padding-top: 37px;
+    padding-left: 37px;
+    height: 180px;
+  }
+
+  #login-signup-navbar nav .logo{
     height: 80px;
   }
 
   #login-signup-section {
-    width: 300px;
-    height: 250px;
+    width: 90%;
+    min-width: 310px;
+    padding: 50px 0px;
+
   }
+
+  #login-signup-privacy{
+    height: 100px;
+  }
+
+
+
+  #login-signup-main{
+    padding-top:30px;
+  }
+     
 
   #login-signup-form {
     align-items: center;
