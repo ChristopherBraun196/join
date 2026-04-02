@@ -138,3 +138,55 @@ footer {
   left: 20px;
   transform: translateY(-50%);
 }
+
+#signupResponsiv {
+  display: none;
+}
+
+@media (max-width: 575px) {
+
+  #login-signup-navbar nav {
+    height: 80px;
+  }
+
+  #login-signup-section {
+    width: 300px;
+    height: 250px;
+  }
+
+  #login-signup-form {
+    align-items: center;
+  }
+
+  .spacer {
+    width: 90px;
+  }
+
+  .btn {
+    font-size: 16px;
+  }
+
+  .name-input,
+  .email-input,
+  .pwd-input {
+    width: 290px;
+  }
+
+  .login-btns {
+    display: flex;
+    width: 50%;
+    gap: 12px;
+    flex-direction: column;
+  }
+
+  #signup {
+    display: none;
+  }
+
+  #signupResponsiv {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    padding-top: 46px;
+  }
+}
