@@ -433,3 +433,10 @@ dialog#openDialogBoard p:has(img) {
 .board-subtask {
   margin-bottom: 8px;
 }
+
+.dialog-board-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+}

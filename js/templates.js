@@ -265,7 +265,8 @@ async function getToDoTemplate(
   progress,
 ) {
   return `  
-  <div class="task-card" draggable="true" onclick="openDialogBoard('${element["id"]}')" ondragstart="startDragging('${element["id"]}')" class="todo">
+<div class="task-card" draggable="true" onclick="openDialogBoard('${element["id"]}')" ondragstart="startDragging('${element["id"]}')" 
+      ontouchstart="startDragging('${element["id"]}')" ontouchmove="handleTouchMove(event)" ontouchend="handleTouchEnd(event)">
   <!-- Category Badge -->
   <span class="category-badge" style="background-color:${element["categoryLabelColor"]}">${element["category"]}</span>
 
@@ -324,7 +325,7 @@ function getDialogBoardTemplate(element, assignedContacts, subtasks) {
         </div>
     </main>
     <footer>
-        <div class="dialog-actions">
+        <div class="dialog-board-actions">
             <button class="delete-edit-button" onclick="deleteTask('${element.id}')">
                 <img src="./assets/icons/delete.svg" alt="delete Button">Delete
             </button>
@@ -446,7 +447,12 @@ function getContactDetailTemplate(contact, initials, color) {
  * @param {string} subtasksHTML - HTML string of the subtasks list
  * @returns {string} HTML string of the task edit dialog
  */
-function getDialogBoardEditTemplate(element, priorityButtons, assignedHTML, subtasksHTML) {
+function getDialogBoardEditTemplate(
+  element,
+  priorityButtons,
+  assignedHTML,
+  subtasksHTML,
+) {
   return `
     <header>
         <div class="flex-sb">
@@ -517,7 +523,6 @@ function getSubtasksTemplate(
     </li>
   `;
 }
-
 
 /**
  * Returns the HTML template for the priority buttons in the edit dialog.
