@@ -220,8 +220,8 @@ main {
     display: none;
   }
 
-  .move-to-btn {
-    rotate: 90deg;
+  .move-to-btn, .move-arrow {
+    rotate: -90deg;
   }
 }
 
