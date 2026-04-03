@@ -35,7 +35,6 @@ async function closeDialogBoard(section) {
  * @returns {Promise<void>}
  */
 async function deleteTask(id) {
-  if (isGuest()) return showMessage("Als Gast nicht möglich.");
   try {
     await deleteData(`/tasks/${id}`);
     showMessage("Task wurde gelöscht");
@@ -215,7 +214,6 @@ function checkIfSubtasksAvaiable(subtasks, taskID) {
  * @returns {Promise<void>}
  */
 async function openEditTask(taskId) {
-  if (isGuest()) return showMessage("Als Gast nicht möglich.");
   currentEditTaskId = taskId;
   const element = tasks.find((t) => t.id === taskId);
   const assignedContacts = await getAssignedContacts(element.assignedTo);

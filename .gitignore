@@ -7,3 +7,5 @@ js/AuthServiceGitignore.js
 /notes
 
 **/.DS_Store
+
+seedDatabase.html
