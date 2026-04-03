@@ -219,6 +219,10 @@ main {
   .topbar_logo {
     display: none;
   }
+
+  .move-to-btn {
+    rotate: 90deg;
+  }
 }
 
 @media (max-width: 1200px) {
