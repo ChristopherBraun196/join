@@ -243,7 +243,6 @@ async function openEditTask(taskId) {
  * @returns {Promise<void>}
  */
 async function saveEditTask(taskId) {
-  if (isGuest()) return showMessage("Als Gast nicht möglich.");
   const element = tasks.find((t) => t.id === taskId);
   const updatedData = {
     ...element,
