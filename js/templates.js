@@ -41,7 +41,7 @@ function getSignupTemplate() {
             <div class="spacer"></div>
         </div>
 
-        <form id="login-signup-form" onsubmit="handleSignup(event); return false;"
+        <form id="login-signup-form" onsubmit="handleSignup(event); return false;">
             <div class="input-fields">
                 <div class="name-input">
                     <input class="form-input" type="text" placeholder="Full Name" name="fullname" autocomplete="name" required/>
