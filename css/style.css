@@ -14,8 +14,7 @@ nav {
   width: 100%;
 }
 
-.name-input input[type="text"],
-textarea {
+.name-input input[type="text"]{
   padding: 0;
   border: 0px solid var(--border-color);
 }
@@ -179,9 +178,6 @@ main {
   font-size: 27px;
 }
 
-.headline h1 {
-  font-size: 61px;
-}
 
 .welcome_msg {
   position: fixed;
@@ -381,19 +377,16 @@ main {
     overflow-y: auto !important;
     height: auto !important;
   }
-
-  .add-task-form {
-    overflow: visible;
-  }
-
+  
   #close-dialog-btn {
     width: 16px;
     height: 16px;
     top: 46px;
     right: 40px;
   }
-
+  
   .add-task-form {
+    overflow: visible;
     flex-direction: column;
     margin: 0;
     padding: 40px;
@@ -412,12 +405,11 @@ main {
     padding: 20px 0;
   }
 
-#add-task-form-footer.mobile {
-    padding-bottom: 110px;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-}
+  #add-task-form-footer.mobile {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+  }
 
   .board-bar {
     display: none;

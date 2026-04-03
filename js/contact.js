@@ -247,7 +247,6 @@ function backToContacts() {
  * @returns {Promise<void>}
  */
 async function submitContact() {
-  if (isGuest()) return showMessage("Als Gast nicht möglich.");
   if (!validateInputs()) return;
   try {
     const contactID = "contact-" + generateUUID();
@@ -265,7 +264,6 @@ async function submitContact() {
  * @returns {Promise<void>}
  */
 async function deleteContact(contactId) {
-  if (isGuest()) return showMessage("Als Gast nicht möglich.");
   try {
     await deleteData("/contacts/" + contactId);
     clearActiveContact();
@@ -330,7 +328,6 @@ function setEditDialogButtons(contactId) {
  * @param {string} contactId - The ID of the contact to edit
  */
 function editContact(contactId) {
-  if (isGuest()) return showMessage("Als Gast nicht möglich.");
   const currentContact = getActiveContactData(contactId);
   openContactDialog();
   fillEditDialogInputs(currentContact);
