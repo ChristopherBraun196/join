@@ -206,6 +206,21 @@ main {
 
 /*-----------------Responsiv------------------*/
 
+@media (min-width: 1200px) {
+  .welcome_msg {
+    position: static;
+    width: auto;
+    height: auto;
+    background: none;
+    z-index: auto;
+    transition: none;
+  }
+
+  .topbar_logo {
+    display: none;
+  }
+}
+
 @media (max-width: 1200px) {
   #sidebar {
     position: fixed;
@@ -325,24 +340,7 @@ main {
   #add-task-header {
     padding-top: 40px !important;
   }
-}
 
-@media (min-width: 1200px) {
-  .welcome_msg {
-    position: static;
-    width: auto;
-    height: auto;
-    background: none;
-    z-index: auto;
-    transition: none;
-  }
-
-  .topbar_logo {
-    display: none;
-  }
-}
-
-@media (max-width: 767px) {
   .summary-add-task-board-main {
     padding: 0;
   }
@@ -406,9 +404,9 @@ main {
   }
 
   #add-task-form-footer.mobile {
-      position: sticky;
-      top: 0;
-      z-index: 10;
+    position: sticky;
+    top: 0;
+    z-index: 10;
   }
 
   .board-bar {
@@ -422,10 +420,29 @@ main {
   .progress-board {
     flex-direction: column;
     margin-top: 40px;
+    height: auto;
   }
 
   .board-task {
     width: 100%;
+    flex: none;
+  }
+
+  .board-task-body {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .task-cards {
+    flex: 1;
+    overflow-x: auto;
+    overflow-y: visible;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .task-cards::-webkit-scrollbar {
+    display: none;
   }
 
   .drop-zone {
@@ -434,14 +451,33 @@ main {
     flex-wrap: nowrap;
     gap: 12px;
     min-height: unset;
-    max-width: 90vw;
-    width: 100%;
-    overflow: auto;
+    width: max-content;
+    overflow: visible;
   }
 
-  .task-card {
-    width: calc(50% - 6px);
-    width: 100%;
+  .scroll-arrow {
+    width: 28px;
+    min-width: 28px;
+    height: 48px;
+    border-radius: 10px;
+  }
+
+  .arrow-up {
+    margin-bottom: 0;
+    margin-right: 4px;
+  }
+
+  .arrow-up svg {
+    transform: rotate(-90deg);
+  }
+
+  .arrow-down {
+    margin-top: 0;
+    margin-left: 4px;
+  }
+
+  .arrow-down svg {
+    transform: rotate(-90deg);
   }
 }
 

@@ -265,10 +265,13 @@ async function getToDoTemplate(
   progress,
 ) {
   return `  
-<div class="task-card" draggable="true" onclick="openDialogBoard('${element["id"]}')" ondragstart="startDragging('${element["id"]}')" 
-      ontouchstart="startDragging('${element["id"]}')" ontouchmove="handleTouchMove(event)" ontouchend="handleTouchEnd(event)">
-  <!-- Category Badge -->
-  <span class="category-badge" style="background-color:${element["categoryLabelColor"]}">${element["category"]}</span>
+<div class="task-card" onclick="openDialogBoard('${element["id"]}')">
+  <div class="task-card-topbar">
+    <span class="category-badge" style="background-color:${element["categoryLabelColor"]}">${element["category"]}</span>
+    <button class="move-to-btn" onclick="toggleMoveOverlay(event, '${element["id"]}', '${element["status"]}')" title="Move to">
+      <img src="./assets/icons/move-task.svg" />
+    </button>
+  </div>
 
   <h3 class="task-title">${element["title"]}</h3>
 
