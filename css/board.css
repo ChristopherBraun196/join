@@ -87,13 +87,8 @@
   height: 80%;
   max-width: 100%;
   overflow: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
 }
 
-.progress-board::-webkit-scrollbar {
-  display: none;
-}
 
 .board-task {
   color: var(--primary-color);
@@ -271,9 +266,11 @@
   background-color: #e7e7e7;
   border-radius: 10px;
   border: 1px dashed #a8a8a8;
-  height: 200px;
+  height: 240px;
   margin-bottom: 16px;
-  width: 100%;
+  width: 240px;
+  text-align: center;
+  padding: 0 20px;
 }
 
 .no-tasks-placeholder.hidden {
