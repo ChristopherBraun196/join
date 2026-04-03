@@ -95,7 +95,7 @@ button, input {
 
 @media (max-width: 480px) {
     h1 {
-        font-size: 40px;
+        font-size: 38px;
     }
     h2 {
         font-size: 32px;
@@ -107,4 +107,4 @@ button, input {
         font-size: 18px;
     }
 }
-    
+

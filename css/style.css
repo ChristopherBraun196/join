@@ -513,3 +513,10 @@ main {
   }
   #deadline-bubble .line { display: none; }
 }
+
+@media (max-width: 420px) {
+  #task-priority-btns {
+    flex-direction: column;
+    width: 100%;
+  }
+}
