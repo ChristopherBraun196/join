@@ -310,6 +310,10 @@ main {
     padding-right: 16px;
   }
 
+  #topbar-content {
+    padding: 0 40px;
+  }
+
   main {
     max-width: 100%;
     top: 100px;
