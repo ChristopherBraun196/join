@@ -27,11 +27,13 @@
 }
 
 .privacy-legal-help-main a:hover {
-  color: white;
+  color: black !important;
+  transition: all .1s ease-in-out;
 }
 
 .privacy-legal-help-main a {
-  color: #29abe2;
+  color: #29abe2 !important;
+  transition: all .1s ease-in-out;
 }
 
 .privacy-legal-help-main ol li {
