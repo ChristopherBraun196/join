@@ -148,6 +148,29 @@ function getSidebarTemplate(summary, addtask, board, contact, privacy, legal) {
 }
 
 /**
+ * Returns the HTML template for the sidebar in guest (unauthenticated) mode.
+ * Shows only the logo, a login link, and privacy/legal links.
+ * @param {string} privacy - Active class for privacy link
+ * @param {string} legal - Active class for legal link
+ * @returns {string} HTML string of the guest sidebar
+ */
+function getSidebarGuestTemplate(privacy, legal) {
+  return `
+        <img src="./assets/img/logo-light.svg" class="logo sidebar_logo" />
+        <nav>
+            <a class="nav-link nav-link--inline" href="./index.html">
+                <img src="./assets/icons/login.svg" class="nav-link-icon" />
+                Log In
+            </a>
+        </nav>
+        <div class="privacy">
+            <a class="nav-link nav-link--inline ${privacy}" href="privacy.html">Privacy Policy</a>
+            <a class="nav-link nav-link--inline ${legal}" href="legal.html">Legal notice</a>
+        </div>
+    `;
+}
+
+/**
  * Returns the HTML template for the topbar.
  * @returns {string} HTML string of the topbar
  */

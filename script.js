@@ -123,6 +123,18 @@ function loadSidebar(page) {
 }
 
 /**
+ * Replaces the sidebar with a guest-only version showing just the login link
+ * and privacy/legal links. Called by authGuard for unauthenticated users on public pages.
+ */
+function switchToGuestSidebar() {
+    const path = window.location.pathname;
+    const privacy = path.includes('privacy') ? 'active' : '';
+    const legal = path.includes('legal') ? 'active' : '';
+    sidebar.classList.add('guest-sidebar');
+    sidebar.innerHTML = getSidebarGuestTemplate(privacy, legal);
+}
+
+/**
  * Returns the initials of a full name.
  * @param {string} name - The full name to extract initials from
  * @returns {string} The uppercase initials

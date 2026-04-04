@@ -63,6 +63,7 @@ main {
   cursor: default;
 }
 
+
 .logo {
   height: 120px;
   width: 100px;
@@ -250,6 +251,40 @@ main {
 
   .privacy {
     display: none;
+  }
+
+  #sidebar.guest-sidebar {
+    height: 70px;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: 0 16px;
+  }
+
+  #sidebar.guest-sidebar nav {
+    width: auto;
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  #sidebar.guest-sidebar .privacy {
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+    margin: 0;
+    width: auto;
+    align-self: stretch;
+  }
+
+  #sidebar.guest-sidebar .nav-link {
+    flex-direction: row;
+    font-size: 14px;
+    flex: none;
+    width: fit-content;
+    padding: 0 12px;
+    height: 100%;
+    align-items: center;
   }
 
   nav {
