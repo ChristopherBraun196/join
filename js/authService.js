@@ -125,15 +125,115 @@ async function login(email, password) {
 }
 
 /**
+ * Shows a field error message and highlights the input border.
+ * @param {HTMLElement} inputWrapper - The parent div of the input
+ * @param {HTMLElement} errorEl - The error span element
+ * @param {string} message - The error message to display
+ */
+function showFieldError(inputWrapper, errorEl, message) {
+  inputWrapper.classList.add("invalid");
+  errorEl.textContent = message;
+  errorEl.classList.add("visible");
+}
+
+/**
+ * Clears a field error message and removes the invalid border.
+ * @param {HTMLElement} inputWrapper - The parent div of the input
+ * @param {HTMLElement} errorEl - The error span element
+ */
+function clearFieldError(inputWrapper, errorEl) {
+  inputWrapper.classList.remove("invalid");
+  errorEl.textContent = "";
+  errorEl.classList.remove("visible");
+}
+
+/**
+ * Shows or hides the password visibility toggle button based on input content.
+ * @param {HTMLInputElement} input - The password input element
+ */
+function togglePwdVisibilityBtn(input) {
+  const wrapper = input.parentElement;
+  const btn = wrapper.querySelector(".pwd-toggle-btn");
+  const lock = wrapper.querySelector(".pwd-lock-icon");
+  const hasValue = input.value.length > 0;
+  if (btn) btn.classList.toggle("visible", hasValue);
+  if (lock) lock.classList.toggle("hidden", hasValue);
+}
+
+/**
+ * Toggles the password input between plain text and password type.
+ * @param {HTMLButtonElement} btn - The toggle button element
+ */
+function togglePwdVisibility(btn) {
+  const input = btn.parentElement.querySelector("input");
+  const isHidden = input.type === "password";
+  input.type = isHidden ? "text" : "password";
+  btn.classList.toggle("showing", isHidden);
+}
+
+/**
+ * Validates a required field on blur and shows an error if empty.
+ * @param {HTMLInputElement} input - The input element
+ * @param {string} errorId - The ID of the error span
+ */
+function validateField(input, errorId) {
+  const errorEl = document.getElementById(errorId);
+  const wrapper = input.parentElement;
+  if (!input.value.trim()) {
+    showFieldError(wrapper, errorEl, "This field is required");
+  } else {
+    clearFieldError(wrapper, errorEl);
+  }
+}
+
+/**
+ * Validates the confirm password field on blur.
+ * @param {HTMLInputElement} input - The confirm password input element
+ */
+function validatePasswordConfirm(input) {
+  const errorEl = document.getElementById("password-confirm-error");
+  const wrapper = input.parentElement;
+  const form = document.getElementById("login-signup-form");
+  const password = form.querySelector("input[name='password']").value;
+  if (!input.value.trim()) {
+    showFieldError(wrapper, errorEl, "This field is required");
+  } else if (input.value !== password) {
+    showFieldError(wrapper, errorEl, "Passwords do not match");
+  } else {
+    clearFieldError(wrapper, errorEl);
+  }
+}
+
+/**
  * Reads the login form values and triggers the login process.
  * @param {Event} event - The form submit event
  * @returns {Promise<void>}
  */
 async function handleLogin(event) {
   const form = document.getElementById("login-signup-form");
-  const email = form.querySelector("input[name='email']").value;
-  const password = form.querySelector("input[name='password']").value;
-  await login(email, password);
+  const emailInput = form.querySelector("input[name='email']");
+  const passwordInput = form.querySelector("input[name='password']");
+  const emailError = document.getElementById("email-error");
+  const passwordError = document.getElementById("password-error");
+
+  let valid = true;
+
+  if (!emailInput.value.trim()) {
+    showFieldError(emailInput.closest(".email-input"), emailError, "This field is required");
+    valid = false;
+  } else {
+    clearFieldError(emailInput.closest(".email-input"), emailError);
+  }
+
+  if (!passwordInput.value.trim()) {
+    showFieldError(passwordInput.closest(".pwd-input"), passwordError, "This field is required");
+    valid = false;
+  } else {
+    clearFieldError(passwordInput.closest(".pwd-input"), passwordError);
+  }
+
+  if (!valid) return;
+  await login(emailInput.value, passwordInput.value);
 }
 
 /**
@@ -143,10 +243,50 @@ async function handleLogin(event) {
  */
 async function handleSignup(event) {
   const form = document.getElementById("login-signup-form");
-  const name = form.querySelector("input[name='fullname']").value;
-  const email = form.querySelector("input[name='email']").value;
-  const password = form.querySelector("input[name='password']").value;
-  await signup(name, email, password);
+  const nameInput = form.querySelector("input[name='fullname']");
+  const emailInput = form.querySelector("input[name='email']");
+  const passwordInput = form.querySelector("input[name='password']");
+  const passwordConfirmInput = form.querySelector("input[name='password_confirm']");
+  const fullnameError = document.getElementById("fullname-error");
+  const emailError = document.getElementById("email-error");
+  const passwordError = document.getElementById("password-error");
+  const passwordConfirmError = document.getElementById("password-confirm-error");
+
+  let valid = true;
+
+  if (!nameInput.value.trim()) {
+    showFieldError(nameInput.closest(".name-input"), fullnameError, "This field is required");
+    valid = false;
+  } else {
+    clearFieldError(nameInput.closest(".name-input"), fullnameError);
+  }
+
+  if (!emailInput.value.trim()) {
+    showFieldError(emailInput.closest(".email-input"), emailError, "This field is required");
+    valid = false;
+  } else {
+    clearFieldError(emailInput.closest(".email-input"), emailError);
+  }
+
+  if (!passwordInput.value.trim()) {
+    showFieldError(passwordInput.closest(".pwd-input"), passwordError, "This field is required");
+    valid = false;
+  } else {
+    clearFieldError(passwordInput.closest(".pwd-input"), passwordError);
+  }
+
+  if (!passwordConfirmInput.value.trim()) {
+    showFieldError(passwordConfirmInput.closest(".pwd-input"), passwordConfirmError, "This field is required");
+    valid = false;
+  } else if (passwordConfirmInput.value !== passwordInput.value) {
+    showFieldError(passwordConfirmInput.closest(".pwd-input"), passwordConfirmError, "Passwords do not match");
+    valid = false;
+  } else {
+    clearFieldError(passwordConfirmInput.closest(".pwd-input"), passwordConfirmError);
+  }
+
+  if (!valid) return;
+  await signup(nameInput.value, emailInput.value, passwordInput.value);
 }
 
 /**
@@ -167,3 +307,7 @@ window.signup = signup;
 window.login = login;
 window.handleLogin = handleLogin;
 window.handleSignup = handleSignup;
+window.validateField = validateField;
+window.validatePasswordConfirm = validatePasswordConfirm;
+window.togglePwdVisibilityBtn = togglePwdVisibilityBtn;
+window.togglePwdVisibility = togglePwdVisibility;

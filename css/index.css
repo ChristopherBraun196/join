@@ -7,6 +7,7 @@
   width: 100% !important;
   max-width: none;
   min-height: calc(100vh - 400px);
+  padding-block: 40px;
 }
 
 #login-signup-privacy {
@@ -32,6 +33,9 @@ footer {
 }
 
 #login-signup-navbar {
+  display: flex;
+  justify-content: center;
+  width: 100%;
   padding: 0 48px;
 }
 
@@ -41,6 +45,7 @@ footer {
   justify-content: space-between;
   align-items: center;
   height: 200px;
+  max-width: 1440px;
 }
 
 #signup {
@@ -130,6 +135,64 @@ footer {
 
 #guest-login-btn a {
   color: #2a3647;
+}
+
+.field-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.field-error {
+  display: none;
+  color: #FF3B3B;
+  font-size: 12px;
+  margin-top: 4px;
+  padding-left: 4px;
+}
+
+.field-error.visible {
+  display: block;
+}
+
+.pwd-toggle-btn {
+  display: none;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  line-height: 0;
+}
+
+.pwd-toggle-btn.visible {
+  display: flex;
+}
+
+.pwd-toggle-btn .eye-on {
+  display: none;
+}
+
+.pwd-toggle-btn.showing .eye-off {
+  display: none;
+}
+
+.pwd-toggle-btn.showing .eye-on {
+  display: block;
+}
+
+.pwd-lock-icon.hidden {
+  display: none;
+}
+
+.pwd-input input[type="text"] {
+  border: none;
+  outline: none;
+  padding: 0;
+}
+
+.email-input.invalid,
+.pwd-input.invalid,
+.name-input.invalid {
+  border-color: #FF3B3B;
 }
 
 .back {

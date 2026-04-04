@@ -9,15 +9,25 @@ function getLoginTemplate() {
             <div class="spacer"></div>
         </div>
 
-        <form id="login-signup-form" onsubmit="handleLogin(event); return false;">
+        <form id="login-signup-form" onsubmit="handleLogin(event); return false;" novalidate>
             <div class="input-fields">
-                <div class="email-input">
-                    <input class="form-input" type="email" placeholder="E-Mail" name="email" autocomplete="additional-name" required/>
-                    <span><img class="input-icon" src="./assets/icons/mail.svg" alt="Email icon"></span>
+                <div class="field-wrapper">
+                    <div class="email-input">
+                        <input class="form-input" type="email" placeholder="E-Mail" name="email" autocomplete="additional-name" onblur="validateField(this, 'email-error')"/>
+                        <span><img class="input-icon" src="./assets/icons/mail.svg" alt="Email icon"></span>
+                    </div>
+                    <span class="field-error" id="email-error"></span>
                 </div>
-                <div class="pwd-input">
-                    <input class="form-input" type="password" placeholder="Password" name="password" required/>
-                    <span><img class="input-icon" id="pwd-icon" src="./assets/icons/lock.svg" alt="Lock icon"></span>
+                <div class="field-wrapper">
+                    <div class="pwd-input">
+                        <input class="form-input" type="password" placeholder="Password" name="password" onblur="validateField(this, 'password-error')" oninput="togglePwdVisibilityBtn(this)"/>
+                        <span class="pwd-lock-icon"><img class="input-icon" src="./assets/icons/lock.svg" alt="Lock icon"></span>
+                        <button type="button" class="pwd-toggle-btn" onclick="togglePwdVisibility(this)" tabindex="-1">
+                            <img class="input-icon eye-off" src="./assets/icons/visibility-off.svg" alt="Hide password">
+                            <img class="input-icon eye-on" src="./assets/icons/visibility-on.svg" alt="Show password">
+                        </button>
+                    </div>
+                    <span class="field-error" id="password-error"></span>
                 </div>
             </div>
             <div class="login-btns">
@@ -41,29 +51,49 @@ function getSignupTemplate() {
             <div class="spacer"></div>
         </div>
 
-        <form id="login-signup-form" onsubmit="handleSignup(event); return false;">
+        <form id="login-signup-form" onsubmit="handleSignup(event); return false;" novalidate>
             <div class="input-fields">
-                <div class="name-input">
-                    <input class="form-input" type="text" placeholder="Full Name" name="fullname" autocomplete="name" required/>
-                    <span><img class="input-icon" src="./assets/icons/person.svg" alt="User icon"></span>
+                <div class="field-wrapper">
+                    <div class="name-input">
+                        <input class="form-input" type="text" placeholder="Full Name" name="fullname" autocomplete="name" onblur="validateField(this, 'fullname-error')"/>
+                        <span><img class="input-icon" src="./assets/icons/person.svg" alt="User icon"></span>
+                    </div>
+                    <span class="field-error" id="fullname-error"></span>
                 </div>
 
-                <div class="email-input">
-                    <input class="form-input" type="email" placeholder="E-Mail" name="email" autocomplete="email" required/>
-                    <span><img class="input-icon" src="./assets/icons/mail.svg" alt="Email icon"></span>
+                <div class="field-wrapper">
+                    <div class="email-input">
+                        <input class="form-input" type="email" placeholder="E-Mail" name="email" autocomplete="email" onblur="validateField(this, 'email-error')"/>
+                        <span><img class="input-icon" src="./assets/icons/mail.svg" alt="Email icon"></span>
+                    </div>
+                    <span class="field-error" id="email-error"></span>
                 </div>
 
-                <div class="pwd-input">
-                    <input class="form-input" type="password" placeholder="Password" name="password" required/>
-                    <span><img class="input-icon" id="pwd-icon" src="./assets/icons/lock.svg" alt="Lock icon"></span>
+                <div class="field-wrapper">
+                    <div class="pwd-input">
+                        <input class="form-input" type="password" placeholder="Password" name="password" onblur="validateField(this, 'password-error')" oninput="togglePwdVisibilityBtn(this)"/>
+                        <span class="pwd-lock-icon"><img class="input-icon" src="./assets/icons/lock.svg" alt="Lock icon"></span>
+                        <button type="button" class="pwd-toggle-btn" onclick="togglePwdVisibility(this)" tabindex="-1">
+                            <img class="input-icon eye-off" src="./assets/icons/visibility-off.svg" alt="Hide password">
+                            <img class="input-icon eye-on" src="./assets/icons/visibility-on.svg" alt="Show password">
+                        </button>
+                    </div>
+                    <span class="field-error" id="password-error"></span>
                 </div>
 
-                <div class="pwd-input">
-                    <input class="form-input" type="password" placeholder="Confirm Password" name="password_confirm"/>
-                    <span><img class="input-icon" id="pwd-confirm-icon" src="./assets/icons/lock.svg" alt="Lock icon"></span>
+                <div class="field-wrapper">
+                    <div class="pwd-input">
+                        <input class="form-input" type="password" placeholder="Confirm Password" name="password_confirm" onblur="validatePasswordConfirm(this)" oninput="togglePwdVisibilityBtn(this)"/>
+                        <span class="pwd-lock-icon"><img class="input-icon" src="./assets/icons/lock.svg" alt="Lock icon"></span>
+                        <button type="button" class="pwd-toggle-btn" onclick="togglePwdVisibility(this)" tabindex="-1">
+                            <img class="input-icon eye-off" src="./assets/icons/visibility-off.svg" alt="Hide password">
+                            <img class="input-icon eye-on" src="./assets/icons/visibility-on.svg" alt="Show password">
+                        </button>
+                    </div>
+                    <span class="field-error" id="password-confirm-error"></span>
                 </div>
                 <div class="accept-input">
-                    <input type="checkbox" id="accept-btn" required/><p>I accept the <a class="highlighted" href="./legal.html">Privacy policy</a></p>
+                    <input type="checkbox" id="accept-btn"/><p>I accept the <a class="highlighted" href="./legal.html">Privacy policy</a></p>
                 </div>
             </div>
 
@@ -123,22 +153,24 @@ function getSidebarTemplate(summary, addtask, board, contact, privacy, legal) {
  */
 function getTopbarTemplate() {
   return `
-  <p id="slogan">Kanban Project Management Tool</p>
-  <img src="/assets/img/logo-dark.svg" class="topbar_logo">
-  
-  <div class="right-topbar-side">
-        <button id="help">
-            <a href="help.html"><img src="./assets/icons/help.svg" /></a>
-        </button>
-        <div id="user-menue" onclick="toggleUserMenue(event)">
-        </div>
-        <div id="user-menue-dropdown">
-          <a href="./legal.html">Legal Notice</a>
-          <a href="./privacy.html">Privacy Policy</a>
-          <a href="#" onclick="logout()">Log Out</a>
-        </div>
+  <div id="topbar-content">
+    <p id="slogan">Kanban Project Management Tool</p>
+    <img src="/assets/img/logo-dark.svg" class="topbar_logo">
+
+    <div class="right-topbar-side">
+          <button id="help">
+              <a href="help.html"><img src="./assets/icons/help.svg" /></a>
+          </button>
+          <div id="user-menue" onclick="toggleUserMenue(event)">
+          </div>
+          <div id="user-menue-dropdown">
+            <a href="./legal.html">Legal Notice</a>
+            <a href="./privacy.html">Privacy Policy</a>
+            <a href="#" onclick="logout()">Log Out</a>
+          </div>
+    </div>
   </div>
-    `;
+  `;
 }
 
 /**
