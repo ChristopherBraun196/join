@@ -26,27 +26,34 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>let currentDraggedElement;
-let currentEditTaskId = null;
+            <pre class="prettyprint source linenums"><code>let currentEditTaskId = null;
 let tasks = [];
 
+const COLUMNS = ["toDo", "inProgress", "await", "done"];
+const COLUMN_LABELS = {
+  toDo: "To-do",
+  inProgress: "In progress",
+  await: "Await feedback",
+  done: "Done",
+};
+
 /**
- * Initializes the board by running setup, loading tasks and rendering. 
+ * Initializes the board by running setup, loading tasks and rendering.
  * @param {string} site - The current site/page identifier
  * @returns {Promise&lt;void>}
  */
-
 async function initBoard(site) {
   init(site);
   await initTasks();
-  renderAll();
+  await renderAll();
+  document.addEventListener("click", handleOutsideClick);
+  window.addEventListener("resize", updateScrollArrows);
 }
 
 /**
  * Initializes the tasks by loading them from the database.
  * @returns {Promise&lt;void>}
  */
-
 async function initTasks() {
   const data = await loadData("/tasks");
   tasks = Object.entries(data).map(([id, task]) => ({ ...task, id }));
@@ -56,21 +63,20 @@ async function initTasks() {
  * Renders all task sections on the board.
  * @returns {Promise&lt;void>}
  */
-
 async function renderAll() {
   await renderSection("toDo");
   await renderSection("inProgress");
   await renderSection("await");
   await renderSection("done");
-  updateNoTaskPlaceholders();  
+  updateNoTaskPlaceholders();
+  updateScrollArrows();
 }
 
 /**
- * Render all Tasks and give the status on the Board
+ * Render all Tasks for a given status column.
  * @param {string} section - The column name (e.g. "toDo", "inProgress")
- * @returns {Promoise&lt;void>} 
+ * @returns {Promise&lt;void>}
  */
-
 async function renderSection(section) {
   let taskStatus = tasks.filter((t) => t["status"] == section);
   document.getElementById(section).innerHTML = getDropZoneTemplate(section);
@@ -90,46 +96,91 @@ async function renderSection(section) {
     );
   }
 }
-/**
- * Starts Dragging the selected tasks
- * @param {string} id - The ID of the task being dragged
- */
-
-function startDragging(id) {
-  currentDraggedElement = id;
-}
-
-/**
- * Allows a dragged element to be dropped on this target.
- * @param {DragEvent} ev - The drag event
- */
-
-function allowDrop(ev) {
-  ev.preventDefault();
-}
 
 /**
  * Renders the given columns and updates the placeholders.
- * @param  {...string} columns - Column names to re-render (e.g. "toDo", "done")
+ * @param  {...string} columns - Column names to re-render
  * @returns {Promise&lt;void>}
  */
-
 async function reRenderColumns(...columns) {
   for (const col of columns) await renderSection(col);
   updateNoTaskPlaceholders();
+  updateScrollArrows();
+}
+
+/* =========================================================
+   MOVE-TO OVERLAY
+   ========================================================= */
+
+/**
+ * Returns the neighbor columns a task can move to.
+ * @param {string} currentStatus - The current column ID
+ * @returns {Object[]} Array of {id, label, direction}
+ */
+function getMoveTargets(currentStatus) {
+  const idx = COLUMNS.indexOf(currentStatus);
+  const targets = [];
+  if (idx > 0) {
+    targets.push({
+      id: COLUMNS[idx - 1],
+      label: COLUMN_LABELS[COLUMNS[idx - 1]],
+      direction: "up",
+    });
+  }
+  if (idx &lt; COLUMNS.length - 1) {
+    targets.push({
+      id: COLUMNS[idx + 1],
+      label: COLUMN_LABELS[COLUMNS[idx + 1]],
+      direction: "down",
+    });
+  }
+  return targets;
 }
 
 /**
- * Moves the dragged task to a new status column.
- * @param {string} newStatus - The target column name (e.g. "toDo", "done")
- * @returns {Promise&lt;void>}
+ * Toggles the move-to overlay on a task card.
+ * @param {Event} event - The click event
+ * @param {string} taskId - The task ID
+ * @param {string} currentStatus - The current column of the task
  */
+function toggleMoveOverlay(event, taskId, currentStatus) {
+  event.stopPropagation();
+  const existingOverlay = document.getElementById("move-overlay-" + taskId);
+  closeAllOverlays();
+  if (existingOverlay) return;
 
-async function moveTo(newStatus) {
-  const task = tasks.find((t) => t.id === currentDraggedElement);
+  const card = event.currentTarget.closest(".task-card");
+  const targets = getMoveTargets(currentStatus);
+  const overlay = document.createElement("div");
+  overlay.className = "move-overlay";
+  overlay.id = "move-overlay-" + taskId;
+  overlay.innerHTML = getMoveOverlayHTML(taskId, targets);
+  card.appendChild(overlay);
+}
+
+/**
+ * Returns the HTML for the move overlay content.
+ */
+function getMoveOverlayHTML(taskId, targets) {
+  let html = '&lt;p class="move-overlay-title">Move to&lt;/p>';
+  for (const t of targets) {
+    const arrow = t.direction === "up" ? "↑" : "↓";
+    html += `&lt;button class="move-overlay-option" onclick="moveTaskTo(event, '${taskId}', '${t.id}')">
+      &lt;span class="move-arrow">${arrow}&lt;/span> ${t.label}
+    &lt;/button>`;
+  }
+  return html;
+}
+
+/**
+ * Moves a task to a new column via the overlay.
+ */
+async function moveTaskTo(event, taskId, newStatus) {
+  event.stopPropagation();
+  const task = tasks.find((t) => t.id === taskId);
   if (!task) return;
   const oldStatus = task.status;
-  if (oldStatus == newStatus) return;
+  if (oldStatus === newStatus) return;
 
   task.status = newStatus;
   try {
@@ -139,36 +190,97 @@ async function moveTo(newStatus) {
   }
   await reRenderColumns(oldStatus, newStatus);
 }
-/**
- * Highlights the dropzone when hovering over it.
- * @param {string} id - The column ID of the dropzone to highlight
- */
 
-function highlight(id) {
-  const dropzone = document.getElementById("dropzone-" + id);
-  if (dropzone) dropzone.classList.add("drag-area-highlight");
+/**
+ * Closes all open move overlays.
+ */
+function closeAllOverlays() {
+  document.querySelectorAll(".move-overlay").forEach((el) => el.remove());
 }
 
 /**
- * Removes the highlight from the dropzone after dragging.
- * @param {string} id - The column ID of the dropzone to unhighlight
+ * Handles clicks outside overlays to close them.
  */
+function handleOutsideClick(event) {
+  if (!event.target.closest(".move-overlay") &amp;&amp; !event.target.closest(".move-to-btn")) {
+    closeAllOverlays();
+  }
+}
 
-function removeHighlight(id) {
-  const dropzone = document.getElementById("dropzone-" + id);
-  if (dropzone) dropzone.classList.remove("drag-area-highlight");
+/* =========================================================
+   SCROLL ARROWS
+   ========================================================= */
+
+/**
+ * Scrolls a column's task-cards container.
+ * Desktop: vertical, Mobile: horizontal.
+ * @param {string} columnId - e.g. "toDo"
+ * @param {number} direction - -1 = up/left, 1 = down/right
+ */
+function scrollColumn(columnId, direction) {
+  const container = document.getElementById(columnId);
+  if (!container) return;
+  const isMobile = window.innerWidth &lt;= 1200;
+  const scrollAmount = isMobile ? 260 : 280;
+
+  if (isMobile) {
+    container.scrollBy({ left: direction * scrollAmount, behavior: "smooth" });
+  } else {
+    container.scrollBy({ top: direction * scrollAmount, behavior: "smooth" });
+  }
+  setTimeout(() => updateScrollArrows(), 400);
 }
 
 /**
- * * Shows or hides the "no tasks" placeholder for each column.
+ * Shows/hides individual scroll arrows based on overflow and position.
  */
+function updateScrollArrows() {
+  for (const col of COLUMNS) {
+    const container = document.getElementById(col);
+    const body = document.querySelector(`.board-task-body[data-column="${col}"]`);
+    if (!container || !body) continue;
 
+    const arrowUp = body.querySelector(".arrow-up");
+    const arrowDown = body.querySelector(".arrow-down");
+    if (!arrowUp || !arrowDown) continue;
+
+    const isMobile = window.innerWidth &lt;= 1200;
+
+    if (isMobile) {
+      const hasOverflow = container.scrollWidth > container.clientWidth + 2;
+      if (!hasOverflow) {
+        arrowUp.classList.add("hidden");
+        arrowDown.classList.add("hidden");
+      } else {
+        arrowUp.classList.toggle("hidden", container.scrollLeft &lt;= 2);
+        arrowDown.classList.toggle("hidden",
+          container.scrollLeft + container.clientWidth >= container.scrollWidth - 2);
+      }
+    } else {
+      const hasOverflow = container.scrollHeight > container.clientHeight + 2;
+      if (!hasOverflow) {
+        arrowUp.classList.add("hidden");
+        arrowDown.classList.add("hidden");
+      } else {
+        arrowUp.classList.toggle("hidden", container.scrollTop &lt;= 2);
+        arrowDown.classList.toggle("hidden",
+          container.scrollTop + container.clientHeight >= container.scrollHeight - 2);
+      }
+    }
+  }
+}
+
+/* =========================================================
+   PLACEHOLDER
+   ========================================================= */
+
+/**
+ * Shows or hides the "no tasks" placeholder for each column.
+ */
 function updateNoTaskPlaceholders() {
-  const columns = ["toDo", "inProgress", "await", "done"];
-
-  for (let i = 0; i &lt; columns.length; i++) {
-    const column = document.getElementById(columns[i]);
-    const placeholder = document.getElementById("placeholder-" + columns[i]);
+  for (let i = 0; i &lt; COLUMNS.length; i++) {
+    const column = document.getElementById(COLUMNS[i]);
+    const placeholder = document.getElementById("placeholder-" + COLUMNS[i]);
     const hasTasks = column.querySelector(".task-card") !== null;
     if (!hasTasks) {
       placeholder.classList.remove("hidden");
@@ -178,11 +290,9 @@ function updateNoTaskPlaceholders() {
   }
 }
 
-/**
- * Loads and returns all contacts assigned to a task.
- * @param {Array|Object} assignedTo - The assigned contacts as array or object
- * @returns {Promise&lt;Object[]>} Array of matching contact objects
- */
+/* =========================================================
+   CONTACTS
+   ========================================================= */
 
 async function getAssignedContacts(assignedTo) {
   const data = await loadData("/contacts");
@@ -199,48 +309,9 @@ async function getAssignedContacts(assignedTo) {
   return result;
 }
 
-/**
- * Handles touch movement for drag-and-drop on mobile devices.
- * @param {TouchEvent} e - The touch move event
- */
-
-function handleTouchMove(e) {
-  e.preventDefault();
-  const touch = e.touches[0];
-  const target = document.elementFromPoint(touch.clientX, touch.clientY);
-  const column = target?.closest("#toDo, #inProgress, #await, #done");
-
-  const columns = ["toDo", "inProgress", "await", "done"];
-  for (let i = 0; i &lt; columns.length; i++) {
-    removeHighlight(columns[i]);
-  }
-
-  if (column) highlight(column.id);
-}
-
-/**
- * Handles the end of a touch drag-and-drop interaction.
- * @param {TouchEvent} e - The touch end event
- */
-
-function handleTouchEnd(e) {
-  const touch = e.changedTouches[0];
-  const target = document.elementFromPoint(touch.clientX, touch.clientY);
-  const column = target?.closest("#toDo, #inProgress, #await, #done");
-
-  const columns = ["toDo", "inProgress", "await", "done"];
-  for (let i = 0; i &lt; columns.length; i++) {
-    removeHighlight(columns[i]);
-  }
-
-  if (column) moveTo(column.id);
-}
-
-
-/**
- *  Filters tasks on the board based on the search input.
- * @returns {Promise&lt;void>}
- */
+/* =========================================================
+   SEARCH / FILTER
+   ========================================================= */
 
 async function findTask() {
   const query = document.getElementById("searchTask").value.toLowerCase();
@@ -259,17 +330,10 @@ async function findTask() {
   await renderFilteredTasks(matches);
 }
 
-/**
- *  Renders filtered tasks into their respective columns.
- * @param {Object[]} filteredTasks - Array of task objects to render
- * @returns {Promise&lt;void>}
- */
-
 async function renderFilteredTasks(filteredTasks) {
   const sections = ["toDo", "inProgress", "await", "done"];
 
   for (const section of sections) {
-    const container = document.getElementById(section);
     document.getElementById(section).innerHTML = getDropZoneTemplate(section);
     const dropZone = document.getElementById(`dropzone-${section}`);
     dropZone.innerHTML = "";
@@ -285,15 +349,12 @@ async function renderFilteredTasks(filteredTasks) {
     }
   }
   updateNoTaskPlaceholders();
+  updateScrollArrows();
 }
 
-/**
- * Toggles the completed state of a subtask and refreshes the edit dialog.
- * @param {number} subtaskIndex - The index of the subtask in the subtasks array
- * @param {boolean} isCompleted - The current completed state of the subtask
- * @param {string} taskId - The ID of the parent task
- * @returns {Promise&lt;void>}
- */
+/* =========================================================
+   EDIT TASK (unchanged from original)
+   ========================================================= */
 
 async function toggleSubtaskEdit(subtaskIndex, isCompleted, taskId) {
   await putData(
@@ -305,13 +366,6 @@ async function toggleSubtaskEdit(subtaskIndex, isCompleted, taskId) {
   const assignedContacts = await getAssignedContacts(element.assignedTo);
   openEditTask(taskId);
 }
-
-/**
- * Returns the subtask HTML for the edit dialog, or a fallback message.
- * @param {Object[]} subtasks - Array of subtask objects
- * @param {string} taskID - The ID of the parent task
- * @returns {string} HTML string of all subtasks or fallback message
- */
 
 function checkIfSubtasksAvaiableEdit(subtasks, taskID) {
   if (subtasks) {
@@ -325,13 +379,6 @@ function checkIfSubtasksAvaiableEdit(subtasks, taskID) {
   }
 }
 
-/**
- * Builds the HTML for all contact options in the assignment dropdown.
- * @param {Object} allContacts - All contacts from the database
- * @param {string[]} assignedIds - Array of already assigned contact IDs
- * @returns {string} HTML string of all contact option elements
- */
-
 function buildContactOptions(allContacts, assignedIds) {
   return Object.entries(allContacts)
     .map(([id, contact]) => {
@@ -341,13 +388,6 @@ function buildContactOptions(allContacts, assignedIds) {
     .join("");
 }
 
-/**
- * Builds the HTML badges for all assigned contacts.
- * @param {Object} allContacts - All contacts from the database
- * @param {string[]} assignedIds - Array of assigned contact IDs
- * @returns {string} HTML string of contact badge elements
- */
-
 function buildContactBadges(allContacts, assignedIds) {
   return Object.entries(allContacts)
     .filter(([id]) => assignedIds.includes(id))
@@ -355,24 +395,11 @@ function buildContactBadges(allContacts, assignedIds) {
     .join("");
 }
 
-/**
- * Builds the full assigned contacts section for the edit dialog.
- * @param {Object} allContacts - All contacts from the database
- * @param {string[]} assignedIds - Array of assigned contact IDs
- * @returns {string} HTML string of the assigned contacts edit section
- */
-
 function buildAssignedContactsEdit(allContacts, assignedIds) {
   const optionsHTML = buildContactOptions(allContacts, assignedIds);
   const badgesHTML = buildContactBadges(allContacts, assignedIds);
   return getAssignedContactsEditTemplate(optionsHTML, badgesHTML);
 }
-
-/**
- * Handles keyboard input for the subtask field in edit mode.
- * @param {KeyboardEvent} event - The keyboard event
- * @param {string} taskId - The ID of the parent task
- */
 
 function handleSubtaskKeyEdit(event, taskId) {
   if (event.key === "Enter") {
@@ -382,21 +409,11 @@ function handleSubtaskKeyEdit(event, taskId) {
   if (event.key === "Escape") clearSubtaskInputEdit();
 }
 
-/**
- * Switches a subtask list item into editing mode.
- * @param {HTMLElement} span - The subtask span element that was clicked
- */
-
 function editSubtaskEditMode(span) {
   const li = span.closest("li");
   li.innerHTML = getSubtaskEditingStateTemplate(span.textContent);
   li.querySelector("input").focus();
 }
-
-/**
- * Confirms the subtask edit and updates the list item.
- * @param {HTMLElement} btn - The confirm button that was clicked
- */
 
 function confirmSubtaskEditMode(btn) {
   const li = btn.closest("li");
@@ -411,6 +428,17 @@ function confirmSubtaskEditMode(btn) {
     li.dataset.index,
   );
 }
+
+function getPriorityButtonsTemplate(currentPriority) {
+  return ["urgent", "medium", "low"]
+    .map((p) => {
+      const active = currentPriority === p ? "active" : "";
+      return `&lt;button class="prio-btn ${active}" data-priority="${p}" onclick="setEditPriority(event, '${p}')">
+      ${capitalize(p)} &lt;img src="./assets/icons/priority-${p}.svg" />
+    &lt;/button>`;
+    })
+    .join("");
+}
 </code></pre>
         </article>
     </section>
@@ -421,13 +449,13 @@ function confirmSubtaskEditMode(btn) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addSubtask">addSubtask</a></li><li><a href="global.html#addSubtaskEdit">addSubtaskEdit</a></li><li><a href="global.html#allowDrop">allowDrop</a></li><li><a href="global.html#appendContactDetail">appendContactDetail</a></li><li><a href="global.html#buildAssignedContactsEdit">buildAssignedContactsEdit</a></li><li><a href="global.html#buildContactBadges">buildContactBadges</a></li><li><a href="global.html#buildContactList">buildContactList</a></li><li><a href="global.html#buildContactOptions">buildContactOptions</a></li><li><a href="global.html#calcSubtaskProgress">calcSubtaskProgress</a></li><li><a href="global.html#capitalize">capitalize</a></li><li><a href="global.html#checkIfSubtaskActive">checkIfSubtaskActive</a></li><li><a href="global.html#checkIfSubtasksAvaiable">checkIfSubtasksAvaiable</a></li><li><a href="global.html#checkIfSubtasksAvaiableEdit">checkIfSubtasksAvaiableEdit</a></li><li><a href="global.html#clearActiveContact">clearActiveContact</a></li><li><a href="global.html#clearAddTaskForm">clearAddTaskForm</a></li><li><a href="global.html#clearDialogInputs">clearDialogInputs</a></li><li><a href="global.html#clearFieldError">clearFieldError</a></li><li><a href="global.html#clearSubtaskInput">clearSubtaskInput</a></li><li><a href="global.html#clearSubtaskInputEdit">clearSubtaskInputEdit</a></li><li><a href="global.html#closeAddTaskDialog">closeAddTaskDialog</a></li><li><a href="global.html#closeContactDialog">closeContactDialog</a></li><li><a href="global.html#closeDialogBoard">closeDialogBoard</a></li><li><a href="global.html#confirmEditSubtask">confirmEditSubtask</a></li><li><a href="global.html#confirmSubtaskEditMode">confirmSubtaskEditMode</a></li><li><a href="global.html#createContactEntry">createContactEntry</a></li><li><a href="global.html#createContactItem">createContactItem</a></li><li><a href="global.html#createLetterDivider">createLetterDivider</a></li><li><a href="global.html#createSubtaskItem">createSubtaskItem</a></li><li><a href="global.html#createTask">createTask</a></li><li><a href="global.html#createUserEntry">createUserEntry</a></li><li><a href="global.html#deleteContact">deleteContact</a></li><li><a href="global.html#deleteData">deleteData</a></li><li><a href="global.html#deleteSubtaskEdit">deleteSubtaskEdit</a></li><li><a href="global.html#deleteTask">deleteTask</a></li><li><a href="global.html#editContact">editContact</a></li><li><a href="global.html#editSubtask">editSubtask</a></li><li><a href="global.html#editSubtaskEditMode">editSubtaskEditMode</a></li><li><a href="global.html#fillEditDialogInputs">fillEditDialogInputs</a></li><li><a href="global.html#findTask">findTask</a></li><li><a href="global.html#focusSubtaskInput">focusSubtaskInput</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#formatLabel">formatLabel</a></li><li><a href="global.html#generateContactJson">generateContactJson</a></li><li><a href="global.html#generateDialog">generateDialog</a></li><li><a href="global.html#generateTaskJson">generateTaskJson</a></li><li><a href="global.html#generateTopbar">generateTopbar</a></li><li><a href="global.html#getActiveContactData">getActiveContactData</a></li><li><a href="global.html#getAmountSolvedSubtasks">getAmountSolvedSubtasks</a></li><li><a href="global.html#getAssignedContacts">getAssignedContacts</a></li><li><a href="global.html#getAssignedTo">getAssignedTo</a></li><li><a href="global.html#getAssignedToAvatars">getAssignedToAvatars</a></li><li><a href="global.html#getContactEmailAdress">getContactEmailAdress</a></li><li><a href="global.html#getContactName">getContactName</a></li><li><a href="global.html#getContactPhone">getContactPhone</a></li><li><a href="global.html#getErrorElement">getErrorElement</a></li><li><a href="global.html#getGreeting">getGreeting</a></li><li><a href="global.html#getInitials">getInitials</a></li><li><a href="global.html#getMemberAvatar">getMemberAvatar</a></li><li><a href="global.html#getNextDeadline">getNextDeadline</a></li><li><a href="global.html#getNumberOfSubtasks">getNumberOfSubtasks</a></li><li><a href="global.html#getPriorityButtonsTemplate">getPriorityButtonsTemplate</a></li><li><a href="global.html#getSubtaskData">getSubtaskData</a></li><li><a href="global.html#getSubtasks">getSubtasks</a></li><li><a href="global.html#getSubtasksEditTemplate">getSubtasksEditTemplate</a></li><li><a href="global.html#getTaskCategory">getTaskCategory</a></li><li><a href="global.html#getTaskCategoryLabelColor">getTaskCategoryLabelColor</a></li><li><a href="global.html#getTaskDescription">getTaskDescription</a></li><li><a href="global.html#getTaskDueDate">getTaskDueDate</a></li><li><a href="global.html#getTaskPriority">getTaskPriority</a></li><li><a href="global.html#getTaskTitle">getTaskTitle</a></li><li><a href="global.html#groupContactsByLetter">groupContactsByLetter</a></li><li><a href="global.html#guestLogin">guestLogin</a></li><li><a href="global.html#handleLogin">handleLogin</a></li><li><a href="global.html#handleLoginError">handleLoginError</a></li><li><a href="global.html#handleSignup">handleSignup</a></li><li><a href="global.html#handleSignupError">handleSignupError</a></li><li><a href="global.html#handleSubtaskKey">handleSubtaskKey</a></li><li><a href="global.html#handleSubtaskKeyEdit">handleSubtaskKeyEdit</a></li><li><a href="global.html#handleTouchEnd">handleTouchEnd</a></li><li><a href="global.html#handleTouchMove">handleTouchMove</a></li><li><a href="global.html#highlight">highlight</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#initAddTask">initAddTask</a></li><li><a href="global.html#initBoard">initBoard</a></li><li><a href="global.html#initSummary">initSummary</a></li><li><a href="global.html#initTasks">initTasks</a></li><li><a href="global.html#isFieldEmpty">isFieldEmpty</a></li><li><a href="global.html#isGuest">isGuest</a></li><li><a href="global.html#loadContacts">loadContacts</a></li><li><a href="global.html#loadData">loadData</a></li><li><a href="global.html#loadSidebar">loadSidebar</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#logout">logout</a></li><li><a href="global.html#moveTo">moveTo</a></li><li><a href="global.html#onSubtaskInput">onSubtaskInput</a></li><li><a href="global.html#onSubtaskInputEdit">onSubtaskInputEdit</a></li><li><a href="global.html#openAddTaskDialog">openAddTaskDialog</a></li><li><a href="global.html#openContactDetail">openContactDetail</a></li><li><a href="global.html#openContactDialog">openContactDialog</a></li><li><a href="global.html#openDialogBoard">openDialogBoard</a></li><li><a href="global.html#openEditTask">openEditTask</a></li><li><a href="global.html#postData">postData</a></li><li><a href="global.html#putData">putData</a></li><li><a href="global.html#reRenderColumns">reRenderColumns</a></li><li><a href="global.html#removeHighlight">removeHighlight</a></li><li><a href="global.html#removeSubtask">removeSubtask</a></li><li><a href="global.html#renderAll">renderAll</a></li><li><a href="global.html#renderContacts">renderContacts</a></li><li><a href="global.html#renderFilteredTasks">renderFilteredTasks</a></li><li><a href="global.html#renderSection">renderSection</a></li><li><a href="global.html#renderSelectedAvatars">renderSelectedAvatars</a></li><li><a href="global.html#renderUserMenue">renderUserMenue</a></li><li><a href="global.html#resetDialog">resetDialog</a></li><li><a href="global.html#saveContact">saveContact</a></li><li><a href="global.html#saveEditTask">saveEditTask</a></li><li><a href="global.html#selectCategory">selectCategory</a></li><li><a href="global.html#selectRandomAvatarColor">selectRandomAvatarColor</a></li><li><a href="global.html#setEditDialogButtons">setEditDialogButtons</a></li><li><a href="global.html#setEditPriority">setEditPriority</a></li><li><a href="global.html#setGreeting">setGreeting</a></li><li><a href="global.html#setPriority">setPriority</a></li><li><a href="global.html#setTopbar">setTopbar</a></li><li><a href="global.html#showFieldError">showFieldError</a></li><li><a href="global.html#showMessage">showMessage</a></li><li><a href="global.html#signup">signup</a></li><li><a href="global.html#startDragging">startDragging</a></li><li><a href="global.html#submitContact">submitContact</a></li><li><a href="global.html#switchToLogin">switchToLogin</a></li><li><a href="global.html#switchToSignup">switchToSignup</a></li><li><a href="global.html#toggleAssignedContact">toggleAssignedContact</a></li><li><a href="global.html#toggleContact">toggleContact</a></li><li><a href="global.html#toggleDropdown">toggleDropdown</a></li><li><a href="global.html#toggleEditDropdown">toggleEditDropdown</a></li><li><a href="global.html#toggleSubtask">toggleSubtask</a></li><li><a href="global.html#toggleSubtaskEdit">toggleSubtaskEdit</a></li><li><a href="global.html#toggleUserMenue">toggleUserMenue</a></li><li><a href="global.html#updateAssignedBadges">updateAssignedBadges</a></li><li><a href="global.html#updateNoTaskPlaceholders">updateNoTaskPlaceholders</a></li><li><a href="global.html#validateForm">validateForm</a></li><li><a href="global.html#validateInputs">validateInputs</a></li><li><a href="global.html#validateOnBlur">validateOnBlur</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addSubtask">addSubtask</a></li><li><a href="global.html#addSubtaskEdit">addSubtaskEdit</a></li><li><a href="global.html#appendContactDetail">appendContactDetail</a></li><li><a href="global.html#backToContacts">backToContacts</a></li><li><a href="global.html#buildContactList">buildContactList</a></li><li><a href="global.html#calcSubtaskProgress">calcSubtaskProgress</a></li><li><a href="global.html#capitalize">capitalize</a></li><li><a href="global.html#checkIfSubtaskActive">checkIfSubtaskActive</a></li><li><a href="global.html#checkIfSubtasksAvaiable">checkIfSubtasksAvaiable</a></li><li><a href="global.html#clearActiveContact">clearActiveContact</a></li><li><a href="global.html#clearAddTaskForm">clearAddTaskForm</a></li><li><a href="global.html#clearDialogInputs">clearDialogInputs</a></li><li><a href="global.html#clearFieldError">clearFieldError</a></li><li><a href="global.html#clearSubtaskInput">clearSubtaskInput</a></li><li><a href="global.html#clearSubtaskInputEdit">clearSubtaskInputEdit</a></li><li><a href="global.html#closeAddTaskDialog">closeAddTaskDialog</a></li><li><a href="global.html#closeAllOverlays">closeAllOverlays</a></li><li><a href="global.html#closeContactDialog">closeContactDialog</a></li><li><a href="global.html#closeDialogBoard">closeDialogBoard</a></li><li><a href="global.html#confirmEditSubtask">confirmEditSubtask</a></li><li><a href="global.html#createContactEntry">createContactEntry</a></li><li><a href="global.html#createContactItem">createContactItem</a></li><li><a href="global.html#createLetterDivider">createLetterDivider</a></li><li><a href="global.html#createSubtaskItem">createSubtaskItem</a></li><li><a href="global.html#createTask">createTask</a></li><li><a href="global.html#createUserEntry">createUserEntry</a></li><li><a href="global.html#deleteContact">deleteContact</a></li><li><a href="global.html#deleteData">deleteData</a></li><li><a href="global.html#deleteSubtaskEdit">deleteSubtaskEdit</a></li><li><a href="global.html#deleteTask">deleteTask</a></li><li><a href="global.html#editContact">editContact</a></li><li><a href="global.html#editSubtask">editSubtask</a></li><li><a href="global.html#fillEditDialogInputs">fillEditDialogInputs</a></li><li><a href="global.html#focusSubtaskInput">focusSubtaskInput</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#formatLabel">formatLabel</a></li><li><a href="global.html#generateContactJson">generateContactJson</a></li><li><a href="global.html#generateDialog">generateDialog</a></li><li><a href="global.html#generateTaskJson">generateTaskJson</a></li><li><a href="global.html#generateTopbar">generateTopbar</a></li><li><a href="global.html#generateUUID">generateUUID</a></li><li><a href="global.html#getActiveContactData">getActiveContactData</a></li><li><a href="global.html#getAddTaskDialogTemplate">getAddTaskDialogTemplate</a></li><li><a href="global.html#getAmountSolvedSubtasks">getAmountSolvedSubtasks</a></li><li><a href="global.html#getAssignedContactTemplate">getAssignedContactTemplate</a></li><li><a href="global.html#getAssignedContactsEditTemplate">getAssignedContactsEditTemplate</a></li><li><a href="global.html#getAssignedTo">getAssignedTo</a></li><li><a href="global.html#getAssignedToAvatars">getAssignedToAvatars</a></li><li><a href="global.html#getContactBadgeTemplate">getContactBadgeTemplate</a></li><li><a href="global.html#getContactDetailTemplate">getContactDetailTemplate</a></li><li><a href="global.html#getContactEmailAdress">getContactEmailAdress</a></li><li><a href="global.html#getContactItemTemplate">getContactItemTemplate</a></li><li><a href="global.html#getContactName">getContactName</a></li><li><a href="global.html#getContactOptionTemplate">getContactOptionTemplate</a></li><li><a href="global.html#getContactPhone">getContactPhone</a></li><li><a href="global.html#getDialogBoardEditTemplate">getDialogBoardEditTemplate</a></li><li><a href="global.html#getDialogBoardTemplate">getDialogBoardTemplate</a></li><li><a href="global.html#getDropZoneTemplate">getDropZoneTemplate</a></li><li><a href="global.html#getErrorElement">getErrorElement</a></li><li><a href="global.html#getGreeting">getGreeting</a></li><li><a href="global.html#getInitials">getInitials</a></li><li><a href="global.html#getLoginTemplate">getLoginTemplate</a></li><li><a href="global.html#getMemberAvatar">getMemberAvatar</a></li><li><a href="global.html#getMoveOverlayHTML">getMoveOverlayHTML</a></li><li><a href="global.html#getMoveTargets">getMoveTargets</a></li><li><a href="global.html#getNextDeadline">getNextDeadline</a></li><li><a href="global.html#getNumberOfSubtasks">getNumberOfSubtasks</a></li><li><a href="global.html#getPriorityButtonsTemplate">getPriorityButtonsTemplate</a></li><li><a href="global.html#getSidebarGuestTemplate">getSidebarGuestTemplate</a></li><li><a href="global.html#getSidebarTemplate">getSidebarTemplate</a></li><li><a href="global.html#getSignupTemplate">getSignupTemplate</a></li><li><a href="global.html#getSubtaskData">getSubtaskData</a></li><li><a href="global.html#getSubtaskEditItemTemplate">getSubtaskEditItemTemplate</a></li><li><a href="global.html#getSubtaskEditingStateTemplate">getSubtaskEditingStateTemplate</a></li><li><a href="global.html#getSubtasks">getSubtasks</a></li><li><a href="global.html#getSubtasksEditTemplate">getSubtasksEditTemplate</a></li><li><a href="global.html#getSubtasksTemplate">getSubtasksTemplate</a></li><li><a href="global.html#getSummaryCounts">getSummaryCounts</a></li><li><a href="global.html#getTaskCategory">getTaskCategory</a></li><li><a href="global.html#getTaskCategoryLabelColor">getTaskCategoryLabelColor</a></li><li><a href="global.html#getTaskDescription">getTaskDescription</a></li><li><a href="global.html#getTaskDueDate">getTaskDueDate</a></li><li><a href="global.html#getTaskPriority">getTaskPriority</a></li><li><a href="global.html#getTaskTitle">getTaskTitle</a></li><li><a href="global.html#getToDoTemplate">getToDoTemplate</a></li><li><a href="global.html#getTopbarTemplate">getTopbarTemplate</a></li><li><a href="global.html#groupContactsByLetter">groupContactsByLetter</a></li><li><a href="global.html#guestLogin">guestLogin</a></li><li><a href="global.html#handleLogin">handleLogin</a></li><li><a href="global.html#handleLoginError">handleLoginError</a></li><li><a href="global.html#handleOutsideClick">handleOutsideClick</a></li><li><a href="global.html#handleSignup">handleSignup</a></li><li><a href="global.html#handleSignupError">handleSignupError</a></li><li><a href="global.html#handleSubtaskKey">handleSubtaskKey</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#initAddTask">initAddTask</a></li><li><a href="global.html#initBoard">initBoard</a></li><li><a href="global.html#initSummary">initSummary</a></li><li><a href="global.html#initTasks">initTasks</a></li><li><a href="global.html#isFieldEmpty">isFieldEmpty</a></li><li><a href="global.html#isGuest">isGuest</a></li><li><a href="global.html#loadContacts">loadContacts</a></li><li><a href="global.html#loadData">loadData</a></li><li><a href="global.html#loadSidebar">loadSidebar</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#logout">logout</a></li><li><a href="global.html#moveTaskTo">moveTaskTo</a></li><li><a href="global.html#onSubtaskInput">onSubtaskInput</a></li><li><a href="global.html#onSubtaskInputEdit">onSubtaskInputEdit</a></li><li><a href="global.html#openAddTaskDialog">openAddTaskDialog</a></li><li><a href="global.html#openContactDetail">openContactDetail</a></li><li><a href="global.html#openContactDialog">openContactDialog</a></li><li><a href="global.html#openDialogBoard">openDialogBoard</a></li><li><a href="global.html#openEditTask">openEditTask</a></li><li><a href="global.html#postData">postData</a></li><li><a href="global.html#putData">putData</a></li><li><a href="global.html#reRenderColumns">reRenderColumns</a></li><li><a href="global.html#removeSubtask">removeSubtask</a></li><li><a href="global.html#renderAll">renderAll</a></li><li><a href="global.html#renderContacts">renderContacts</a></li><li><a href="global.html#renderSection">renderSection</a></li><li><a href="global.html#renderSelectedAvatars">renderSelectedAvatars</a></li><li><a href="global.html#renderSummaryElements">renderSummaryElements</a></li><li><a href="global.html#renderUserMenue">renderUserMenue</a></li><li><a href="global.html#resetDialog">resetDialog</a></li><li><a href="global.html#saveContact">saveContact</a></li><li><a href="global.html#saveEditTask">saveEditTask</a></li><li><a href="global.html#scrollColumn">scrollColumn</a></li><li><a href="global.html#selectCategory">selectCategory</a></li><li><a href="global.html#selectRandomAvatarColor">selectRandomAvatarColor</a></li><li><a href="global.html#setEditDialogButtons">setEditDialogButtons</a></li><li><a href="global.html#setEditPriority">setEditPriority</a></li><li><a href="global.html#setGreeting">setGreeting</a></li><li><a href="global.html#setPriority">setPriority</a></li><li><a href="global.html#setTopbar">setTopbar</a></li><li><a href="global.html#showFieldError">showFieldError</a></li><li><a href="global.html#showMessage">showMessage</a></li><li><a href="global.html#signup">signup</a></li><li><a href="global.html#submitContact">submitContact</a></li><li><a href="global.html#switchToGuestSidebar">switchToGuestSidebar</a></li><li><a href="global.html#switchToLogin">switchToLogin</a></li><li><a href="global.html#switchToSignup">switchToSignup</a></li><li><a href="global.html#toggleAssignedContact">toggleAssignedContact</a></li><li><a href="global.html#toggleContact">toggleContact</a></li><li><a href="global.html#toggleDropdown">toggleDropdown</a></li><li><a href="global.html#toggleEditDropdown">toggleEditDropdown</a></li><li><a href="global.html#toggleMoveOverlay">toggleMoveOverlay</a></li><li><a href="global.html#togglePwdVisibility">togglePwdVisibility</a></li><li><a href="global.html#togglePwdVisibilityBtn">togglePwdVisibilityBtn</a></li><li><a href="global.html#toggleSubtask">toggleSubtask</a></li><li><a href="global.html#toggleUserMenue">toggleUserMenue</a></li><li><a href="global.html#updateAssignedBadges">updateAssignedBadges</a></li><li><a href="global.html#updateNoTaskPlaceholders">updateNoTaskPlaceholders</a></li><li><a href="global.html#updateScrollArrows">updateScrollArrows</a></li><li><a href="global.html#validateField">validateField</a></li><li><a href="global.html#validateForm">validateForm</a></li><li><a href="global.html#validateInputs">validateInputs</a></li><li><a href="global.html#validateOnBlur">validateOnBlur</a></li><li><a href="global.html#validatePasswordConfirm">validatePasswordConfirm</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Apr 01 2026 18:14:10 GMT+0200 (Central European Summer Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Sun Apr 05 2026 10:30:12 GMT+0200 (Central European Summer Time)
 </footer>
 
 <script> prettyPrint(); </script>

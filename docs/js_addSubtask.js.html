@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: js/authGuard.js</title>
+    <title>JSDoc: Source: js/addSubtask.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: js/authGuard.js</h1>
+    <h1 class="page-title">Source: js/addSubtask.js</h1>
 
     
 
@@ -26,50 +26,127 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { auth, db } from "./firebaseAuth.js";
-import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
-import { ref, get } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
-const homePaths = ["/", "/index.html", "index.html"];
-const publicPaths = ["/privacy.html", "privacy.html", "/legal.html", "legal.html", "/help.html", "help.html"];
-const path = window.location.pathname;
-
-onAuthStateChanged(auth, async (user) => {
-  if (user) {
-     if (user.isAnonymous) {
-      window.currentUser = { name: "Guest" };
-      renderUserMenue();
-      if (homePaths.includes(path)) {
-        window.location.href = "./summary.html";
-      }
-      return; // &lt;-- kein DB-Lookup für Gäste
-    }
-    const snapshot = await get(ref(db, `users/${user.uid}`));
-    const { contactId } = snapshot.val();
-
-    const contactSnap = await get(ref(db, `contacts/${contactId}`));
-    window.currentUser = contactSnap.val();
-    renderUserMenue();
-    if (homePaths.includes(path)) {
-      window.location.href = "./summary.html";
-    }
-  } else {
-    if (publicPaths.includes(path)) {
-      if (typeof switchToGuestSidebar === 'function') switchToGuestSidebar();
-    } else if (!homePaths.includes(path)) {
-      window.location.href = "./index.html";
-    }
-  }
-});
-
-/**
- * Signs out the current user from Firebase.
- * @returns {Promise&lt;void>}
+            <pre class="prettyprint source linenums"><code>/**
+ * Sets the focus to the subtask input field.
  */
-async function logout() {
-  await signOut(auth);
+function focusSubtaskInput() {
+    document.getElementById('subtask-input').focus();
 }
 
-window.logout = logout;</code></pre>
+/**
+ * Clears the subtak input field
+ */
+function clearSubtaskInput() {
+    document.getElementById('subtask-input').value = '';
+    onSubtaskInput();
+}
+
+/**
+ * Handles keyboard input for the subtask field.
+ * @param {KeyboardEvent} event - The keyboard event
+ */
+function handleSubtaskKey(event) {
+    if (event.key === 'Enter') { event.preventDefault(); addSubtask(); }
+    if (event.key === 'Escape') clearSubtaskInput();
+}
+
+/**
+ * Toggles the visibility of the subtask confirm buttons based on the input value.
+ */
+function onSubtaskInput() {
+    const input = document.getElementById('subtask-input');
+    const confirmBtns = document.getElementById('subtask-confirm-btns');
+    const hasText = input.value.trim().length > 0;
+    confirmBtns.classList.toggle('visible', hasText);
+}
+
+/**
+ * Adds a new subtask to the subtask list.
+ */
+function addSubtask() {
+    const input = document.getElementById('subtask-input');
+    const text = input.value.trim();
+    if (!text) return;
+
+    const list = document.getElementById('subtask-list');
+    const li = createSubtaskItem(text);
+    list.appendChild(li);
+    clearSubtaskInput();
+}
+
+/**
+ * Creates a subtask list item element with edit and delete buttons.
+ * @param {string} text - The subtask title
+ * @returns {HTMLElement} The created list item element
+ */
+function createSubtaskItem(text) {
+    const li = document.createElement('li');
+    li.innerHTML = `
+        &lt;span class="subtask-text" onclick="editSubtask(this)">${text}&lt;/span>
+        &lt;div class="subtask-item-actions">
+            &lt;button class="subtask-icon-btn" onclick="removeSubtask(this)" type="button">
+                &lt;img src="./assets/icons/close.svg" alt="Delete">
+            &lt;/button>
+        &lt;/div>
+    `;
+    return li;
+}
+
+/**
+ * Switches a subtask list item into edit mode.
+ * @param {HTMLElement} span - The subtask text element that was clicked
+ */
+function editSubtask(span) {
+    const li = span.closest('li');
+    const currentText = span.textContent;
+    
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.value = currentText;
+    input.className = 'subtask-edit-input';
+    li.replaceChild(input, span);
+    input.focus();
+    input.select();
+
+    const actions = li.querySelector('.subtask-item-actions');
+    actions.innerHTML = `
+        &lt;button class="subtask-icon-btn" onclick="removeSubtask(this)" type="button">
+            &lt;img src="./assets/icons/delete.svg" alt="Delete">
+        &lt;/button>
+        &lt;div class="subtask-divider">&lt;/div>
+        &lt;button class="subtask-icon-btn" onclick="confirmEditSubtask(this)" type="button">
+            &lt;img src="./assets/icons/check-dark.svg" alt="Confirm">
+        &lt;/button>
+    `;
+
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') confirmEditSubtask(actions.querySelector('[alt="Confirm"]').closest('button'));
+        if (e.key === 'Escape') cancelEditSubtask(input, currentText);
+    });
+}
+
+/**
+ * Confirms the subtask edit and replaces the list item with the updated text.
+ * @param {HTMLElement} btn - The confirm button that was clicked
+ */
+function confirmEditSubtask(btn) {
+    const li = btn.closest('li');
+    const input = li.querySelector('.subtask-edit-input');
+    const newText = input.value.trim();
+    if (!newText) { li.remove(); return; }
+
+    const newLi = createSubtaskItem(newText);
+    li.replaceWith(newLi);
+}
+
+/**
+ * Cancels the subtask edit and restores the original text.
+ * @param {HTMLElement} input - The subtask input element
+ * @param {string} originalText - The original subtask text to restore
+ */
+function removeSubtask(btn) {
+    btn.closest('li').remove();
+}</code></pre>
         </article>
     </section>
 

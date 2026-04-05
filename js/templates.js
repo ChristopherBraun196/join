@@ -420,25 +420,6 @@ function getAssignedContactTemplate(contact) {
 }
 
 /**
- * Returns the HTML template for a subtask list item.
- * @param {Object} subtask - The subtask object
- * @param {string} taskID - The ID of the parent task
- * @param {number} subtaskIndex - The index of the subtask
- * @param {string} toggleFn - The toggle function name to call on click
- * @returns {string} HTML string of the subtask list item
- */
-function getSubtasksTemplate(subtask, taskID, subtaskIndex) {
-  return `
-        <li class="no-decoration board-subtask">
-            <label for="${subtask.id}">
-                <input type="checkbox" id="${subtask.id}" onclick="toggleSubtask('${subtaskIndex}', ${subtask.completed}, '${taskID}')" ${checkIfSubtaskActive(subtask.completed)}>
-                ${subtask.title}
-            </label>
-        </li>
-    `;
-}
-
-/**
  * Returns the HTML template for a contact list item.
  * @param {Object} contact - The contact object
  * @param {string} initials - The initials of the contact
