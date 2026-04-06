@@ -92,8 +92,11 @@ function getSignupTemplate() {
                     </div>
                     <span class="field-error" id="password-confirm-error"></span>
                 </div>
-                <div class="accept-input">
-                    <input type="checkbox" id="accept-btn"/><p>I accept the <a class="highlighted" href="./legal.html">Privacy policy</a></p>
+                <div class="field-wrapper">
+                    <div class="accept-input">
+                        <input type="checkbox" id="accept-btn"/><p>I accept the <a class="highlighted" href="./legal.html">Privacy policy</a></p>
+                    </div>
+                    <span class="field-error" id="accept-error"></span>
                 </div>
             </div>
 

@@ -54,16 +54,31 @@ async function createUserEntry(uid, contactId) {
 }
 
 /**
- * Displays an error message based on the Firebase signup error code.
+ * Displays an error message at the relevant input field based on the Firebase signup error code.
  * @param {Error} error - The Firebase error object
  */
 function handleSignupError(error) {
-  const messages = {
-    "auth/email-already-in-use": "Diese E-Mail ist bereits registriert.",
-    "auth/invalid-email": "Ungültige E-Mail-Adresse.",
-    "auth/weak-password": "Passwort zu schwach (min. 6 Zeichen).",
+  const form = document.getElementById("login-signup-form");
+  const emailInput = form.querySelector("input[name='email']");
+  const passwordInput = form.querySelector("input[name='password']");
+  const emailError = document.getElementById("email-error");
+  const passwordError = document.getElementById("password-error");
+
+  const emailMessages = {
+    "auth/email-already-in-use": "This email is already registered.",
+    "auth/invalid-email": "Invalid email address.",
   };
-  showMessage(messages[error.code] || "Anderer Fehler: " + error.message);
+  const passwordMessages = {
+    "auth/weak-password": "Password too weak (min. 6 characters).",
+  };
+
+  if (emailMessages[error.code]) {
+    showFieldError(emailInput.closest(".email-input"), emailError, emailMessages[error.code]);
+  } else if (passwordMessages[error.code]) {
+    showFieldError(passwordInput.closest(".pwd-input"), passwordError, passwordMessages[error.code]);
+  } else {
+    showFieldError(emailInput.closest(".email-input"), emailError, error.message);
+  }
 }
 
 /**
@@ -82,7 +97,7 @@ async function signup(name, email, password) {
     );
     const contactId = await createContactEntry(user.uid, name, email);
     await createUserEntry(user.uid, contactId);
-    showMessage("Signup erfolgreich!");
+    showMessage("Signup successful!");
     setTimeout(() => {
       window.location.href = "./summary.html";
     }, 1000);
@@ -92,18 +107,22 @@ async function signup(name, email, password) {
 }
 
 /**
- * Displays an error message based on the Firebase login error code.
+ * Displays an error message at the relevant input field based on the Firebase login error code.
  * @param {Error} error - The Firebase error object
  */
 function handleLoginError(error) {
-  const messages = {
-    "auth/invalid-email": "Falsche E-Mail.",
-    "auth/wrong-password": "Falsches Passwort.",
-    "auth/user-not-found": "Nutzer nicht gefunden.",
-    "auth/invalid-credential": "E-Mail oder Passwort ist falsch.",
-    "auth/too-many-requests": "Zu viele Fehlversuche. Bitte warte kurz.",
-  };
-  showMessage(messages[error.code] || "Anderer Fehler: " + error.message);
+  const form = document.getElementById("login-signup-form");
+  const emailInput = form.querySelector("input[name='email']");
+  const passwordInput = form.querySelector("input[name='password']");
+  const passwordError = document.getElementById("password-error");
+
+  if (error.code === "auth/too-many-requests") {
+    showFieldError(passwordInput.closest(".pwd-input"), passwordError, "Too many failed attempts. Please wait a moment.");
+    return;
+  }
+
+  emailInput.closest(".email-input").classList.add("invalid");
+  showFieldError(passwordInput.closest(".pwd-input"), passwordError, "Wrong email address or password.");
 }
 
 /**
@@ -115,7 +134,7 @@ function handleLoginError(error) {
 async function login(email, password) {
   try {
     await signInWithEmailAndPassword(auth, email, password);
-    showMessage("Erfolgreich eingeloggt!");
+    showMessage("Login successful!");
     setTimeout(() => {
       window.location.href = "./summary.html";
     }, 2000);
@@ -247,10 +266,12 @@ async function handleSignup(event) {
   const emailInput = form.querySelector("input[name='email']");
   const passwordInput = form.querySelector("input[name='password']");
   const passwordConfirmInput = form.querySelector("input[name='password_confirm']");
+  const acceptCheckbox = form.querySelector("#accept-btn");
   const fullnameError = document.getElementById("fullname-error");
   const emailError = document.getElementById("email-error");
   const passwordError = document.getElementById("password-error");
   const passwordConfirmError = document.getElementById("password-confirm-error");
+  const acceptError = document.getElementById("accept-error");
 
   let valid = true;
 
@@ -263,6 +284,9 @@ async function handleSignup(event) {
 
   if (!emailInput.value.trim()) {
     showFieldError(emailInput.closest(".email-input"), emailError, "This field is required");
+    valid = false;
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value.trim())) {
+    showFieldError(emailInput.closest(".email-input"), emailError, "Not a valid email address");
     valid = false;
   } else {
     clearFieldError(emailInput.closest(".email-input"), emailError);
@@ -283,6 +307,17 @@ async function handleSignup(event) {
     valid = false;
   } else {
     clearFieldError(passwordConfirmInput.closest(".pwd-input"), passwordConfirmError);
+  }
+
+  if (!acceptCheckbox.checked) {
+    acceptCheckbox.classList.add("invalid");
+    acceptError.textContent = "You have to accept the privacy policy";
+    acceptError.classList.add("visible");
+    valid = false;
+  } else {
+    acceptCheckbox.classList.remove("invalid");
+    acceptError.textContent = "";
+    acceptError.classList.remove("visible");
   }
 
   if (!valid) return;

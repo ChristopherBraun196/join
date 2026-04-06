@@ -126,6 +126,16 @@ footer {
   gap: 16px;
 }
 
+#accept-btn.invalid {
+  outline: 2px solid #FF3B3B;
+  border-radius: 3px;
+}
+
+#accept-error {
+  text-align: center;
+  padding-left: 0;
+}
+
 .login-btns {
   display: flex;
   justify-content: center;
