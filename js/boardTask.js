@@ -38,7 +38,7 @@ async function deleteTask(id) {
   try {
     await deleteData(`/tasks/${id}`);
     showMessage("Task wurde gelöscht");
-    closeDialogBoard();
+    document.getElementById("openDialogBoard").close();
     const data = await loadData("/tasks");
     tasks = Object.entries(data).map(([id, task]) => ({ ...task, id }));
     renderAll();
