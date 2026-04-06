@@ -244,7 +244,7 @@ main {
     align-items: center;
   }
 
-   dialog#openDialogBoard .save-edit-button {
+   dialog#openDialogBoard  {
     position: fixed;
     bottom: 90px;    /* ← über der mobilen Navbar */
     right: 16px;
