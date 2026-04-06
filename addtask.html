@@ -29,7 +29,7 @@
                     </div>
                     <div id="task-due-date">
                         <label for="due-date">Due Date<span class="required">*</span></label>
-                        <input type="date" id="due-date" name="due-date" required onblur="validateOnBlur(this, 'Please pick a due date')" />
+                        <input type="date" id="due-date" name="due-date" required onchange="validateDate(this)" />
                     </div>
                 </div>
                 <div id="right-side-task">

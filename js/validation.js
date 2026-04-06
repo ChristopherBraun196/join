@@ -25,6 +25,9 @@ function validateForm(form) {
         if (isFieldEmpty(input)) {
             showFieldError(input, message);
             isValid = false;
+        } else if (input.type === 'date' && isDateInPast(input)) {
+            showFieldError(input, 'The date cannot be in the past.');
+            isValid = false;
         } else {
             clearFieldError(input);
         }
@@ -40,6 +43,31 @@ function validateForm(form) {
  */
 function isFieldEmpty(input) {
     return input.value.trim() === '';
+}
+
+/**
+ * Checks whether a date input's value is in the past.
+ * @param {HTMLInputElement} input - The date input element to check
+ * @returns {boolean} True if the date is before today, false otherwise
+ */
+function isDateInPast(input) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return new Date(input.value) < today;
+}
+
+/**
+ * Validates a date input on blur: checks for empty value and past date.
+ * @param {HTMLInputElement} input - The date input element
+ */
+function validateDate(input) {
+    if (isFieldEmpty(input)) {
+        showFieldError(input, 'Please pick a due date');
+    } else if (isDateInPast(input)) {
+        showFieldError(input, 'The date cannot be in the past.');
+    } else {
+        clearFieldError(input);
+    }
 }
 
 /**
