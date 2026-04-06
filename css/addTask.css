@@ -355,6 +355,11 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   box-shadow: 0 0 0 1px var(--border-color);
 }
 
+#assigned-badges .badge-avatar.overflow-badge {
+  background-color: #999;
+  font-size: 12px;
+}
+
 #custom-select-dropdown-inner {
   max-height: 220px;
   overflow-y: auto;

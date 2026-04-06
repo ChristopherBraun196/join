@@ -63,6 +63,9 @@ function clearAddTaskForm() {
     document.querySelectorAll('#task-priority-btns .priority-btn').forEach(btn => btn.classList.remove('set'));
     document.querySelector('#task-priority-btns .priority-btn.medium').classList.add('set');
     document.getElementById('subtask-list').innerHTML = '';
+
+    document.querySelectorAll('#add-task-form .input-error').forEach(input => clearFieldError(input));
+    document.querySelectorAll('#add-task-form .field-error-msg').forEach(el => el.style.display = 'none');
 }
 
 /**
@@ -174,15 +177,26 @@ function toggleContact(option) {
 function updateAssignedBadges() {
     const badges = document.getElementById('assigned-badges');
     badges.innerHTML = '';
+    const limit = 5;
+    const selected = document.querySelectorAll('#assigned-dropdown .custom-option.selected');
+    const total = selected.length;
 
-    document.querySelectorAll('#assigned-dropdown .custom-option.selected').forEach(opt => {
+    selected.forEach((opt, i) => {
+        if (i >= limit) return;
         const avatar = opt.querySelector('.contact-avatar');
         const badge = document.createElement('div');
         badge.className = 'badge-avatar';
         badge.style.background = avatar.style.background;
-        badge.textContent = avatar.textContent;
+        badge.textContent = avatar.textContent.trim();
         badges.appendChild(badge);
     });
+
+    if (total > limit) {
+        const overflow = document.createElement('div');
+        overflow.className = 'badge-avatar overflow-badge';
+        overflow.textContent = `+${total - limit}`;
+        badges.appendChild(overflow);
+    }
 }
 
 /**

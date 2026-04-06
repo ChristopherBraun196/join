@@ -448,9 +448,10 @@ main {
 
   #right-side-task {
     border-left: none;
-    border-top: 1px solid var(--border-color);
     padding: 0;
     padding-top: 40px;
+    flex: auto;
+    border-top: 1px solid var(--border-color);
   }
 
   #add-task-form-footer {
