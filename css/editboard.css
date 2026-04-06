@@ -20,6 +20,18 @@
   background: white;
   font-size: 16px;
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.prio-btn:hover {
+  box-shadow: 0 4px 4px 0 #00000050;
+}
+
+@media (max-width: 420px) {
+  .priority-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
 }
 
 .prio-btn[data-priority="urgent"].active {
@@ -87,7 +99,6 @@
   padding: 6px 10px;
   border-radius: 10px;
   font-size: 14px;
-  margin-bottom: 6px;
 }
 
 .subtask-edit-item::before {

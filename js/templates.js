@@ -211,7 +211,7 @@ function getAddTaskDialogTemplate(status) {
         <h1>Add Task</h2>
         <button onclick="closeAddTaskDialog()" id="close-dialog-btn" tabindex="1"><img src="../assets/icons/close.svg"></button>
       </header>
-      <form class="add-task-form" onsubmit="createTask('${status}'); return false;" id="add-task-form">
+      <form class="add-task-form" onsubmit="createTask('${status}'); return false;" id="add-task-form" novalidate>
           <div id="left-side-form">
               <div id="task-title">
                   <label for="title">Title<span class="required">*</span></label>
@@ -298,7 +298,7 @@ function getAddTaskDialogTemplate(status) {
       <footer id="add-task-form-footer">
           <p><span class="required">*</span> This field is required</p>
           <div id="task-btns">
-              <button id="clear-task-form" type="button" onclick="clearAddTaskForm('${status}')">Clear <img src="./assets/icons/close.svg" alt="Cross icon"></button>
+              <button id="clear-task-form" type="button" onclick="clearDialogAddTaskForm('${status}')">Clear <img src="./assets/icons/close.svg" alt="Cross icon"></button>
               <button id="create-task" class="primary-btn" form="add-task-form" type="submit">Create Task <img src="./assets/icons/check.svg" alt="Check icon"></button>
           </div>
       </footer>
@@ -380,7 +380,7 @@ function getDialogBoardTemplate(element, assignedContacts, subtasks) {
         </div>
         <div>
             <p>Subtasks</p>
-            <ul id="subtasksk">
+            <ul id="subtasks">
                 ${checkIfSubtasksAvaiable(subtasks, element.id)}
             </ul>        
         </div>
@@ -399,14 +399,6 @@ function getDialogBoardTemplate(element, assignedContacts, subtasks) {
   `;
 }
 
-/**
- * Returns the HTML template for a column drop zone.
- * @param {string} columnId - The ID of the column
- * @returns {string} HTML string of the drop zone
- */
-function getDropZoneTemplate(columnId) {
-  return `<div class="drop-zone" id="dropzone-${columnId}"></div>`;
-}
 
 /**
  * Returns the HTML template for an assigned contact in the task dialog.
@@ -528,7 +520,7 @@ function getDialogBoardEditTemplate(
                 </button>
             </div>
         </div>
-        <ul id="subtasksk">${subtasksHTML}</ul>
+        <ul id="subtasks">${subtasksHTML}</ul>
     </main>
     <footer>
         <div class="dialog-actions">

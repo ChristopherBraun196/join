@@ -50,16 +50,15 @@ async function renderAll() {
  * @returns {Promise<void>}
  */
 async function renderSection(section) {
-  let taskStatus = tasks.filter((t) => t["status"] == section);
-  document.getElementById(section).innerHTML = getDropZoneTemplate(section);
-  const dropZone = document.getElementById(`dropzone-${section}`);
-  dropZone.innerHTML = "";
+  const container = document.getElementById(section);
+  container.innerHTML = "";
+  const taskStatus = tasks.filter((t) => t["status"] == section);
 
   for (let i = 0; i < taskStatus.length; i++) {
     const element = taskStatus[i];
     const [solved, total, visibility] = await getSubtaskData(element);
 
-    dropZone.innerHTML += await getToDoTemplate(
+    container.innerHTML += await getToDoTemplate(
       element,
       solved,
       total,
@@ -306,15 +305,14 @@ async function renderFilteredTasks(filteredTasks) {
   const sections = ["toDo", "inProgress", "await", "done"];
 
   for (const section of sections) {
-    document.getElementById(section).innerHTML = getDropZoneTemplate(section);
-    const dropZone = document.getElementById(`dropzone-${section}`);
-    dropZone.innerHTML = "";
+    const container = document.getElementById(section);
+    container.innerHTML = "";
 
     const sectionTasks = filteredTasks.filter((t) => t.status === section);
 
     for (const element of sectionTasks) {
       const [solved, total, visibility] = await getSubtaskData(element);
-      dropZone.innerHTML += await getToDoTemplate(
+      container.innerHTML += await getToDoTemplate(
         element, solved, total, visibility,
         calcSubtaskProgress(solved, total),
       );

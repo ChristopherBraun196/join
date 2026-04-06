@@ -56,8 +56,12 @@ function createSubtaskItem(text) {
     li.innerHTML = `
         <span class="subtask-text" onclick="editSubtask(this)">${text}</span>
         <div class="subtask-item-actions">
+            <button class="subtask-icon-btn" onclick="editSubtask(this.closest('li').querySelector('.subtask-text'))" type="button">
+                <img src="./assets/icons/edit.svg" alt="Edit">
+            </button>
+            <div class="subtask-divider"></div>
             <button class="subtask-icon-btn" onclick="removeSubtask(this)" type="button">
-                <img src="./assets/icons/close.svg" alt="Delete">
+                <img src="./assets/icons/delete.svg" alt="Delete">
             </button>
         </div>
     `;

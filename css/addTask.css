@@ -358,6 +358,10 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 /* ── Subtasks ── */
 
+#subtasks {
+  padding: 16px 0;
+}
+
 .subtask-input-wrapper {
   display: flex;
   align-items: center;
@@ -378,13 +382,13 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   font-size: 15px;
   font-family: inherit;
   background: transparent;
-  width: auto;
 }
 
 .subtask-actions {
   display: flex;
   align-items: center;
   flex-shrink: 0;
+  padding-right: 8px;
 }
 
 .subtask-icon-btn {
@@ -470,6 +474,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 .subtask-item-actions {
   display: flex;
+  align-items: center;
   gap: 4px;
   opacity: 0;
   transition: opacity 0.15s;

@@ -36,14 +36,33 @@ function closeAddTaskDialog() {
 }
 
 /**
- * Clears and resets the add task form.
+ * Clears and resets the add task form in add task dialog.
  * @param {string} status - The initial status for the new task
  */
-function clearAddTaskForm(status) {
+function clearDialogAddTaskForm(status) {
     const dialogSection = document.querySelector('#add-task-dialog');
     dialogSection.innerHTML = '';
     dialogSection.innerHTML = getAddTaskDialogTemplate(status);
     renderContacts();
+}
+
+/**
+ * Resets the add task form in addtask.html including all custom dropdowns, priority buttons, and subtasks.
+ */
+function clearAddTaskForm() {
+    document.getElementById('add-task-form').reset();
+    document.querySelectorAll('#assigned-dropdown .custom-option.selected').forEach(opt => {
+        opt.classList.remove('selected');
+        opt.querySelector('input[type="checkbox"]').checked = false;
+    });
+    document.getElementById('assigned-badges').innerHTML = '';
+    document.querySelectorAll('#category-dropdown .custom-option.selected').forEach(opt => opt.classList.remove('selected'));
+    document.querySelector('#category-wrapper input[name="category"]').value = '';
+    document.getElementById('category-placeholder').textContent = 'Select task category';
+    document.getElementById('category-placeholder').style.color = '';
+    document.querySelectorAll('#task-priority-btns .priority-btn').forEach(btn => btn.classList.remove('set'));
+    document.querySelector('#task-priority-btns .priority-btn.medium').classList.add('set');
+    document.getElementById('subtask-list').innerHTML = '';
 }
 
 /**
@@ -300,8 +319,11 @@ function getSubtasks() {
  * @returns {Promise<void>}
  */
 async function createTask(status) {
+    const form = document.getElementById('add-task-form');
+    if (!validateForm(form)) return;
+
     const taskID = generateUUID();
-    let task = generateTaskJson(taskID, status);    
+    let task = generateTaskJson(taskID, status);
     await putData("/tasks/task-"+taskID, task);
     location.href = "./board.html";
 }
