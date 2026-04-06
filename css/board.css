@@ -323,10 +323,11 @@ dialog#openDialogBoard footer {
 }
 
 dialog#openDialogBoard {
+  position: fixed;
   top: 50%;
   left: calc(240px + min(100vw - 240px, 1440px) / 2);
   padding: 32px;
-  width: 100%;
+  width: 100%;  
   max-width: 500px;
   max-height: min(800px, calc(100vh - 120px));
   overflow-y: auto;
