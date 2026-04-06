@@ -41,7 +41,7 @@ async function putData(path = "", data = {}) {
   try {
     await set(ref(db, path), data);
   } catch (error) {
-    showMessage("Keine Berechtigung für diese Aktion.");
+    showMessage("No permission for this action.");
     throw error;
   }
 }
@@ -55,7 +55,7 @@ async function deleteData(path = "") {
   try {
     await remove(ref(db, path));
   } catch (error) {
-     showMessage("Keine Berechtigung für diese Aktion.");
+     showMessage("No permission for this action.");
     throw error;
   }
 }
