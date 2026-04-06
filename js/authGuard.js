@@ -25,10 +25,18 @@ onAuthStateChanged(auth, async (user) => {
       renderUserMenue();
       if (homePaths.includes(path)) {
         window.location.href = "./summary.html";
+      } else if (publicPaths.includes(path)) {
+        const page = path.includes("privacy")
+          ? "privacy"
+          : path.includes("legal")
+            ? "legal"
+            : "help";
+        if (typeof loadSidebar === "function") loadSidebar(page);
       }
       return;
     }
     const snapshot = await get(ref(db, `users/${user.uid}`));
+    if (!snapshot.val()) return;
     const { contactId } = snapshot.val();
     const contactSnap = await get(ref(db, `contacts/${contactId}`));
     window.currentUser = contactSnap.val();
@@ -58,6 +66,7 @@ onAuthStateChanged(auth, async (user) => {
  */
 async function logout() {
   await signOut(auth);
+  window.location.href = "/";
 }
 
 window.logout = logout;

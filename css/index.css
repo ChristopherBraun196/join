@@ -21,17 +21,17 @@
 }
 
 footer {
-  height: 200px;
+  max-height: 200px;
+  height: 100%;
 }
 
 #login-signup-privacy a {
-  color: #cdcdcd;
+  color: #6d6d6d;
   text-decoration: none;
 }
 #login-signup-privacy a:hover {
   color: var(--highligted-color);
   font-weight: bolder;
-  font-size: 19px;
 }
 
 #login-signup-navbar {
@@ -101,7 +101,7 @@ footer {
 .input-fields {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 8px;
 }
 
 .name-input,
@@ -129,7 +129,7 @@ footer {
 }
 
 #accept-btn.invalid {
-  outline: 2px solid #FF3B3B;
+  outline: 2px solid var(--error-color);
   border-radius: 3px;
 }
 
@@ -155,15 +155,16 @@ footer {
 }
 
 .field-error {
-  display: none;
-  color: #FF3B3B;
-  font-size: 12px;
+  visibility: hidden;
+  color: var(--error-color);
+  font-size: 16px;
   margin-top: 4px;
   padding-left: 4px;
+  min-height: 20px;
 }
 
 .field-error.visible {
-  display: block;
+  visibility: visible;
 }
 
 .pwd-toggle-btn {
@@ -204,7 +205,7 @@ footer {
 .email-input.invalid,
 .pwd-input.invalid,
 .name-input.invalid {
-  border-color: #FF3B3B;
+  border-color: var(--error-color);
 }
 
 .back {
@@ -220,14 +221,12 @@ footer {
 
 @media (max-width: 575px) {
   #login-signup-navbar nav{
-    align-items: flex-start;
-
+    height: 100px;
   }
 
   #login-signup-navbar{
     padding-top: 37px;
     padding-left: 37px;
-    height: 180px;
   }
 
   #login-signup-navbar nav .logo{

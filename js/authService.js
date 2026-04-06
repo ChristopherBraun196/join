@@ -1,5 +1,5 @@
 import { auth, db } from "./firebaseAuth.js";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, getAuth, signInAnonymously} from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInAnonymously, signOut} from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
 import { ref, set } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
 
 
@@ -97,9 +97,10 @@ async function signup(name, email, password) {
     );
     const contactId = await createContactEntry(user.uid, name, email);
     await createUserEntry(user.uid, contactId);
+    await signOut(auth);
     showMessage("Signup successful!");
     setTimeout(() => {
-      window.location.href = "./summary.html";
+      switchToLogin();
     }, 1000);
   } catch (error) {
     handleSignupError(error);
@@ -228,7 +229,7 @@ function validatePasswordConfirm(input) {
  * @param {Event} event - The form submit event
  * @returns {Promise<void>}
  */
-async function handleLogin(event) {
+async function handleLogin() {
   const form = document.getElementById("login-signup-form");
   const emailInput = form.querySelector("input[name='email']");
   const passwordInput = form.querySelector("input[name='password']");
@@ -260,7 +261,7 @@ async function handleLogin(event) {
  * @param {Event} event - The form submit event
  * @returns {Promise<void>}
  */
-async function handleSignup(event) {
+async function handleSignup() {
   const form = document.getElementById("login-signup-form");
   const nameInput = form.querySelector("input[name='fullname']");
   const emailInput = form.querySelector("input[name='email']");
@@ -285,7 +286,7 @@ async function handleSignup(event) {
   if (!emailInput.value.trim()) {
     showFieldError(emailInput.closest(".email-input"), emailError, "This field is required");
     valid = false;
-  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value.trim())) {
+  } else if (!/^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(emailInput.value.trim())) {
     showFieldError(emailInput.closest(".email-input"), emailError, "Not a valid email address");
     valid = false;
   } else {
@@ -294,6 +295,9 @@ async function handleSignup(event) {
 
   if (!passwordInput.value.trim()) {
     showFieldError(passwordInput.closest(".pwd-input"), passwordError, "This field is required");
+    valid = false;
+  } else if (passwordInput.value.length < 6) {
+    showFieldError(passwordInput.closest(".pwd-input"), passwordError, "Password too weak (min. 6 characters).");
     valid = false;
   } else {
     clearFieldError(passwordInput.closest(".pwd-input"), passwordError);

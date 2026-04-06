@@ -21,7 +21,6 @@
   flex-direction: column;
   gap: 10px;
   width: 100%;
-  margin-bottom: 40px;
 }
 
 .privacy-legal-help-main a{
@@ -51,12 +50,6 @@
 .privacy-legal-help-main h3 {
   font-size: 20px;
   font-weight: bold;
-}
-
-.privacy .nav-link:hover {
-  color: #29a9e1;
-  background: none;
-  transform: scale(1.05);
 }
 
 @media (max-width: 1200px) {
