@@ -381,17 +381,42 @@ function validateInputs() {
   const emailInput = document.getElementById("input-email");
   const phoneInput = document.getElementById("input-phone");
   const phoneRegex = /^[+\d\s\-()]{6,20}$/;
+  
+  let isValid = true;
+
+  // Reset
+  [nameInput, emailInput, phoneInput].forEach(input => {
+    input.style.borderColor = "";
+    const err = input.parentElement.querySelector(".error-msg");
+    if (err) err.remove();
+  });
+
   if (!nameInput.value.trim()) {
-    alert("Bitte einen Namen eingeben.");
-    return false;
+    showError(nameInput, "This field is required");
+    isValid = false;
   }
+
   if (!emailInput.checkValidity()) {
-    alert("Bitte eine gültige E-Mail Adresse eingeben.");
-    return false;
+    showError(emailInput, "Please enter a valid email address");
+    isValid = false;
   }
+
   if (!phoneRegex.test(phoneInput.value.trim())) {
-    alert("Bitte eine gültige Telefonnummer eingeben.");
-    return false;
+    showError(phoneInput, "Please enter a valid phone number");
+    isValid = false;
   }
-  return true;
+
+  return isValid;
+}
+
+function showError(input, message) {
+  input.style.borderColor = "#ff8190";
+  const err = document.createElement("span");
+  err.className = "error-msg";
+  err.style.color = "#ff8190";
+  err.style.fontSize = "12px";
+  err.style.marginTop = "4px";
+  err.style.display = "block";
+  err.textContent = message;
+  input.parentElement.appendChild(err);
 }
