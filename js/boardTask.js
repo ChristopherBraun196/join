@@ -16,6 +16,7 @@ async function openDialogBoard(id) {
     element.subtasks,
   );
   dialogBoard.showModal();
+  document.querySelector("body > main").style.overflowY = "hidden";
 }
 
 /**
@@ -26,6 +27,7 @@ async function openDialogBoard(id) {
 async function closeDialogBoard(section) {
   const dialogBoard = document.getElementById("openDialogBoard");
   dialogBoard.close();
+  document.querySelector("body > main").style.overflowY = "";
   await renderSection(section);
 }
 
@@ -368,8 +370,10 @@ async function toggleAssignedContact(event, contactId) {
 
   if (checkbox.checked) {
     assignedTo.push({ id: contactId });
+     event.currentTarget.classList.add('selected');
   } else {
     assignedTo = assignedTo.filter((a) => a.id !== contactId);
+     event.currentTarget.classList.remove('selected');
   }
 
   await putData("/tasks/" + taskId + "/assignedTo", assignedTo);

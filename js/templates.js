@@ -493,10 +493,10 @@ function getDialogBoardEditTemplate(
             <span class="category-badge" style="background-color:${element["categoryLabelColor"]}">${element["category"]}</span>
             <button onclick="closeDialogBoard('${element.status}')">✕</button>
         </div>
-        <label class="edit-margin" for="edit-title">Title</label>
-        <input type="text" id="edit-title" value="${element.title}" />
     </header>
     <main>
+        <label class="edit-margin" for="edit-title">Title</label>
+        <input type="text" id="edit-title" value="${element.title}" />
         <label class="edit-margin" for="edit-description">Description</label>
         <textarea id="edit-description">${element.description}</textarea>
         <label class="edit-margin" for="edit-due-date">Due date</label>

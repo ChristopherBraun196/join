@@ -158,6 +158,11 @@
   border-radius: 10px;
   font-size: 16px;  
   font-weight: 500;
+
+  position: sticky;
+  bottom: 16px;
+  margin-left: auto;
+  z-index: 10;
 }
 
 .save-edit-button:hover {

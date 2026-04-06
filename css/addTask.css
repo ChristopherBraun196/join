@@ -304,7 +304,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   color: #2a3647;
 }
 
-.custom-option:hover {
+.custom-option:not(.selected):hover {
   background: #f0f4f8;
 }
 
@@ -328,6 +328,12 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 /* Selected badges shown below Assigned To dropdown */
+.selected {
+    background-color: #2a3647;
+    color: #f0f4f8;
+}
+
+
 #assigned-badges {
   display: flex;
   flex-wrap: wrap;
