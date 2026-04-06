@@ -1,8 +1,7 @@
 let mobileActiveContact = null;
 
 const AVATAR_COLORS = [
-  "#FF7043",  "#E91E8C",  "#9C27B0",  "#3F51B5",  
-  "#00BCD4",  "#4CAF50",  "#FF9800",  "#795548",
+  "#FF7043",  "#E91E8C",  "#9C27B0",  "#3F51B5",  "#00BCD4",  "#4CAF50",  "#FF9800",  "#795548",
 ];
 
 /**
@@ -18,11 +17,12 @@ function openContactDialog() {
 function closeContactDialog() {
   document.getElementById("dialog-overlay").classList.remove("active");
   clearDialogInputs();
+  clearErrors();
   resetDialog();
 }
 
 /**
- *  * Clears all input fields in the contact dialog.
+ * Clears all input fields in the contact dialog.
  */
 function clearDialogInputs() {
   document.getElementById("input-name").value = "";
@@ -381,26 +381,18 @@ function validateInputs() {
   const emailInput = document.getElementById("input-email");
   const phoneInput = document.getElementById("input-phone");
   const phoneRegex = /^[+\d\s\-()]{6,20}$/;
-  
   let isValid = true;
 
-  // Reset
-  [nameInput, emailInput, phoneInput].forEach(input => {
-    input.style.borderColor = "";
-    const err = input.parentElement.querySelector(".error-msg");
-    if (err) err.remove();
-  });
+  clearErrors();
 
   if (!nameInput.value.trim()) {
     showError(nameInput, "This field is required");
     isValid = false;
   }
-
   if (!emailInput.checkValidity()) {
     showError(emailInput, "Please enter a valid email address");
     isValid = false;
   }
-
   if (!phoneRegex.test(phoneInput.value.trim())) {
     showError(phoneInput, "Please enter a valid phone number");
     isValid = false;
@@ -409,14 +401,35 @@ function validateInputs() {
   return isValid;
 }
 
+/**
+ * Marks an input field as invalid and displays an error message below it.
+ * @param {HTMLInputElement} input - The input element to mark as invalid
+ * @param {string} message - The error message to display
+ */
 function showError(input, message) {
-  input.style.borderColor = "#ff8190";
+  input.style.borderColor = "var(--error-color)";
   const err = document.createElement("span");
   err.className = "error-msg";
-  err.style.color = "#ff8190";
-  err.style.fontSize = "12px";
+  err.style.color = "var(--error-color)";
+  err.style.fontSize = "16px";
   err.style.marginTop = "4px";
   err.style.display = "block";
   err.textContent = message;
   input.parentElement.appendChild(err);
+}
+
+/**
+ * Clears all validation errors from the contact dialog input fields.
+ * Resets border colors and removes all error message elements.
+ */
+function clearErrors() {
+  [
+    document.getElementById("input-name"),
+    document.getElementById("input-email"),
+    document.getElementById("input-phone"),
+  ].forEach((input) => {
+    input.style.borderColor = "";
+    const err = input.parentElement.querySelector(".error-msg");
+    if (err) err.remove();
+  });
 }
