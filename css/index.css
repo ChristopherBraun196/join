@@ -29,7 +29,9 @@ footer {
   text-decoration: none;
 }
 #login-signup-privacy a:hover {
-  color: #2a3647;
+  color: var(--highligted-color);
+  font-weight: bolder;
+  font-size: 19px;
 }
 
 #login-signup-navbar {

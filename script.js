@@ -33,9 +33,9 @@ document.addEventListener('keydown', (e) => {
  * Initializes the page by generating the topbar and loading the sidebar.
  * @param {string} site - The current page identifier
  */
-function init(site) {
+function init(site, withSidebar = true) {
     generateTopbar();
-    loadSidebar(site);
+    if (withSidebar) loadSidebar(site);
 }
 
 /**
