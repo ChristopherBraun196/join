@@ -14,7 +14,7 @@ nav {
   width: 100%;
 }
 
-.name-input input[type="text"]{
+.name-input input[type="text"] {
   padding: 0;
   border: 0px solid var(--border-color);
 }
@@ -62,7 +62,6 @@ main {
   pointer-events: none;
   cursor: default;
 }
-
 
 .logo {
   height: 120px;
@@ -124,7 +123,7 @@ main {
   height: 40px;
   border-radius: 50%;
   cursor: pointer;
-  transition: all .1s ease-in;
+  transition: all 0.1s ease-in;
   border: solid 2px var(--primary-color);
   background-color: var(--highligted-color);
 }
@@ -165,7 +164,7 @@ main {
 #user-menue:hover {
   border: solid 2px var(--highligted-color);
   background-color: var(--primary-color);
-  transition: all .1s ease-in-out;
+  transition: all 0.1s ease-in-out;
   transform: scale(1.1);
 }
 
@@ -183,7 +182,6 @@ main {
   padding-left: 100px;
   font-size: 27px;
 }
-
 
 .welcome_msg {
   position: fixed;
@@ -226,7 +224,8 @@ main {
     display: none;
   }
 
-  .move-to-btn, .move-arrow {
+  .move-to-btn,
+  .move-arrow {
     rotate: -90deg;
   }
 }
@@ -421,14 +420,14 @@ main {
     overflow-y: auto !important;
     height: auto !important;
   }
-  
+
   #close-dialog-btn {
     width: 16px;
     height: 16px;
     top: 46px;
     right: 40px;
   }
-  
+
   .add-task-form {
     overflow: visible;
     flex-direction: column;
@@ -525,10 +524,16 @@ main {
   .arrow-down svg {
     transform: rotate(-90deg);
   }
+
+  dialog#openDialogBoard {
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 }
 
 @media (max-width: 575px) {
-  .summary_row_first, .summary_row_last {
+  .summary_row_first,
+  .summary_row_last {
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -548,14 +553,16 @@ main {
     flex-direction: column;
   }
 
-  #all-deadlines-counter { 
+  #all-deadlines-counter {
     flex-direction: row;
   }
 
   #deadline-bubble {
     flex-direction: column;
   }
-  #deadline-bubble .line { display: none; }
+  #deadline-bubble .line {
+    display: none;
+  }
 }
 
 @media (max-width: 420px) {
