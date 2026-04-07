@@ -81,7 +81,7 @@
 
 label {
   display: block;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 500;
   margin-bottom: 8px;
 }
@@ -94,7 +94,7 @@ textarea {
   border-radius: var(--border-radius);
   border: 1px solid var(--border-color);
   background-color: white;
-  font-size: 15px;
+  font-size: 16px;
   font-family: inherit;
   transition:
     border-color 0.2s,
