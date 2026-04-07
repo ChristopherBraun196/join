@@ -435,17 +435,6 @@ function confirmSubtaskEditMode(btn) {
   );
 }
 
-function getPriorityButtonsTemplate(currentPriority) {
-  return ["urgent", "medium", "low"]
-    .map((p) => {
-      const active = currentPriority === p ? "active" : "";
-      return `<button class="prio-btn ${active}" data-priority="${p}" onclick="setEditPriority(event, '${p}')">
-      ${capitalize(p)} <img src="./assets/icons/priority-${p}.svg" />
-    </button>`;
-    })
-    .join("");
-}
-
 /**
  * Returns the active CSS class for a priority button.
  * @param {string} priority - The priority to check

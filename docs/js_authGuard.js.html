@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: js/summary.js</title>
+    <title>JSDoc: Source: js/authGuard.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: js/summary.js</h1>
+    <h1 class="page-title">Source: js/authGuard.js</h1>
 
     
 
@@ -26,88 +26,107 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
- * Calculates the summary counts for all task statuses and priorities.
- * @param {Object[]} tasks - Array of task objects
- * @returns {Object} Object containing all counts and the upcoming deadline
- */
-function getSummaryCounts(tasks) {
-  const urgentTasks = tasks.filter((t) => t.priority === "urgent");
-  return {
-    toDoCount: tasks.filter((t) => t.status === "toDo").length,
-    doneCount: tasks.filter((t) => t.status === "done").length,
-    progressCount: tasks.filter((t) => t.status === "inProgress").length,
-    feedbackCount: tasks.filter((t) => t.status === "await").length,
-    boardCount: tasks.length,
-    urgentCount: urgentTasks.length,
-    deadline: getNextDeadline(urgentTasks),
-  };
-}
+            <pre class="prettyprint source linenums"><code>import { auth, db } from "./firebaseAuth.js";
+import {
+  onAuthStateChanged,
+  signOut,
+} from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+import {
+  ref,
+  get,
+} from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
+const homePaths = ["/", "/index.html", "index.html"];
+const publicPaths = [
+  "/privacy.html",
+  "privacy.html",
+  "/legal.html",
+  "legal.html",
+  "/help.html",
+  "help.html",
+];
+const path = window.location.pathname;
 
 /**
- * Renders the summary counts into the corresponding DOM elements.
- * @param {Object} counts - The counts object returned by getSummaryCounts
- */
-function renderSummaryElements(counts) {
-  document.getElementById("todo_count").textContent = counts.toDoCount;
-  document.getElementById("done_count").textContent = counts.doneCount;
-  document.getElementById("progress_count").textContent = counts.progressCount;
-  document.getElementById("feedback_count").textContent = counts.feedbackCount;
-  document.getElementById("board_count").textContent = counts.boardCount;
-  document.getElementById("urgent_count").textContent = counts.urgentCount;
-  document.getElementById("deadline").textContent = counts.deadline;
-}
-
-/**
- * Initializes the summary page by loading tasks and updating all counters.
+ * Loads the authenticated user's data from Firebase and sets the global current user.
+ * Redirects to summary page if on a home path, or loads the sidebar for public paths.
+ * @async
+ * @param {Object} user - The Firebase authenticated user object
+ * @param {string} path - The current page path
  * @returns {Promise&lt;void>}
  */
-async function initSummary() {
-  const data = await loadData("/tasks");
-
-  const tasks = data
-    ? Object.entries(data).map(([id, task]) => ({ ...task, id }))
-    : [];
-
-  renderSummaryElements(getSummaryCounts(tasks));
-
-  if (window.innerWidth &lt;= 1200) {
-    const welcomeMsg = document.querySelector(".welcome_msg");
-    if (!welcomeMsg) return;
-
-    setTimeout(() => {
-      welcomeMsg.classList.add("fade-out");
-
-      welcomeMsg.addEventListener(
-        "transitionend",
-        () => {
-          welcomeMsg.classList.add("hidden");
-        },
-        { once: true },
-      );
-    }, 1000);
+async function handleAuthenticatedUser(user, path) {
+  const snapshot = await get(ref(db, `users/${user.uid}`));
+  if (!snapshot.val()) return;
+  const { contactId } = snapshot.val();
+  const contactSnap = await get(ref(db, `contacts/${contactId}`));
+  window.currentUser = contactSnap.val();
+  renderUserMenue();
+  if (homePaths.includes(path)) {
+    window.location.href = "./summary.html";
+  } else if (publicPaths.includes(path)) {
+    const page = path.includes("privacy")
+      ? "privacy"
+      : path.includes("legal")
+        ? "legal"
+        : "help";
+    if (typeof loadSidebar === "function") loadSidebar(page);
   }
 }
 
 /**
- * Returns the nearest upcoming deadline from a list of urgent tasks.
- * @param {Object[]} urgentTasks - Array of urgent task objects
- * @returns {string} The formatted deadline date or "No deadline"
+ * Handles routing for unauthenticated users.
+ * Shows guest sidebar on public paths or redirects to index if on a protected path.
+ * @param {string} path - The current page path
+ * @returns {void}
  */
-function getNextDeadline(urgentTasks) {
-  const withDeadline = urgentTasks
-    .filter((t) => t.dueDate)
-    .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
-
-  if (withDeadline.length === 0) return "No deadline";
-
-  const date = new Date(withDeadline[0].dueDate);
-  return date.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+function handleUnauthenticatedUser(path) {
+  if (publicPaths.includes(path)) {
+    if (typeof switchToGuestSidebar === "function") switchToGuestSidebar();
+  } else if (!homePaths.includes(path)) {
+    window.location.href = "./index.html";
+  }
 }
+
+/**
+ * Listens to Firebase auth state changes and routes the user accordingly.
+ * Handles three cases: anonymous guest, authenticated user, and unauthenticated user.
+ * @listens onAuthStateChanged
+ * @param {Object|null} user - The Firebase user object or null if not logged in
+ * @returns {Promise&lt;void>}
+ */
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    if (user.isAnonymous) {
+      window.currentUser = { name: "Guest" };
+      renderUserMenue();
+      if (homePaths.includes(path)) {
+        window.location.href = "./summary.html";
+      } else if (publicPaths.includes(path)) {
+        const page = path.includes("privacy")
+          ? "privacy"
+          : path.includes("legal")
+            ? "legal"
+            : "help";
+        if (typeof loadSidebar === "function") loadSidebar(page);
+      }
+      return;
+    }
+    await handleAuthenticatedUser(user, path);
+  } else {
+    handleUnauthenticatedUser(path);
+  }
+});
+
+/**
+ * Signs out the current user from Firebase.
+ * @returns {Promise&lt;void>}
+ */
+async function logout() {
+  await signOut(auth);
+  window.location.href = "/";
+}
+
+window.logout = logout;
 </code></pre>
         </article>
     </section>
