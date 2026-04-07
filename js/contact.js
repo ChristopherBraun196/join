@@ -4,6 +4,19 @@ const AVATAR_COLORS = [
   "#FF7043",  "#E91E8C",  "#9C27B0",  "#3F51B5",  "#00BCD4",  "#4CAF50",  "#FF9800",  "#795548",
 ];
 
+function showMessage(message) {
+    const box = document.getElementById('message-box');
+    box.textContent = message;
+    box.style.opacity = '1';
+    box.style.transform = 'translate(-50%, 0)';
+    box.style.zIndex = '999';
+    setTimeout(() => {
+        box.style.opacity = '0';
+        box.style.transform = 'translate(-50%, 200px)';
+        box.style.zIndex = '0';
+    }, 2500);
+}
+
 /**
  * Opens the contact dialog overlay.
  */
@@ -245,6 +258,7 @@ async function submitContact() {
     await putData("/contacts/" + contactID, generateContactJson(contactID));
     closeContactDialog();
     loadContacts();
+    showMessage("Contact successfully created");
   } catch (error) {
     console.error("Fehler beim Erstellen des Kontakts:", error);
   }
@@ -260,6 +274,7 @@ async function deleteContact(contactId) {
     await deleteData("/contacts/" + contactId);
     clearActiveContact();
     loadContacts();
+    showMessage("Contact successfully deleted");
   } catch (error) {
     console.error("Fehler beim Löschen des Kontakts:", error);
   }
@@ -343,6 +358,7 @@ async function saveContact(contactId) {
     closeContactDialog();
     clearActiveContact();
     loadContacts();
+    showMessage("Contact successfully updated");
   } catch (error) {
     console.error("Fehler beim Speichern des Kontakts:", error);
   }
