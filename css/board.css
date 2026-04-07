@@ -160,7 +160,7 @@
 .category-badge {
   display: inline-block;
   color: #fff;
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 600;
   width: 160px;
   border-radius: var(--border-radius);
@@ -169,14 +169,14 @@
 
 .task-title {
   font-weight: 700;
-  font-size: 16px;
+  font-size: 18px;
   color: #1a1a2e;
   margin: 0 0 6px 0;
   line-height: 1.3;
 }
 
 .task-description {
-  font-size: 13px;
+  font-size: 16px;
   color: #aaa;
   margin: 0 0 16px 0;
   line-height: 1.5;
@@ -221,7 +221,7 @@
   height: 34px;
   border-radius: 50%;
   color: #fff;
-  font-size: 12px;
+  font-size: 16px;
   font-weight: 700;
   display: flex;
   align-items: center;
@@ -236,7 +236,7 @@
 
 .avatar.overflow-badge {
   background-color: #999;
-  font-size: 12px;
+  font-size: 16px;
   flex-shrink: 0;
 }
 
@@ -370,7 +370,7 @@ dialog#openDialogBoard footer {
 .flex-sb button {
   background: none;
   border: none;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: bold;
   width: 30px;
   height: 30px;
@@ -442,7 +442,7 @@ dialog#openDialogBoard p:has(img) {
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 16px;
   margin-top: 28px;
 }
 
