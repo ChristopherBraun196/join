@@ -48,10 +48,10 @@
 }
 
 #add-task-dialog-content {
-  display: flex !important;
-  flex-direction: column !important;
-  height: 100% !important;
-  overflow: hidden !important;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
 }
 
 .add-task-form {
@@ -208,11 +208,9 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   padding: 10px 24px;
   border-radius: var(--border-radius);
   font-size: 16px;
-  font-family: InterRegular;
   cursor: pointer;
   gap: 8px;
   transition: opacity 0.2s;
-  border: none;
 }
 
 #task-btns button span {

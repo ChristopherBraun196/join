@@ -1,10 +1,10 @@
 #login-signup-main {
   position: inherit;
   display: flex;
-  flex-direction: column !important;
-  justify-content: center !important;
-  align-items: center !important;
-  width: 100% !important;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
   max-width: none;
   min-height: calc(100vh - 400px);
   padding-block: 40px;
@@ -42,8 +42,8 @@ footer {
 }
 
 #login-signup-navbar nav {
-  display: flex !important;
-  flex-direction: row !important;
+  display: flex;
+  flex-direction: row;
   justify-content: space-between;
   align-items: center;
   height: 200px;

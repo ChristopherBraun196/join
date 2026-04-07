@@ -1,30 +1,30 @@
 .primary-btn {
-  transition: all 0.1s ease-in !important;
-  background-color: var(--primary-color) !important;
-  color: white !important;
-  font-family: InterBold !important;
+  transition: all 0.1s ease-in;
+  background-color: var(--primary-color);
+  color: white;
+  font-family: InterBold;
   border-radius: var(--border-radius);
   border: none;
 }
 
 .primary-btn:hover {
-  transition: all 0.1s ease-in !important;
-  background-color: var(--highligted-color) !important;
-  box-shadow: 0 4px 4px 0 #00000050 !important;
+  transition: all 0.1s ease-in;
+  background-color: var(--highligted-color);
+  box-shadow: 0 4px 4px 0 #00000050;
 }
 
 .secondary-btn {
-  transition: all 0.1s ease-in !important;
+  transition: all 0.1s ease-in;
   background-color: white;
   color: var(--primary-color);
-  border: 1px solid var(--border-color) !important;
-  border-radius: var(--border-radius) !important;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
 }
 
 .secondary-btn:hover {
-  transition: all 0.1s ease-in !important;
-  border: 1px solid var(--highligted-color) !important;
-  box-shadow: 0 4px 4px 0 #00000050 !important;
+  transition: all 0.1s ease-in;
+  border: 1px solid var(--highligted-color);
+  box-shadow: 0 4px 4px 0 #00000050;
 }
 
 .regular-btn {
@@ -107,8 +107,9 @@
   color: var(--error-color);
 }
 
-.input-error {
-  border-color: var(--error-color) !important;
+input.input-error,
+textarea.input-error {
+  border-color: var(--error-color);
   background-color: #fff5f6;
 }
 
@@ -120,7 +121,7 @@
 }
 
 #category-wrapper input[name="category"].input-error ~ .custom-select-trigger {
-  border-color: var(--error-color) !important;
+  border-color: var(--error-color);
   background-color: #fff5f6;
 }
 
