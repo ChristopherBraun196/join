@@ -70,7 +70,11 @@ function createSubtaskItem(text) {
 
 /**
  * Switches a subtask list item into edit mode.
- * @param {HTMLElement} span - The subtask text element that was clicked
+ * Replaces the text span with an input field and swaps the action buttons
+ * to show delete and confirm options. Supports keyboard interaction.
+ * 
+ * @param {HTMLElement} span - The subtask text span element that was clicked
+ * @returns {void}
  */
 function editSubtask(span) {
     const li = span.closest('li');
@@ -85,15 +89,7 @@ function editSubtask(span) {
     input.select();
 
     const actions = li.querySelector('.subtask-item-actions');
-    actions.innerHTML = `
-        <button class="subtask-icon-btn" onclick="removeSubtask(this)" type="button">
-            <img src="./assets/icons/delete.svg" alt="Delete">
-        </button>
-        <div class="subtask-divider"></div>
-        <button class="subtask-icon-btn" onclick="confirmEditSubtask(this)" type="button">
-            <img src="./assets/icons/check-dark.svg" alt="Confirm">
-        </button>
-    `;
+    actions.innerHTML = getSubtaskEditActionsTemplate();
 
     input.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') confirmEditSubtask(actions.querySelector('[alt="Confirm"]').closest('button'));

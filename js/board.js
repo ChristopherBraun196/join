@@ -173,7 +173,10 @@ function closeAllOverlays() {
  * Handles clicks outside overlays to close them.
  */
 function handleOutsideClick(event) {
-  if (!event.target.closest(".move-overlay") && !event.target.closest(".move-to-btn")) {
+  if (
+    !event.target.closest(".move-overlay") &&
+    !event.target.closest(".move-to-btn")
+  ) {
     closeAllOverlays();
   }
 }
@@ -203,12 +206,16 @@ function scrollColumn(columnId, direction) {
 }
 
 /**
- * Shows/hides individual scroll arrows based on overflow and position.
+ * Updates scroll arrow visibility for all board columns based on scroll position and overflow.
+ * Delegates to mobile or desktop handler depending on screen width.
+ * @returns {void}
  */
 function updateScrollArrows() {
   for (const col of COLUMNS) {
     const container = document.getElementById(col);
-    const body = document.querySelector(`.board-task-body[data-column="${col}"]`);
+    const body = document.querySelector(
+      `.board-task-body[data-column="${col}"]`,
+    );
     if (!container || !body) continue;
 
     const arrowUp = body.querySelector(".arrow-up");
@@ -218,26 +225,52 @@ function updateScrollArrows() {
     const isMobile = window.innerWidth <= 1200;
 
     if (isMobile) {
-      const hasOverflow = container.scrollWidth > container.clientWidth + 2;
-      if (!hasOverflow) {
-        arrowUp.classList.add("hidden");
-        arrowDown.classList.add("hidden");
-      } else {
-        arrowUp.classList.toggle("hidden", container.scrollLeft <= 2);
-        arrowDown.classList.toggle("hidden",
-          container.scrollLeft + container.clientWidth >= container.scrollWidth - 2);
-      }
+      handleMobileArrows(container, arrowUp, arrowDown);
     } else {
-      const hasOverflow = container.scrollHeight > container.clientHeight + 2;
-      if (!hasOverflow) {
-        arrowUp.classList.add("hidden");
-        arrowDown.classList.add("hidden");
-      } else {
-        arrowUp.classList.toggle("hidden", container.scrollTop <= 2);
-        arrowDown.classList.toggle("hidden",
-          container.scrollTop + container.clientHeight >= container.scrollHeight - 2);
-      }
+      handleDesktopArrows(container, arrowUp, arrowDown);
     }
+  }
+}
+
+/**
+ * Shows or hides scroll arrows for horizontal (mobile) scroll containers.
+ * @param {HTMLElement} container - The scrollable column container
+ * @param {HTMLElement} arrowUp - The left scroll arrow element
+ * @param {HTMLElement} arrowDown - The right scroll arrow element
+ * @returns {void}
+ */
+function handleMobileArrows(container, arrowUp, arrowDown) {
+  const hasOverflow = container.scrollWidth > container.clientWidth + 2;
+  if (!hasOverflow) {
+    arrowUp.classList.add("hidden");
+    arrowDown.classList.add("hidden");
+  } else {
+    arrowUp.classList.toggle("hidden", container.scrollLeft <= 2);
+    arrowDown.classList.toggle(
+      "hidden",
+      container.scrollLeft + container.clientWidth >= container.scrollWidth - 2,
+    );
+  }
+}
+/**
+ * Shows or hides scroll arrows for vertical (desktop) scroll containers.
+ * @param {HTMLElement} container - The scrollable column container
+ * @param {HTMLElement} arrowUp - The upward scroll arrow element
+ * @param {HTMLElement} arrowDown - The downward scroll arrow element
+ * @returns {void}
+ */
+function handleDesktopArrows(container, arrowUp, arrowDown) {
+  const hasOverflow = container.scrollHeight > container.clientHeight + 2;
+  if (!hasOverflow) {
+    arrowUp.classList.add("hidden");
+    arrowDown.classList.add("hidden");
+  } else {
+    arrowUp.classList.toggle("hidden", container.scrollTop <= 2);
+    arrowDown.classList.toggle(
+      "hidden",
+      container.scrollTop + container.clientHeight >=
+        container.scrollHeight - 2,
+    );
   }
 }
 
@@ -313,7 +346,10 @@ async function renderFilteredTasks(filteredTasks) {
     for (const element of sectionTasks) {
       const [solved, total, visibility] = await getSubtaskData(element);
       container.innerHTML += await getToDoTemplate(
-        element, solved, total, visibility,
+        element,
+        solved,
+        total,
+        visibility,
         calcSubtaskProgress(solved, total),
       );
     }

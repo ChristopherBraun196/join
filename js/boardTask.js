@@ -348,39 +348,74 @@ function toggleEditDropdown() {
 }
 
 /**
+ * Retrieves the checkbox from a contact option and toggles it if the click was outside the checkbox.
+ * @param {MouseEvent} event - The click event from the contact option
+ * @returns {HTMLInputElement} The checkbox element
+ */
+function getCheckboxState(event) {
+  const checkbox = event.currentTarget.querySelector("input[type='checkbox']");
+  if (event.target !== checkbox) checkbox.checked = !checkbox.checked;
+  return checkbox;
+}
+
+/**
+ * Returns a normalized array of assigned contacts from a task element.
+ * Handles both array and object formats from Firebase.
+ * @param {Object} element - The task object containing assignedTo data
+ * @returns {Array<{id: string}>} Normalized array of assigned contact references
+ */
+function getNormalizedAssignedTo(element) {
+  if (!element.assignedTo) return [];
+  return Array.isArray(element.assignedTo)
+    ? [...element.assignedTo]
+    : Object.values(element.assignedTo);
+}
+
+/**
+ * Adds or removes a contact from the assigned list and updates the UI selection state.
+ * @param {HTMLInputElement} checkbox - The checkbox element indicating assignment state
+ * @param {Array<{id: string}>} assignedTo - Current list of assigned contacts
+ * @param {string} contactId - The ID of the contact to add or remove
+ * @param {HTMLElement} currentTarget - The contact option element to toggle selected class
+ * @returns {Array<{id: string}>} Updated list of assigned contacts
+ */
+function updateAssignedList(checkbox, assignedTo, contactId, currentTarget) {
+  if (checkbox.checked) {
+    assignedTo.push({ id: contactId });
+    currentTarget.classList.add("selected");
+  } else {
+    assignedTo = assignedTo.filter((a) => a.id !== contactId);
+    currentTarget.classList.remove("selected");
+  }
+  return assignedTo;
+}
+
+/**
+ * Saves the updated assigned contacts to Firebase, reinitializes tasks and refreshes the badge UI.
+ * @async
+ * @param {string} taskId - The ID of the task to update
+ * @param {Array<{id: string}>} assignedTo - Updated list of assigned contacts
+ * @returns {Promise<void>}
+ */
+async function saveAndRefreshAssigned(taskId, assignedTo) {
+  await putData("/tasks/" + taskId + "/assignedTo", assignedTo);
+  await initTasks();
+  const allContacts = await loadData("/contacts");
+  const assignedIds = assignedTo.map((a) => a.id);
+  document.getElementById("edit-assigned-badges").innerHTML =
+    buildContactBadges(allContacts, assignedIds);
+}
+
+/**
  * Toggles a contact's assignment on a task and updates the UI.
  * @param {MouseEvent} event - The click event from the contact option
  * @param {string} contactId - The ID of the contact to toggle
  * @returns {Promise<void>}
  */
 async function toggleAssignedContact(event, contactId) {
-  const checkbox = event.currentTarget.querySelector("input[type='checkbox']");
-
-  if (event.target !== checkbox) {
-    checkbox.checked = !checkbox.checked;
-  }
-
-  const taskId = currentEditTaskId;
-  const element = tasks.find((t) => t.id === taskId);
-  let assignedTo = element.assignedTo
-    ? Array.isArray(element.assignedTo)
-      ? [...element.assignedTo]
-      : Object.values(element.assignedTo)
-    : [];
-
-  if (checkbox.checked) {
-    assignedTo.push({ id: contactId });
-     event.currentTarget.classList.add('selected');
-  } else {
-    assignedTo = assignedTo.filter((a) => a.id !== contactId);
-     event.currentTarget.classList.remove('selected');
-  }
-
-  await putData("/tasks/" + taskId + "/assignedTo", assignedTo);
-  await initTasks();
-
-  const allContacts = await loadData("/contacts");
-  const assignedIds = assignedTo.map((a) => a.id);
-  document.getElementById("edit-assigned-badges").innerHTML =
-    buildContactBadges(allContacts, assignedIds);
+  const checkbox = getCheckboxState(event);
+  const element = tasks.find((t) => t.id === currentEditTaskId);
+  let assignedTo = getNormalizedAssignedTo(element);
+  assignedTo = updateAssignedList(checkbox, assignedTo, contactId, event.currentTarget);
+  await saveAndRefreshAssigned(currentEditTaskId, assignedTo);
 }

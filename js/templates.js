@@ -663,3 +663,20 @@ function getSubtaskEditingStateTemplate(currentText) {
     </div>
   `;
 }
+
+/**
+ * Returns the HTML template for subtask edit action buttons.
+ * Contains a delete button and a confirm button separated by a divider.
+ * @returns {string} HTML string with delete and confirm action buttons
+ */
+function getSubtaskEditActionsTemplate() {
+    return `
+        <button class="subtask-icon-btn" onclick="removeSubtask(this)" type="button">
+            <img src="./assets/icons/delete.svg" alt="Delete">
+        </button>
+        <div class="subtask-divider"></div>
+        <button class="subtask-icon-btn" onclick="confirmEditSubtask(this)" type="button">
+            <img src="./assets/icons/check-dark.svg" alt="Confirm">
+        </button>
+    `;
+}
