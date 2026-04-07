@@ -85,7 +85,7 @@ function showFieldError(input, message) {
         input.insertAdjacentElement('afterend', errorEl);
     }
     errorEl.textContent = message;
-    errorEl.style.display = 'block';
+    errorEl.style.visibility = 'visible';
 }
 
 /**
@@ -95,7 +95,7 @@ function showFieldError(input, message) {
 function clearFieldError(input) {
     input.classList.remove('input-error');
     const errorEl = getErrorElement(input);
-    if (errorEl) errorEl.style.display = 'none';
+    if (errorEl) errorEl.style.visibility = 'hidden';
 }
 
 /**

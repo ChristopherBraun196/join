@@ -279,7 +279,7 @@
 
 .error-msg {
   display: block;
-  min-height: 1.2em;  
+  min-height: 20px;  
   font-size: 16px;
   color: #c0392b;
   margin-top: 4px;

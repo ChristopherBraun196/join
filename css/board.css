@@ -119,6 +119,8 @@ input.find-task {
   overflow-y: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  padding: 8px;
+  margin: -8px;
 }
 
 .task-cards::-webkit-scrollbar {

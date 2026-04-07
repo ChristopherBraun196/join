@@ -65,7 +65,7 @@ function clearAddTaskForm() {
     document.getElementById('subtask-list').innerHTML = '';
 
     document.querySelectorAll('#add-task-form .input-error').forEach(input => clearFieldError(input));
-    document.querySelectorAll('#add-task-form .field-error-msg').forEach(el => el.style.display = 'none');
+    document.querySelectorAll('#add-task-form .field-error-msg').forEach(el => el.style.visibility = 'hidden');
 }
 
 /**
