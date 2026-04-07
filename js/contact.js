@@ -4,6 +4,11 @@ const AVATAR_COLORS = [
   "#FF7043",  "#E91E8C",  "#9C27B0",  "#3F51B5",  "#00BCD4",  "#4CAF50",  "#FF9800",  "#795548",
 ];
 
+/**
+ * Displays a temporary message box with the given text.
+ * The box animates in, stays visible for 2.5 seconds, then animates out.
+ * @param {string} message - The message text to display
+ */
 function showMessage(message) {
     const box = document.getElementById('message-box');
     box.textContent = message;

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: authGuard.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: authGuard.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { auth, db } from "./firebaseAuth.js";
+import {
+  onAuthStateChanged,
+  signOut,
+} from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+import {
+  ref,
+  get,
+} from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
+const homePaths = ["/", "/index.html", "index.html"];
+const publicPaths = [
+  "/privacy.html",
+  "privacy.html",
+  "/legal.html",
+  "legal.html",
+  "/help.html",
+  "help.html",
+];
+const path = window.location.pathname;
+
+/**
+ * Loads the authenticated user's data from Firebase and sets the global current user.
+ * Redirects to summary page if on a home path, or loads the sidebar for public paths.
+ * @async
+ * @param {Object} user - The Firebase authenticated user object
+ * @param {string} path - The current page path
+ * @returns {Promise&lt;void>}
+ */
+async function handleAuthenticatedUser(user, path) {
+  const snapshot = await get(ref(db, `users/${user.uid}`));
+  if (!snapshot.val()) return;
+  const { contactId } = snapshot.val();
+  const contactSnap = await get(ref(db, `contacts/${contactId}`));
+  window.currentUser = contactSnap.val();
+  renderUserMenue();
+  if (homePaths.includes(path)) {
+    window.location.href = "./summary.html";
+  } else if (publicPaths.includes(path)) {
+    const page = path.includes("privacy")
+      ? "privacy"
+      : path.includes("legal")
+        ? "legal"
+        : "help";
+    if (typeof loadSidebar === "function") loadSidebar(page);
+  }
+}
+
+/**
+ * Handles routing for unauthenticated users.
+ * Shows guest sidebar on public paths or redirects to index if on a protected path.
+ * @param {string} path - The current page path
+ * @returns {void}
+ */
+function handleUnauthenticatedUser(path) {
+  if (publicPaths.includes(path)) {
+    if (typeof switchToGuestSidebar === "function") switchToGuestSidebar();
+  } else if (!homePaths.includes(path)) {
+    window.location.href = "./index.html";
+  }
+}
+
+/**
+ * Listens to Firebase auth state changes and routes the user accordingly.
+ * Handles three cases: anonymous guest, authenticated user, and unauthenticated user.
+ * @listens onAuthStateChanged
+ * @param {Object|null} user - The Firebase user object or null if not logged in
+ * @returns {Promise&lt;void>}
+ */
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    if (user.isAnonymous) {
+      window.currentUser = { name: "Guest" };
+      renderUserMenue();
+      if (homePaths.includes(path)) {
+        window.location.href = "./summary.html";
+      } else if (publicPaths.includes(path)) {
+        const page = path.includes("privacy")
+          ? "privacy"
+          : path.includes("legal")
+            ? "legal"
+            : "help";
+        if (typeof loadSidebar === "function") loadSidebar(page);
+      }
+      return;
+    }
+    await handleAuthenticatedUser(user, path);
+  } else {
+    handleUnauthenticatedUser(path);
+  }
+});
+
+/**
+ * Signs out the current user from Firebase.
+ * @returns {Promise&lt;void>}
+ */
+async function logout() {
+  await signOut(auth);
+  window.location.href = "/";
+}
+
+window.logout = logout;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#clearFieldError">clearFieldError</a></li><li><a href="global.html#createContactEntry">createContactEntry</a></li><li><a href="global.html#createUserEntry">createUserEntry</a></li><li><a href="global.html#guestLogin">guestLogin</a></li><li><a href="global.html#handleAuthenticatedUser">handleAuthenticatedUser</a></li><li><a href="global.html#handleLogin">handleLogin</a></li><li><a href="global.html#handleLoginError">handleLoginError</a></li><li><a href="global.html#handleSignup">handleSignup</a></li><li><a href="global.html#handleSignupError">handleSignupError</a></li><li><a href="global.html#handleUnauthenticatedUser">handleUnauthenticatedUser</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#logout">logout</a></li><li><a href="global.html#selectRandomAvatarColor">selectRandomAvatarColor</a></li><li><a href="global.html#showFieldError">showFieldError</a></li><li><a href="global.html#signup">signup</a></li><li><a href="global.html#togglePwdVisibility">togglePwdVisibility</a></li><li><a href="global.html#togglePwdVisibilityBtn">togglePwdVisibilityBtn</a></li><li><a href="global.html#validateField">validateField</a></li><li><a href="global.html#validatePasswordConfirm">validatePasswordConfirm</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Tue Apr 07 2026 13:31:55 GMT+0200 (Central European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
