@@ -44,14 +44,23 @@ function isGuest() {
   return window.currentUser?.name === "Guest";
 }
 
-if (animatedImgWrapper) {
-  animatedImgWrapper.addEventListener("animationend", (e) => {
-    if (e.target === animatedImgWrapper) {
-      animatedImgWrapper.style.display = "none";
-      navLogo.classList.remove("hide");
-    }
-  });
+/**
+ * Registers the animation end event on the logo wrapper element.
+ * Hides the wrapper and reveals the nav logo after the animation completes.
+ */
+function initLogoAnimation() {
+  if (animatedImgWrapper) {
+    animatedImgWrapper.addEventListener("animationend", (e) => {
+      if (e.target === animatedImgWrapper) {
+        animatedImgWrapper.style.display = "none";
+        navLogo.classList.remove("hide");
+      }
+    });
+  }
 }
+
+initLogoAnimation();
+
 document.addEventListener(
   "cancel",
   (e) => {

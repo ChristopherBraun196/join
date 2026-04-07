@@ -445,3 +445,24 @@ function getPriorityButtonsTemplate(currentPriority) {
     })
     .join("");
 }
+
+/**
+ * Returns the active CSS class for a priority button.
+ * @param {string} priority - The priority to check
+ * @param {string} currentPriority - The currently active priority
+ * @returns {string} "active" or empty string
+ */
+function getPriorityActiveClass(priority, currentPriority) {
+  return currentPriority === priority ? "active" : "";
+}
+
+/**
+ * Returns the HTML template for all priority buttons in the edit dialog.
+ * @param {string} currentPriority - The currently active priority (e.g. "urgent")
+ * @returns {string} HTML string of all priority buttons
+ */
+function getPriorityButtonsTemplate(currentPriority) {
+  return ["urgent", "medium", "low"]
+    .map((p) => getPriorityButtonTemplate(p, currentPriority))
+    .join("");
+}

@@ -1,7 +1,14 @@
 import { auth, db } from "./firebaseAuth.js";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInAnonymously, signOut} from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
-import { ref, set } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
-
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signInAnonymously,
+  signOut,
+} from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+import {
+  ref,
+  set,
+} from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
 
 export const AVATAR_COLORS = [
   "#FF7043",
@@ -73,11 +80,23 @@ function handleSignupError(error) {
   };
 
   if (emailMessages[error.code]) {
-    showFieldError(emailInput.closest(".email-input"), emailError, emailMessages[error.code]);
+    showFieldError(
+      emailInput.closest(".email-input"),
+      emailError,
+      emailMessages[error.code],
+    );
   } else if (passwordMessages[error.code]) {
-    showFieldError(passwordInput.closest(".pwd-input"), passwordError, passwordMessages[error.code]);
+    showFieldError(
+      passwordInput.closest(".pwd-input"),
+      passwordError,
+      passwordMessages[error.code],
+    );
   } else {
-    showFieldError(emailInput.closest(".email-input"), emailError, error.message);
+    showFieldError(
+      emailInput.closest(".email-input"),
+      emailError,
+      error.message,
+    );
   }
 }
 
@@ -118,12 +137,20 @@ function handleLoginError(error) {
   const passwordError = document.getElementById("password-error");
 
   if (error.code === "auth/too-many-requests") {
-    showFieldError(passwordInput.closest(".pwd-input"), passwordError, "Too many failed attempts. Please wait a moment.");
+    showFieldError(
+      passwordInput.closest(".pwd-input"),
+      passwordError,
+      "Too many failed attempts. Please wait a moment.",
+    );
     return;
   }
 
   emailInput.closest(".email-input").classList.add("invalid");
-  showFieldError(passwordInput.closest(".pwd-input"), passwordError, "Wrong email address or password.");
+  showFieldError(
+    passwordInput.closest(".pwd-input"),
+    passwordError,
+    "Wrong email address or password.",
+  );
 }
 
 /**
@@ -225,107 +252,161 @@ function validatePasswordConfirm(input) {
 }
 
 /**
+ * Returns the email and password input elements from the login form.
+ * @returns {{emailInput: HTMLElement, passwordInput: HTMLElement}}
+ */
+function getLoginFormInputs() {
+  const form = document.getElementById("login-signup-form");
+  return {
+    emailInput: form.querySelector("input[name='email']"),
+    passwordInput: form.querySelector("input[name='password']"),
+  };
+}
+
+/**
+ * Validates a single login input field and shows or clears its error.
+ * @param {HTMLElement} input - The input element to validate
+ * @param {HTMLElement} errorEl - The error message element
+ * @param {string} wrapperClass - The CSS class of the input wrapper
+ * @returns {boolean} True if the input is valid
+ */
+function validateLoginField(input, errorEl, wrapperClass) {
+  if (!input.value.trim()) {
+    showFieldError(input.closest(wrapperClass), errorEl, "This field is required");
+    return false;
+  }
+  clearFieldError(input.closest(wrapperClass), errorEl);
+  return true;
+}
+
+/**
+ * Validates all login form inputs.
+ * @param {HTMLElement} emailInput - The email input element
+ * @param {HTMLElement} passwordInput - The password input element
+ * @returns {boolean} True if all inputs are valid
+ */
+function validateLoginInputs(emailInput, passwordInput) {
+  const emailValid = validateLoginField(emailInput, document.getElementById("email-error"), ".email-input");
+  const passwordValid = validateLoginField(passwordInput, document.getElementById("password-error"), ".pwd-input");
+  return emailValid && passwordValid;
+}
+
+/**
  * Reads the login form values and triggers the login process.
- * @param {Event} event - The form submit event
  * @returns {Promise<void>}
  */
 async function handleLogin() {
-  const form = document.getElementById("login-signup-form");
-  const emailInput = form.querySelector("input[name='email']");
-  const passwordInput = form.querySelector("input[name='password']");
-  const emailError = document.getElementById("email-error");
-  const passwordError = document.getElementById("password-error");
-
-  let valid = true;
-
-  if (!emailInput.value.trim()) {
-    showFieldError(emailInput.closest(".email-input"), emailError, "This field is required");
-    valid = false;
-  } else {
-    clearFieldError(emailInput.closest(".email-input"), emailError);
-  }
-
-  if (!passwordInput.value.trim()) {
-    showFieldError(passwordInput.closest(".pwd-input"), passwordError, "This field is required");
-    valid = false;
-  } else {
-    clearFieldError(passwordInput.closest(".pwd-input"), passwordError);
-  }
-
-  if (!valid) return;
+  const { emailInput, passwordInput } = getLoginFormInputs();
+  if (!validateLoginInputs(emailInput, passwordInput)) return;
   await login(emailInput.value, passwordInput.value);
 }
 
 /**
- * Reads the signup form values and triggers the signup process.
- * @param {Event} event - The form submit event
+ * Returns all input elements from the signup form.
+ * @returns {{nameInput: HTMLElement, emailInput: HTMLElement, passwordInput: HTMLElement, passwordConfirmInput: HTMLElement, acceptCheckbox: HTMLElement}}
+ */
+function getSignupFormInputs() {
+  const form = document.getElementById("login-signup-form");
+  return {
+    nameInput: form.querySelector("input[name='fullname']"),
+    emailInput: form.querySelector("input[name='email']"),
+    passwordInput: form.querySelector("input[name='password']"),
+    passwordConfirmInput: form.querySelector("input[name='password_confirm']"),
+    acceptCheckbox: form.querySelector("#accept-btn"),
+  };
+}
+
+/**
+ * Validates the full name input field.
+ * @param {HTMLElement} nameInput - The name input element
+ * @returns {boolean} True if the input is valid
+ */
+function validateSignupName(nameInput) {
+  const error = document.getElementById("fullname-error");
+  return validateLoginField(nameInput, error, ".name-input");
+}
+
+/**
+ * Validates the email input field including format check.
+ * @param {HTMLElement} emailInput - The email input element
+ * @returns {boolean} True if the input is valid
+ */
+function validateSignupEmail(emailInput) {
+  const error = document.getElementById("email-error");
+  if (!emailInput.value.trim()) return !showFieldError(emailInput.closest(".email-input"), error, "This field is required");
+  if (!/^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(emailInput.value.trim())) return !showFieldError(emailInput.closest(".email-input"), error, "Not a valid email address");
+  clearFieldError(emailInput.closest(".email-input"), error);
+  return true;
+}
+
+/**
+ * Validates the password input field including minimum length check.
+ * @param {HTMLElement} passwordInput - The password input element
+ * @returns {boolean} True if the input is valid
+ */
+function validateSignupPassword(passwordInput) {
+  const error = document.getElementById("password-error");
+  if (!passwordInput.value.trim()) return !showFieldError(passwordInput.closest(".pwd-input"), error, "This field is required");
+  if (passwordInput.value.length < 6) return !showFieldError(passwordInput.closest(".pwd-input"), error, "Password too weak (min. 6 characters).");
+  clearFieldError(passwordInput.closest(".pwd-input"), error);
+  return true;
+}
+
+/**
+ * Validates the password confirmation input field.
+ * @param {HTMLElement} passwordInput - The original password input element
+ * @param {HTMLElement} passwordConfirmInput - The confirmation input element
+ * @returns {boolean} True if both passwords match
+ */
+function validateSignupPasswordConfirm(passwordInput, passwordConfirmInput) {
+  const error = document.getElementById("password-confirm-error");
+  if (!passwordConfirmInput.value.trim()) return !showFieldError(passwordConfirmInput.closest(".pwd-input"), error, "This field is required");
+  if (passwordConfirmInput.value !== passwordInput.value) return !showFieldError(passwordConfirmInput.closest(".pwd-input"), error, "Passwords do not match");
+  clearFieldError(passwordConfirmInput.closest(".pwd-input"), error);
+  return true;
+}
+
+/**
+ * Validates the privacy policy checkbox.
+ * @param {HTMLElement} acceptCheckbox - The checkbox element
+ * @returns {boolean} True if the checkbox is checked
+ */
+function validateAcceptCheckbox(acceptCheckbox) {
+  const error = document.getElementById("accept-error");
+  if (acceptCheckbox.checked) {
+    acceptCheckbox.classList.remove("invalid");
+    error.textContent = "";
+    error.classList.remove("visible");
+    return true;
+  }
+  acceptCheckbox.classList.add("invalid");
+  error.textContent = "You have to accept the privacy policy";
+  error.classList.add("visible");
+  return false;
+}
+
+/**
+ * Validates all signup form inputs and returns the combined result.
+ * @param {{nameInput: HTMLElement, emailInput: HTMLElement, passwordInput: HTMLElement, passwordConfirmInput: HTMLElement, acceptCheckbox: HTMLElement}} inputs - The form input elements
+ * @returns {boolean} True if all inputs are valid
+ */
+function validateSignupInputs({ nameInput, emailInput, passwordInput, passwordConfirmInput, acceptCheckbox }) {
+  const nameValid = validateSignupName(nameInput);
+  const emailValid = validateSignupEmail(emailInput);
+  const passwordValid = validateSignupPassword(passwordInput);
+  const confirmValid = validateSignupPasswordConfirm(passwordInput, passwordConfirmInput);
+  const acceptValid = validateAcceptCheckbox(acceptCheckbox);
+  return nameValid && emailValid && passwordValid && confirmValid && acceptValid;
+}
+
+/**
+ * Reads the signup form values, validates them and triggers the signup process.
  * @returns {Promise<void>}
  */
 async function handleSignup() {
-  const form = document.getElementById("login-signup-form");
-  const nameInput = form.querySelector("input[name='fullname']");
-  const emailInput = form.querySelector("input[name='email']");
-  const passwordInput = form.querySelector("input[name='password']");
-  const passwordConfirmInput = form.querySelector("input[name='password_confirm']");
-  const acceptCheckbox = form.querySelector("#accept-btn");
-  const fullnameError = document.getElementById("fullname-error");
-  const emailError = document.getElementById("email-error");
-  const passwordError = document.getElementById("password-error");
-  const passwordConfirmError = document.getElementById("password-confirm-error");
-  const acceptError = document.getElementById("accept-error");
-
-  let valid = true;
-
-  if (!nameInput.value.trim()) {
-    showFieldError(nameInput.closest(".name-input"), fullnameError, "This field is required");
-    valid = false;
-  } else {
-    clearFieldError(nameInput.closest(".name-input"), fullnameError);
-  }
-
-  if (!emailInput.value.trim()) {
-    showFieldError(emailInput.closest(".email-input"), emailError, "This field is required");
-    valid = false;
-  } else if (!/^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(emailInput.value.trim())) {
-    showFieldError(emailInput.closest(".email-input"), emailError, "Not a valid email address");
-    valid = false;
-  } else {
-    clearFieldError(emailInput.closest(".email-input"), emailError);
-  }
-
-  if (!passwordInput.value.trim()) {
-    showFieldError(passwordInput.closest(".pwd-input"), passwordError, "This field is required");
-    valid = false;
-  } else if (passwordInput.value.length < 6) {
-    showFieldError(passwordInput.closest(".pwd-input"), passwordError, "Password too weak (min. 6 characters).");
-    valid = false;
-  } else {
-    clearFieldError(passwordInput.closest(".pwd-input"), passwordError);
-  }
-
-  if (!passwordConfirmInput.value.trim()) {
-    showFieldError(passwordConfirmInput.closest(".pwd-input"), passwordConfirmError, "This field is required");
-    valid = false;
-  } else if (passwordConfirmInput.value !== passwordInput.value) {
-    showFieldError(passwordConfirmInput.closest(".pwd-input"), passwordConfirmError, "Passwords do not match");
-    valid = false;
-  } else {
-    clearFieldError(passwordConfirmInput.closest(".pwd-input"), passwordConfirmError);
-  }
-
-  if (!acceptCheckbox.checked) {
-    acceptCheckbox.classList.add("invalid");
-    acceptError.textContent = "You have to accept the privacy policy";
-    acceptError.classList.add("visible");
-    valid = false;
-  } else {
-    acceptCheckbox.classList.remove("invalid");
-    acceptError.textContent = "";
-    acceptError.classList.remove("visible");
-  }
-
-  if (!valid) return;
-  await signup(nameInput.value, emailInput.value, passwordInput.value);
+  const inputs = getSignupFormInputs();
+  if (!validateSignupInputs(inputs)) return;
+  await signup(inputs.nameInput.value, inputs.emailInput.value, inputs.passwordInput.value);
 }
 
 /**

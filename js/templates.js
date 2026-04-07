@@ -559,19 +559,16 @@ function getSubtasksTemplate(
 }
 
 /**
- * Returns the HTML template for the priority buttons in the edit dialog.
- * @param {string} currentPriority - The currently active priority (e.g. "urgent")
- * @returns {string} HTML string of the priority buttons
+ * Returns the HTML for a single priority button.
+ * @param {string} priority - The priority value (e.g. "urgent")
+ * @param {string} currentPriority - The currently active priority
+ * @returns {string} HTML string of the priority button
  */
-function getPriorityButtonsTemplate(currentPriority) {
-  return ["urgent", "medium", "low"]
-    .map((p) => {
-      const active = currentPriority === p ? "active" : "";
-      return `<button class="prio-btn ${active}" data-priority="${p}" onclick="setEditPriority(event, '${p}')">
-      ${capitalize(p)} <span><img src="./assets/icons/priority-${p}.svg" /></span>
-    </button>`;
-    })
-    .join("");
+function getPriorityButtonTemplate(priority, currentPriority) {
+  const active = getPriorityActiveClass(priority, currentPriority);
+  return `<button class="prio-btn ${active}" data-priority="${priority}" onclick="setEditPriority(event, '${priority}')">
+    ${capitalize(priority)} <span><img src="./assets/icons/priority-${priority}.svg" /></span>
+  </button>`;
 }
 
 /**
