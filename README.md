@@ -3,6 +3,7 @@
 A Kanban-based task management tool built with vanilla JavaScript and Firebase.
 
 🔗 [Live Demo](https://join.christopher-braun-dev.de)
+
 ![Join Board](assets/img/board-screen.png)
 
 ## ✨ Features
